@@ -1,6 +1,5 @@
 package com.soywiz.kds
 
-import com.soywiz.kds.Computed
 import kotlin.test.assertEquals
 
 class ComputedTest {

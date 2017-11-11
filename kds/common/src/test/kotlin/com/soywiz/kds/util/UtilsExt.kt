@@ -1,8 +1,6 @@
 package com.soywiz.kds.util
 
-import com.soywiz.kds.Queue
 import kotlin.math.abs
-
 
 fun Int.reverseBytes(): Int {
 	val v0 = ((this ushr 0) and 0xFF)
@@ -33,9 +31,9 @@ fun Long.reverseBytes(): Long {
 private val formatRegex = Regex("%([-]?\\d+)?(\\w)")
 
 fun String.format(vararg params: Any): String {
-	val params = Queue(*params)
+	var paramIndex = 0
 	return formatRegex.replace(this) { mr ->
-		val param = params.dequeue()
+		val param = params[paramIndex++]
 		//println("param: $param")
 		val size = mr.groupValues[1]
 		val type = mr.groupValues[2]
@@ -122,7 +120,7 @@ fun Int.toStringUnsigned(radix: Int): String {
 	} else {
 		var out = ""
 		while (temp != 0) {
-			val digit = temp urem  radix
+			val digit = temp urem radix
 			temp = temp udiv radix
 			out += Hex.DIGITS_UPPER[digit]
 		}
