@@ -1,0 +1,6 @@
+apply plugin: 'kotlin-platform-js'
+
+dependencies {
+	expectedBy project(":kds-common")
+	compile "com.soywiz:kmem-js:$kmemVersion"
+}
