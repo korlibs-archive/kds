@@ -12,6 +12,7 @@ class LinkedList<T> {
 */
 
 // @TODO: Reimplement like the previous one + implement Collection
+// @TODO: Unify with LinkedList2 and improve performance
 class LinkedList<T>(private val list: ArrayList<T> = arrayListOf<T>()) : MutableCollection<T> by list {
 
 	override val size: Int get() = list.size
