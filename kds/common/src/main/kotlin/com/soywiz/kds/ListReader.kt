@@ -15,3 +15,5 @@ class ListReader<T>(val list: List<T>) {
 		}
 	}
 }
+
+fun <T> List<T>.reader() = ListReader(this)
