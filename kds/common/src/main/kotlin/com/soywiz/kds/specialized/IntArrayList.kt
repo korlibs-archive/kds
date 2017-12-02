@@ -23,9 +23,7 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
 		}
 	}
 
-	fun clear() {
-		length = 0
-	}
+	fun clear() = run { length = 0 }
 
 	fun add(value: Int) {
 		ensure(1)
@@ -44,7 +42,6 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
 	}
 
 	fun add(values: IntArrayList) = add(values.data, 0, values.length)
-
 	fun add(value: Iterable<Int>) = run { for (v in value) add(v) }
 
 	operator fun get(index: Int) = data[index]
@@ -58,8 +55,8 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
 	}
 
 	override fun containsAll(elements: Collection<Int>): Boolean {
-		for (e in elements) if (!contains(e)) return false;
-		return true;
+		for (e in elements) if (!contains(e)) return false
+		return true
 	}
 
 	@Suppress("ReplaceSizeZeroCheckWithIsEmpty")

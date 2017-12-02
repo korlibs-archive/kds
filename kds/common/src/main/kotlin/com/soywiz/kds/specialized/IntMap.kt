@@ -1,5 +1,6 @@
 package com.soywiz.kds.specialized
 
+// @TODO: We should implement this in common!
 expect class IntMap<T>() {
 	val size: Int
 	fun clear(): Unit

@@ -55,8 +55,8 @@ class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
 	}
 
 	override fun containsAll(elements: Collection<Double>): Boolean {
-		for (e in elements) if (!contains(e)) return false;
-		return true;
+		for (e in elements) if (!contains(e)) return false
+		return true
 	}
 
 	@Suppress("ReplaceSizeZeroCheckWithIsEmpty")
