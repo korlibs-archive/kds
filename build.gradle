@@ -23,7 +23,7 @@ allprojects {
 	}
 
 	group 'com.soywiz'
-	version '0.3.1-SNAPSHOT'
+	version '0.3.1'
 
 	if (project == rootProject) {
 		new File(rootProject.rootDir, "kds/common/src/main/kotlin/com/soywiz/kds/KdsVersion.kt").write(
