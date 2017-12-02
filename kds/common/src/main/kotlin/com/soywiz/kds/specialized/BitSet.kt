@@ -1,4 +1,4 @@
-package com.soywiz.kds
+package com.soywiz.kds.specialized
 
 import com.soywiz.kmem.fill
 

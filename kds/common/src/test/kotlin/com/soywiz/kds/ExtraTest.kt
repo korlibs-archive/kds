@@ -1,5 +1,6 @@
 package com.soywiz.kds
 
+import com.soywiz.kds.extra.Extra
 import kotlin.test.assertEquals
 
 class ExtraTest {

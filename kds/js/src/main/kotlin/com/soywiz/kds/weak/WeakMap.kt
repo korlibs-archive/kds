@@ -1,4 +1,4 @@
-package com.soywiz.kds
+package com.soywiz.kds.weak
 
 @JsName("WeakMap")
 external class JsWeakMap {
