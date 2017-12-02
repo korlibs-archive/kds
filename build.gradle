@@ -27,7 +27,7 @@ allprojects {
 
 	if (project == rootProject) {
 		new File(rootProject.rootDir, "kds/common/src/main/kotlin/com/soywiz/kds/KdsVersion.kt").write(
-				"package com.soywiz.kds\n\ninternal val KDS_VERSION = \"$version\""
+				"package com.soywiz.kds\n\ninternal const val KDS_VERSION = \"$version\"\n"
 		)
 	}
 

@@ -1,21 +1,22 @@
 package com.soywiz.kds
 
-class Pool<T>(private val reset: (T) -> Unit = {}, preallocate: Int = 0, private val gen: () -> T) {
-	constructor(preallocate: Int = 0, gen: () -> T) : this({}, preallocate, gen)
+class Pool<T>(private val reset: (T) -> Unit = {}, preallocate: Int = 0, private val gen: (Int) -> T) {
+	constructor(preallocate: Int = 0, gen: (Int) -> T) : this({}, preallocate, gen)
 
 	private val items = LinkedList<T>()
+	private var lastId = 0
 
 	val itemsInPool: Int get() = items.size
 
 	init {
-		for (n in 0 until preallocate) items += gen()
+		for (n in 0 until preallocate) items += gen(lastId++)
 	}
 
 	fun alloc(): T {
 		if (items.isNotEmpty()) {
 			return items.removeLast()
 		} else {
-			return gen()
+			return gen(lastId++)
 		}
 	}
 
