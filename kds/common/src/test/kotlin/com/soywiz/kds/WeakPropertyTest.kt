@@ -1,6 +1,5 @@
 package com.soywiz.kds
 
-import com.soywiz.kds.weak.WeakProperty
 import org.junit.Test
 import kotlin.test.assertEquals
 

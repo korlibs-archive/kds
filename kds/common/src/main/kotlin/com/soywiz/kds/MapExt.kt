@@ -1,6 +1,4 @@
-package com.soywiz.kds.ext
-
-import com.soywiz.kds.lmapOf
+package com.soywiz.kds
 
 fun <K, V> Map<K, V>.flip(): Map<V, K> = this.map { Pair(it.value, it.key) }.toMap()
 

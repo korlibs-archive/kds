@@ -1,4 +1,4 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
 import com.soywiz.kmem.arraycopy
 import kotlin.math.max

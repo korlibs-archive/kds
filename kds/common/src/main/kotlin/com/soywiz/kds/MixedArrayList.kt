@@ -1,4 +1,4 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
 internal class MixedArrayList<T>(val shape: Shape) {
     enum class Shape { OBJ, INT }

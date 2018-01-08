@@ -1,4 +1,4 @@
-package com.soywiz.kds.ext
+package com.soywiz.kds
 
 fun <T> mapWhile(cond: () -> Boolean, gen: (Int) -> T): List<T> {
 	val out = arrayListOf<T>()

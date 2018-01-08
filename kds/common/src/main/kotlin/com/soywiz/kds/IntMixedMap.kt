@@ -1,4 +1,4 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
 // @TODO: We should improve this!
 internal class IntMixedMap<T>(val shape: MixedArrayList.Shape, private val loadFactor: Double = 0.75) {

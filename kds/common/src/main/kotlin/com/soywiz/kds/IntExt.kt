@@ -1,4 +1,6 @@
-package com.soywiz.kds.util
+package com.soywiz.kds
+
+import kotlin.math.log2
 
 infix fun Int.divCeil(that: Int): Int = if (this % that != 0) (this / that) + 1 else (this / that)
 
@@ -9,3 +11,6 @@ infix fun Int.umod(other: Int): Int {
         else -> remainder
     }
 }
+
+// @TODO: Use bit counting instead
+fun ilog2(v: Int): Int = log2(v.toDouble()).toInt()

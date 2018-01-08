@@ -1,4 +1,4 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
 class IntIntMap {
     private val i = IntMixedMap<Int>(MixedArrayList.Shape.INT)

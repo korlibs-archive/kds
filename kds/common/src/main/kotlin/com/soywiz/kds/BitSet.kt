@@ -1,6 +1,5 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
-import com.soywiz.kds.util.divCeil
 import com.soywiz.kmem.fill
 
 class BitSet(val size: Int) {

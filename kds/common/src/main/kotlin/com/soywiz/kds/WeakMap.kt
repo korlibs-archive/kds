@@ -1,4 +1,4 @@
-package com.soywiz.kds.weak
+package com.soywiz.kds
 
 expect class WeakMap<K, V>() {
 	operator fun contains(key: K): Boolean

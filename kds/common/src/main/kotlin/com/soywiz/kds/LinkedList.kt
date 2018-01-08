@@ -1,7 +1,5 @@
 package com.soywiz.kds
 
-import com.soywiz.kds.util.umod
-
 class LinkedList<T>() : MutableCollection<T> {
     private var _start: Int = 0
     private var _size: Int = 0

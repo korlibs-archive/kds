@@ -1,4 +1,4 @@
-package com.soywiz.kds.weak
+package com.soywiz.kds
 
 import kotlin.reflect.KProperty
 

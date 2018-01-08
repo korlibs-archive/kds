@@ -1,4 +1,4 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
 fun IntArray.binarySearch(v: Int, fromIndex: Int, toIndex: Int): Int {
 	var low = fromIndex

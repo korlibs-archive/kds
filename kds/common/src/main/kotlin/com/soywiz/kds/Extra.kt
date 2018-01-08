@@ -1,6 +1,5 @@
-package com.soywiz.kds.extra
+package com.soywiz.kds
 
-import com.soywiz.kds.lmapOf
 import kotlin.reflect.KProperty
 
 interface Extra {

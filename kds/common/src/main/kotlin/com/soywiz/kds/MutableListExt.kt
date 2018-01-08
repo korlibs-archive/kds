@@ -1,4 +1,4 @@
-package com.soywiz.kds.ext
+package com.soywiz.kds
 
 fun <T> MutableList<T>.splice(removeOffset: Int, removeCount: Int, vararg itemsToAdd: T) {
 	// @TODO: Improve performance

@@ -1,5 +1,6 @@
 package com.soywiz.kds.specialized
 
+import com.soywiz.kds.IntMap
 import org.junit.Test
 import kotlin.test.assertEquals
 

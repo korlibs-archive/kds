@@ -1,4 +1,4 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
 class IntMap<T>(private val loadFactor: Double) {
     constructor() : this(0.75)
