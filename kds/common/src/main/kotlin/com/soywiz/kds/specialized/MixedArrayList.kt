@@ -1,6 +1,6 @@
 package com.soywiz.kds.specialized
 
-class MixedArrayList<T>(val shape: Shape) {
+internal class MixedArrayList<T>(val shape: Shape) {
     enum class Shape { OBJ, INT }
 
     private var _objects: ArrayList<T>? = null
