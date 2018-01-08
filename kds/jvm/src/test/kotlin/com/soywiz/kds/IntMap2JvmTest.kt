@@ -64,5 +64,9 @@ class IntMap2JvmTest {
             val key = rand2.nextInt()
             assertEquals(ref[key], imp[key])
         }
+        for (n in 0 until 10000) {
+            val key = rand2.nextInt()
+            assertEquals(ref[key], imp[key])
+        }
     }
 }

@@ -2,7 +2,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
 	ext.kmemVersion = '0.3.0'
-	ext.kotlinVersion = '1.2.0'
+	ext.kotlinVersion = '1.2.10'
 
 	repositories {
 		jcenter()
@@ -23,7 +23,7 @@ allprojects {
 	}
 
 	group 'com.soywiz'
-	version '0.3.2-SNAPSHOT'
+	version '0.4.0-SNAPSHOT'
 
 	if (project == rootProject) {
 		new File(rootProject.rootDir, "kds/common/src/main/kotlin/com/soywiz/kds/KdsVersion.kt").write(
