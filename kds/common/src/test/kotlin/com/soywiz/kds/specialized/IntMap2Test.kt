@@ -1,13 +1,13 @@
 package com.soywiz.kds.specialized
 
-import com.soywiz.kds.IntMap2
+import com.soywiz.kds.IntMap
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class IntMap2Test {
     @Test
     fun simple() {
-        val m = IntMap2<String>()
+        val m = IntMap<String>()
         assertEquals(0, m.size)
         assertEquals(null, m[0])
 
@@ -31,7 +31,7 @@ class IntMap2Test {
 
     @Test
     fun name2() {
-        val m = IntMap2<Int>()
+        val m = IntMap<Int>()
         for (n in 0 until 1000) m[n] = n * 1000
         for (n in 0 until 1000) assertEquals(n * 1000, m[n])
         assertEquals(null, m[-1])

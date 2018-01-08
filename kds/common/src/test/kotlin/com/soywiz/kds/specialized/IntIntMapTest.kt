@@ -35,11 +35,11 @@ class IntIntMapTest {
         for (n in 0 until 1000) m[n] = n * 1000
         for (n in 0 until 1000) {
             assertEquals(n * 1000, m[n])
-            assertEquals(true, m.has(n))
+            assertEquals(true, m.contains(n))
         }
         assertEquals(0, m[-1])
         assertEquals(0, m[1001])
-        assertEquals(false, m.has(-1))
-        assertEquals(false, m.has(1001))
+        assertEquals(false, m.contains(-1))
+        assertEquals(false, m.contains(1001))
     }
 }
