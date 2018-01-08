@@ -4,6 +4,7 @@ class Stack<T>() {
 	private val items = arrayListOf<T>()
 
 	val size: Int get() = items.size
+	val hasMore: Boolean get() = size > 0
 
 	constructor(vararg items: T) : this() {
 		for (item in items) push(item)

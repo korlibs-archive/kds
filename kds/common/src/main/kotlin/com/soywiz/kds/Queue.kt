@@ -4,6 +4,7 @@ class Queue<T>() {
 	private val items = LinkedList<T>()
 
 	val size: Int get() = items.size
+	val hasMore: Boolean get() = size > 0
 
 	constructor(vararg items: T) : this() {
 		for (item in items) queue(item)
