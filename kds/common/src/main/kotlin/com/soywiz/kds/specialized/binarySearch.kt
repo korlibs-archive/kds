@@ -1,6 +1,5 @@
 package com.soywiz.kds.specialized
 
-
 fun IntArray.binarySearch(v: Int, fromIndex: Int, toIndex: Int): Int {
 	var low = fromIndex
 	var high = toIndex - 1

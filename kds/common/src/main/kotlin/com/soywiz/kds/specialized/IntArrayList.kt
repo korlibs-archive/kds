@@ -61,6 +61,20 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
 
 	@Suppress("ReplaceSizeZeroCheckWithIsEmpty")
 	override fun isEmpty(): Boolean = this.size == 0
+
+	fun indexOf(value: Int): Int {
+		for (n in 0 until size) if (data[n] == value) return n
+		return -1
+		//val index = data.indexOf(value)
+		//if (index < 0 || index >= length) return -1
+		//return index
+	}
+
+	fun removeAt(index: Int) {
+		if (index < 0 || index >= length) throw IndexOutOfBoundsException()
+		arraycopy(data, index + 1, data, index, length - index - 1)
+		length--
+	}
 }
 
 fun IntArrayList.binarySearch(value: Int) = data.binarySearch(value, 0, length)

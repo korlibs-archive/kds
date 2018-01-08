@@ -1,16 +1,16 @@
 package com.soywiz.kds.specialized
 
 // @TODO: We should improve this!
-open class IntMap<T>(private val loadFactor: Double) {
+open class IntIntMap(private val loadFactor: Double) {
     constructor() : this(0.75)
 
     private var nbits = 4
-    private var buckets = arrayOfNulls<Bucket<T>>(1 shl nbits)
+    private var buckets = arrayOfNulls<Bucket>(1 shl nbits)
     private val capacity: Int get() = buckets.size
 
-    private class Bucket<T> {
+    private class Bucket {
         private val keys = IntArrayList()
-        private val values = arrayListOf<T>()
+        private val values = IntArrayList()
         val size get() = keys.size
 
         fun clear() {
@@ -23,12 +23,12 @@ open class IntMap<T>(private val loadFactor: Double) {
         fun getKeyAt(index: Int) = keys[index]
         fun getValueAt(index: Int) = values[index]
 
-        fun add(key: Int, value: T) {
+        fun add(key: Int, value: Int) {
             keys.add(key)
             values.add(value)
         }
 
-        fun setValueAt(index: Int, value: T): T {
+        fun setValueAt(index: Int, value: Int): Int {
             val old = values[index]
             values[index] = value
             return old
@@ -49,7 +49,7 @@ open class IntMap<T>(private val loadFactor: Double) {
         for (bucket in buckets) bucket?.clear()
     }
 
-    private fun _getBucket(key: Int, create: Boolean = false): Bucket<T>? {
+    private fun _getBucket(key: Int, create: Boolean = false): Bucket? {
         val hash = hash(key) and ((1 shl nbits) - 1)
         var bucket = buckets[hash]
         if (create && bucket == null) {
@@ -59,8 +59,8 @@ open class IntMap<T>(private val loadFactor: Double) {
         return bucket
     }
 
-    private fun tryGetBucket(key: Int): Bucket<T>? = _getBucket(key, create = false)
-    private fun getOrCreateBucket(key: Int): Bucket<T> = _getBucket(key, create = true)!!
+    private fun tryGetBucket(key: Int): Bucket? = _getBucket(key, create = false)
+    private fun getOrCreateBucket(key: Int): Bucket = _getBucket(key, create = true)!!
 
     fun remove(key: Int): Unit {
         if (tryGetBucket(key)?.remove(key) == true) {
@@ -82,14 +82,14 @@ open class IntMap<T>(private val loadFactor: Double) {
         return (tryGetBucket(key) ?: return false).getKeyIndex(key) >= 0
     }
 
-    operator fun get(key: Int): T? {
-        val bucket = tryGetBucket(key) ?: return null
+    operator fun get(key: Int): Int {
+        val bucket = tryGetBucket(key) ?: return 0
         val index = bucket.getKeyIndex(key)
-        if (index < 0) return null
+        if (index < 0) return 0
         return bucket.getValueAt(index)
     }
 
-    operator fun set(key: Int, value: T): T? {
+    operator fun set(key: Int, value: Int): Int {
         val bucket = getOrCreateBucket(key)
         val index = bucket.getKeyIndex(key)
         // Do not exists
@@ -100,7 +100,7 @@ open class IntMap<T>(private val loadFactor: Double) {
             }
             bucket.add(key, value)
             size++
-            return null
+            return 0
         } else {
             return bucket.setValueAt(index, value)
         }
@@ -121,9 +121,8 @@ open class IntMap<T>(private val loadFactor: Double) {
 
     private fun hash(value: Int) = value xor (-0x12477ce0)
 
-    fun getOrPut(key: Int, callback: () -> T): T {
-        val res = get(key)
-        if (res == null) set(key, callback())
+    fun getOrPut(key: Int, callback: () -> Int): Int {
+        if (!has(key)) set(key, callback())
         return get(key)!!
     }
 }
