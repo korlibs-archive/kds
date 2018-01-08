@@ -5,6 +5,7 @@ internal class IntMixedMap<T>(val shape: MixedArrayList.Shape, private val loadF
     private var nbits = 4
     private var buckets = arrayOfNulls<Bucket<T>>(1 shl nbits)
     private val capacity: Int get() = buckets.size
+    private var resizeCapacity: Int = (this.buckets.size * loadFactor).toInt()
 
     var size: Int = 0; private set
 
@@ -92,7 +93,7 @@ internal class IntMixedMap<T>(val shape: MixedArrayList.Shape, private val loadF
     }
 
     private fun rehashIfRequired() {
-        if (size >= capacity * loadFactor) {
+        if (size >= resizeCapacity) {
             rehash()
         }
     }
@@ -101,6 +102,7 @@ internal class IntMixedMap<T>(val shape: MixedArrayList.Shape, private val loadF
         val oldBuckets = this.buckets
         nbits++
         this.buckets = arrayOfNulls(1 shl nbits)
+        resizeCapacity = (this.buckets.size * loadFactor).toInt()
         //println("rehash: ${this.buckets.size}")
         for (ob in oldBuckets) {
             val b = ob ?: continue
