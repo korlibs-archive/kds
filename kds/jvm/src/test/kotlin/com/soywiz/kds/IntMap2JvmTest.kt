@@ -1,6 +1,7 @@
 package com.soywiz.kds
 
 import org.junit.Test
+import java.util.*
 import kotlin.test.assertEquals
 
 class IntMap2JvmTest {
@@ -46,5 +47,22 @@ class IntMap2JvmTest {
         //for (key in m.values) {
         //println(key)
         //}
+    }
+
+    @Test
+    fun name4() {
+        val ref = hashMapOf<Int, String>()
+        val imp = IntMap<String>()
+        val rand1 = Random(0L)
+        for (n in 0 until 10000) {
+            val key = rand1.nextInt()
+            ref[key] = "n$n"
+            imp[key] = "n$n"
+        }
+        val rand2 = Random(0L)
+        for (n in 0 until 10000) {
+            val key = rand2.nextInt()
+            assertEquals(ref[key], imp[key])
+        }
     }
 }
