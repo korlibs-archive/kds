@@ -2,7 +2,7 @@ package com.soywiz.kds
 
 // @TODO: Requires more work
 class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
-//class LinkedList<T>(private val debug: Boolean) {
+    //class LinkedList<T>(private val debug: Boolean) {
     constructor() : this(false)
 
     companion object {
@@ -184,18 +184,20 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
         return slot != NONE
     }
 
-    fun removeAt(index: Int) {
+    fun removeAt(index: Int): T {
+        if (index < 0 || index >= size) throw IndexOutOfBoundsException()
         if (index >= size / 2) {
             iterateReverse { cindex, cslot -> if (cindex == index) return removeSlot(cslot) }
         } else {
             iterate { cindex, cslot -> if (cindex == index) return removeSlot(cslot) }
         }
+        throw IllegalStateException()
     }
 
     fun removeFirst() = removeSlot(firstSlot)
     fun removeLast() = removeSlot(lastSlot)
 
-    fun removeSlot(slot: Int) {
+    fun removeSlot(slot: Int): T {
         if (slot < 0 || slot >= capacity) throw IndexOutOfBoundsException()
         if (firstSlot == slot) firstSlot = next[slot]
         if (lastSlot == slot) lastSlot = prev[slot]
@@ -206,6 +208,7 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
         size--
         freeSlot(slot)
         checkInternalState()
+        return items[slot]
     }
 
     private inline fun iterate(startSlot: Int = this.firstSlot, callback: (cindex: Int, cslot: Int) -> Unit) {

@@ -135,9 +135,9 @@ class LinkedListJvmTest {
     fun removeAt() {
         val l = create<String>()
         l.addAll(listOf("a", "b", "c", "d", "e", "f", "g"))
-        l.removeAt(1)
+        assertEquals("b", l.removeAt(1))
         assertEquals("a,c,d,e,f,g", l.str)
-        l.removeAt(4)
+        assertEquals("f", l.removeAt(4))
         assertEquals("a,c,d,e,g", l.str)
         l.addAt(2, "*")
         assertEquals("a,c,*,d,e,g", l.str)
