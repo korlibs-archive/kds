@@ -10,7 +10,7 @@ buildscript {
 	ext.projectDevelName = 'Carlos Ballesteros Velasco'
 	ext.projectInceptionYear = 2017
 
-	ext.kmemVersion = '0.3.0'
+	ext.kmemVersion = '0.3.1'
 	ext.kotlinVersion = '1.2.10'
 
 	repositories {
