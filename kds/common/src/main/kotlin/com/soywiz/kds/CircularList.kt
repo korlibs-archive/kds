@@ -1,5 +1,7 @@
 package com.soywiz.kds
 
+import com.soywiz.kmem.arraycopy
+
 // Accessing by index: 1
 // Inserting at first or last: 1
 // Getting first or last: 1
@@ -29,10 +31,10 @@ class CircularList<T>() : MutableCollection<T> {
     }
 
     private fun copyCyclic(i: Array<Any>, istart: Int, o: Array<Any>, count: Int) {
-        // @TODO: Optimize this with two arraycopy!
-        for (n in 0 until count) {
-            o[n] = i[(istart + n) umod i.size]
-        }
+        val size1 = kotlin.math.min(i.size - istart, count)
+        val size2 = count - size1
+        arraycopy(i, istart, o, 0, size1)
+        if (size2 > 0) arraycopy(i, 0, o, size1, size2)
     }
 
     fun addAll(items: Iterable<T>) = run {
