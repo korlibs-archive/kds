@@ -1,82 +1,173 @@
 package com.soywiz.kds
 
-class LinkedList<T>() : MutableCollection<T> {
-    private var _start: Int = 0
-    private var _size: Int = 0
-    private var data: Array<Any> = arrayOfNulls<Any>(16) as Array<Any>
-    private val capacity: Int get() = data.size
+class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
+    constructor() : this(false)
 
-    override val size: Int get() = _size
-
-    fun isNotEmpty(): Boolean = size != 0
-    override fun isEmpty(): Boolean = size == 0
-
-    private fun resizeIfRequiredFor(count: Int) {
-        if (size + count > capacity) {
-            val i = this.data
-            val istart = this._start
-            val o = arrayOfNulls<Any>(this.data.size * 2) as Array<Any>
-            copyCyclic(i, istart, o, this._size)
-            this.data = o
-            this._start = 0
-        }
+    companion object {
+        const private val NONE = -1
     }
 
-    private fun copyCyclic(i: Array<Any>, istart: Int, o: Array<Any>, count: Int) {
-        // @TODO: Optimize this with two arraycopy!
-        for (n in 0 until count) {
-            o[n] = i[(istart + n) umod i.size]
-        }
+    private var firstSlot = NONE
+    private var lastSlot = NONE
+
+    private var firstFreeSlot = 0
+    private var lastFreeSlot = 15
+
+    override var size: Int = 0; private set
+
+    private var prev = IntArray(16) { it - 1 }
+    private var next = IntArray(16) { it + 1 }
+    private var items = arrayOfNulls<Any>(16) as Array<T>
+
+    private val capacity: Int get() = items.size
+
+    init {
+        prev[0] = NONE
+        next[next.size - 1] = NONE
+        checkInternalState()
     }
 
-    fun addAll(items: Iterable<T>) = run {
-        resizeIfRequiredFor(items.count())
-        for (i in items) addLast(i)
-    }
-
-    fun addFirst(item: T) {
-        resizeIfRequiredFor(1)
-        _start = (_start - 1) umod capacity
-        _size++
-        data[_start] = item as Any
-    }
-
-    fun addLast(item: T) {
-        resizeIfRequiredFor(1)
-        data[(_start + size) umod capacity] = item as Any
-        _size++
-    }
-
-    fun removeFirst(): T {
-        if (_size <= 0) throw IndexOutOfBoundsException()
-        return first.apply { _start++; _size-- }
-    }
-
-    fun removeLast(): T {
-        if (_size <= 0) throw IndexOutOfBoundsException()
-        return last.apply { _size-- }
-    }
-
-    // @TODO: This is slow. But we can improve it using two arraycopy. Also we can reduce from left or from right.
-    fun removeAt(index: Int): T {
+    operator fun get(index: Int): T {
         if (index < 0 || index >= size) throw IndexOutOfBoundsException()
-        if (index == 0) return removeFirst()
-        if (index == size - 1) return removeLast()
-
-        // if (index < size / 2) // @TODO: reduce from left
-        val old = this[index]
-        for (n in index until size - 1) this[n] = this[n + 1]
-        _size--
-        return old
+        iterate { cindex, slot -> if (cindex == index) return items[slot] }
+        throw IllegalStateException()
     }
 
-    override fun add(element: T): Boolean = true.apply { addLast(element) }
-    override fun addAll(elements: Collection<T>): Boolean = true.apply { addAll(elements as Iterable<T>) }
-    override fun clear() = run { _size = 0 }
-    override fun remove(element: T): Boolean {
-        val index = indexOf(element)
-        if (index >= 0) removeAt(index)
-        return (index >= 0)
+    operator override fun contains(item: T) = indexOf(item) != NONE
+
+    val first get() = items.getOrNull(firstSlot)
+    val last get() = items.getOrNull(lastSlot)
+
+    private fun ensure(count: Int) {
+        val oldCapacity = capacity
+        if (size + count >= oldCapacity) {
+            val newCapacity = oldCapacity * 4
+            prev = prev.copyOf(newCapacity)
+            next = next.copyOf(newCapacity)
+            items = items.copyOf(newCapacity) as Array<T>
+            for (n in (oldCapacity + 1) until newCapacity) prev[n] = n - 1
+            for (n in oldCapacity until newCapacity) next[n] = n + 1
+            prev[oldCapacity] = lastFreeSlot
+            next[lastFreeSlot] = oldCapacity
+            lastFreeSlot = newCapacity - 1
+        }
+    }
+
+    /**
+     * @return int Slot for fast removal
+     */
+    fun addLast(item: T): Int {
+        val slot = allocateSlot()
+        if (lastSlot != NONE) next[lastSlot] = slot
+        next[slot] = NONE
+        prev[slot] = lastSlot
+        items[slot] = item
+        if (firstSlot == NONE) firstSlot = slot
+        lastSlot = slot
+        size++
+        checkInternalState()
+        return slot
+    }
+
+    fun addFirst(item: T): Int {
+        val slot = allocateSlot()
+        if (firstSlot != NONE) prev[firstSlot] = slot
+        prev[slot] = NONE
+        next[slot] = firstSlot
+        items[slot] = item
+        if (lastSlot == NONE) lastSlot = slot
+        firstSlot = slot
+        size++
+        checkInternalState()
+        return slot
+    }
+
+    private fun allocateSlot(): Int {
+        ensure(+1)
+        val slot = firstFreeSlot
+        firstFreeSlot = next[firstFreeSlot]
+        if (firstFreeSlot == NONE) {
+            throw IllegalStateException()
+        }
+        prev[firstFreeSlot] = NONE
+        return slot
+    }
+
+
+    private fun freeSlot(slot: Int) {
+        prev[firstFreeSlot] = slot
+        next[slot] = firstFreeSlot
+        firstFreeSlot = slot
+        checkInternalState()
+    }
+
+    fun addAt(index: Int, item: T): Int = addAtSlot(slotOfIndex(index), item)
+
+    fun addAtSlot(slot: Int, item: T): Int {
+        TODO()
+        checkInternalState()
+    }
+
+    fun indexOf(item: T): Int {
+        iterate { cindex, cslot -> if (items[cslot] == item) return cindex }
+        return NONE
+    }
+
+    fun slotOf(item: T): Int {
+        iterate { _, cslot -> if (items[cslot] == item) return cslot }
+        return NONE
+    }
+
+    fun slotOfIndex(index: Int): Int {
+        iterate { cindex, cslot -> if (cindex == index) return cslot }
+        return NONE
+    }
+
+    override fun remove(item: T): Boolean {
+        val slot = slotOf(item)
+        if (slot != NONE) removeSlot(slot)
+        return slot != NONE
+    }
+
+    fun removeAt(index: Int) {
+        // @TODO: Reverse iterate if index >= size / 2
+        iterate { cindex, cslot -> if (cindex == index) return removeSlot(cslot) }
+    }
+
+    fun removeFirst() = removeSlot(firstSlot)
+    fun removeLast() = removeSlot(lastSlot)
+
+    fun removeSlot(slot: Int) {
+        if (slot < 0 || slot >= capacity) throw IndexOutOfBoundsException()
+        if (firstSlot == slot) firstSlot = next[slot]
+        if (lastSlot == slot) lastSlot = prev[slot]
+        val p = prev[slot]
+        val n = next[slot]
+        if (p != NONE) next[p] = n
+        if (n != NONE) prev[n] = p
+        size--
+        freeSlot(slot)
+        checkInternalState()
+    }
+
+    private inline fun iterate(startSlot: Int = this.firstSlot, callback: (cindex: Int, cslot: Int) -> Unit) {
+        var cindex = 0
+        var cslot = startSlot
+        while (cslot != NONE) {
+            callback(cindex, cslot)
+            cslot = next[cslot]
+            cindex++
+        }
+    }
+
+    private inline fun iterateReverse(startSlot: Int = this.lastSlot, callback: (cindex: Int, cslot: Int) -> Unit) {
+        var cindex = 0
+        var cslot = startSlot
+        while (cslot != NONE) {
+            callback(cindex, cslot)
+            cslot = prev[cslot]
+            cindex++
+        }
     }
 
     override fun removeAll(elements: Collection<T>): Boolean = _removeRetainAll(elements, retain = false)
@@ -84,47 +175,98 @@ class LinkedList<T>() : MutableCollection<T> {
 
     private fun _removeRetainAll(elements: Collection<T>, retain: Boolean): Boolean {
         val eset = elements.toSet()
-        val temp = this.data.copyOf()
-        var tsize = 0
-        val osize = size
-        for (n in 0 until size) {
-            val c = this[n]
-            if ((c in eset) == retain) {
-                temp[tsize++] = c as Any
-            }
-        }
-        this.data = temp
-        this._start = 0
-        this._size = tsize
-        return tsize != osize
-    }
-
-    val first: T get() = data[_start] as T
-    val last: T get() = data[internalIndex(size - 1)] as T
-
-    private fun internalIndex(index: Int) = (_start + index) umod capacity
-
-    operator fun set(index: Int, value: T): Unit = run { data[internalIndex(index)] = value as Any }
-    operator fun get(index: Int): T = data[internalIndex(index)] as T
-
-    override fun contains(element: T): Boolean = (0 until size).any { this[it] == element }
-
-    fun indexOf(element: T): Int {
-        for (n in 0 until size) if (this[n] == element) return n
-        return -1
+        val temp = arrayListOf<T>()
+        iterate { cindex, cslot -> if ((items[cslot] in eset) == retain) temp += items[cslot] }
+        if (temp.size == this.size) return false
+        clear()
+        for (e in temp) addLast(e)
+        checkInternalState()
+        return true
     }
 
     override fun containsAll(elements: Collection<T>): Boolean {
-        val eset = elements.toSet()
-        return (0 until size).any { this[it] in eset }
+        val emap = elements.map { it to 0 }.toLinkedMap()
+        iterate { cindex, cslot ->
+            val e = items[cslot]
+            if (e in emap) emap[e] = 1
+        }
+        checkInternalState()
+        return emap.values.all { it == 1 }
     }
 
-    override fun iterator(): MutableIterator<T> {
-        return object : MutableIterator<T> {
-            var index = 0
-            override fun next(): T = this@LinkedList[index++]
-            override fun hasNext(): Boolean = index < size
-            override fun remove() = TODO()
+    override fun isEmpty(): Boolean = size == 0
+    override fun add(element: T): Boolean = true.apply { addLast(element) }
+    override fun addAll(elements: Collection<T>): Boolean = true.apply { ensure(elements.size); for (e in elements) addLast(e) }
+
+    override fun clear() {
+        firstSlot = -1
+        lastSlot = -1
+        firstFreeSlot = 0
+        size = 0
+        for (n in prev.indices) {
+            prev[n] = if (n == 0) -1 else n - 1
+            next[n] = if (n == prev.size - 1) -1 else n + 1
         }
+    }
+
+    override fun iterator(): MutableIterator<T> = object : MutableIterator<T> {
+        var cslot = firstSlot
+
+        override fun hasNext(): Boolean = cslot != NONE
+
+        override fun next(): T {
+            return items[cslot].apply { cslot = next[cslot] }
+        }
+
+        override fun remove() {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+    }
+
+    private fun checkInternalState() {
+        if (debug) checkInternalStateFull()
+    }
+
+    private fun checkInternalStateFull() {
+        val slots = _getAllocatedSlots()
+        val slotsReversed = _getAllocatedSlotsReverse().reversed()
+        val freeSlots = _getFreeSlots()
+        val freeSlotsReverse = _getFreeSlotsReverse().reversed()
+        if (slots != slotsReversed) {
+            throw IllegalStateException()
+        }
+        if (freeSlots != freeSlotsReverse) {
+            throw IllegalStateException()
+        }
+        if (slots.size != size) {
+            throw IllegalStateException()
+        }
+        if (slots.size + freeSlots.size != capacity) {
+            throw IllegalStateException()
+        }
+    }
+
+    private fun _getAllocatedSlots(): List<Int> {
+        val slots = arrayListOf<Int>()
+        iterate(firstSlot) { _, cslot -> slots += cslot }
+        return slots
+    }
+
+    private fun _getAllocatedSlotsReverse(): List<Int> {
+        val slots = arrayListOf<Int>()
+        iterateReverse(lastSlot) { _, cslot -> slots += cslot }
+        return slots
+    }
+
+    private fun _getFreeSlots(): List<Int> {
+        val slots = arrayListOf<Int>()
+        iterate(firstFreeSlot) { _, cslot -> slots += cslot }
+        return slots
+    }
+
+    private fun _getFreeSlotsReverse(): List<Int> {
+        val slots = arrayListOf<Int>()
+        iterateReverse(lastFreeSlot) { _, cslot -> slots += cslot }
+        return slots
     }
 }

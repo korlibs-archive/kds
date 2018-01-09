@@ -3,10 +3,14 @@ package com.soywiz.kds
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class LinkedListTest {
+class LinkedListJvmTest {
+    //private fun <T> create() = LinkedList<T>(debug = true)
+    private fun <T> create() = LinkedList<T>(debug = false)
+
     @Test
     fun simple() {
-        val l = LinkedList<String>()
+        val l = create<String>()
+        assertEquals(0, l.size)
         l += listOf("a", "b", "c", "d", "e", "f")
         assertEquals("a,b,c,d,e,f", l.toList().joinToString(","))
         assertEquals("a", l.first)
@@ -30,7 +34,7 @@ class LinkedListTest {
 
     @Test
     fun grow() {
-        val l = LinkedList<String>()
+        val l = create<String>()
         for (n in 0 until 1000) l.add("$n")
         for (n in 0 until 495) {
             l.removeFirst()
@@ -42,9 +46,35 @@ class LinkedListTest {
 
     @Test
     fun grow2() {
-        val l = LinkedList<Boolean>()
+        val l = create<Boolean>()
         for (n in 0 until 1000) l.addFirst(true)
         for (n in 0 until 1000) l.removeFirst()
         for (n in 0 until 1000) l.addFirst(true)
     }
+
+    private fun simpleRemove(count: Int) {
+        val l = create<Boolean>()
+        for (n in 0 until count) l.addFirst(true); for (n in 0 until count) l.removeFirst()
+        for (n in 0 until count) l.addLast(true); for (n in 0 until count) l.removeFirst()
+        for (n in 0 until count) l.addFirst(true); for (n in 0 until count) l.removeLast()
+        for (n in 0 until count) l.addLast(true); for (n in 0 until count) l.removeLast()
+    }
+
+    @Test
+    fun simpleRemove1() = simpleRemove(1)
+
+    @Test
+    fun simpleRemove2() = simpleRemove(2)
+
+    @Test
+    fun simpleRemove4() = simpleRemove(4)
+
+    @Test
+    fun simpleRemove15() = simpleRemove(15)
+
+    @Test
+    fun simpleRemove16() = simpleRemove(16)
+
+    @Test
+    fun simpleRemove32() = simpleRemove(32)
 }

@@ -3,10 +3,10 @@ package com.soywiz.kds
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class LinkedListTest {
+class CircularListTest {
     @Test
     fun simple() {
-        val l = LinkedList<String>()
+        val l = CircularList<String>()
         l += listOf("a", "b", "c", "d", "e", "f")
         assertEquals("a,b,c,d,e,f", l.toList().joinToString(","))
         assertEquals("a", l.first)
@@ -30,7 +30,7 @@ class LinkedListTest {
 
     @Test
     fun grow() {
-        val l = LinkedList<String>()
+        val l = CircularList<String>()
         for (n in 0 until 1000) l.add("$n")
         for (n in 0 until 495) {
             l.removeFirst()
@@ -42,7 +42,7 @@ class LinkedListTest {
 
     @Test
     fun grow2() {
-        val l = LinkedList<Boolean>()
+        val l = CircularList<Boolean>()
         for (n in 0 until 1000) l.addFirst(true)
         for (n in 0 until 1000) l.removeFirst()
         for (n in 0 until 1000) l.addFirst(true)
