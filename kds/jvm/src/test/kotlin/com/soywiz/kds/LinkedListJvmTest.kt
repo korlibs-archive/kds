@@ -4,8 +4,8 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 class LinkedListJvmTest {
-    //private fun <T> create() = LinkedList<T>(debug = true)
-    private fun <T> create() = LinkedList<T>(debug = false)
+    private fun <T> create() = LinkedList<T>(debug = true)
+    //private fun <T> create() = LinkedList<T>(debug = false)
 
     @Test
     fun simple() {

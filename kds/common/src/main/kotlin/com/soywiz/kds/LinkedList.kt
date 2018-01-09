@@ -50,6 +50,7 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
             for (n in oldCapacity until newCapacity) next[n] = n + 1
             prev[oldCapacity] = lastFreeSlot
             next[lastFreeSlot] = oldCapacity
+            next[newCapacity - 1] = NONE
             lastFreeSlot = newCapacity - 1
         }
     }
@@ -98,6 +99,7 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
     private fun freeSlot(slot: Int) {
         prev[firstFreeSlot] = slot
         next[slot] = firstFreeSlot
+        prev[slot] = NONE
         firstFreeSlot = slot
         checkInternalState()
     }
