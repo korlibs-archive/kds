@@ -57,7 +57,7 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
     }
 
     /**
-     * @return int Slot for fast removal
+     * @return int Slot for fast addition
      */
     fun addLast(item: T): Int {
         val slot = allocateSlot()
@@ -72,6 +72,9 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
         return slot
     }
 
+    /**
+     * @return int Slot for fast addition
+     */
     fun addFirst(item: T): Int {
         val slot = allocateSlot()
         if (firstSlot != NONE) prev[firstSlot] = slot
@@ -182,8 +185,11 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
     }
 
     fun removeAt(index: Int) {
-        // @TODO: Reverse iterate if index >= size / 2
-        iterate { cindex, cslot -> if (cindex == index) return removeSlot(cslot) }
+        if (index >= size / 2) {
+            iterateReverse { cindex, cslot -> if (cindex == index) return removeSlot(cslot) }
+        } else {
+            iterate { cindex, cslot -> if (cindex == index) return removeSlot(cslot) }
+        }
     }
 
     fun removeFirst() = removeSlot(firstSlot)
@@ -213,12 +219,12 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
     }
 
     private inline fun iterateReverse(startSlot: Int = this.lastSlot, callback: (cindex: Int, cslot: Int) -> Unit) {
-        var cindex = 0
+        var cindex = size - 1
         var cslot = startSlot
         while (cslot != NONE) {
             callback(cindex, cslot)
             cslot = prev[cslot]
-            cindex++
+            cindex--
         }
     }
 

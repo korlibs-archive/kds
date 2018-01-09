@@ -6,13 +6,15 @@ import kotlin.test.assertEquals
 class LinkedListJvmTest {
     private fun <T> create() = LinkedList<T>(debug = true)
     //private fun <T> create() = LinkedList<T>(debug = false)
+    
+    private val <T> LinkedList<T>.str get() = this.joinToString(",")
 
     @Test
     fun simple() {
         val l = create<String>()
         assertEquals(0, l.size)
         l += listOf("a", "b", "c", "d", "e", "f")
-        assertEquals("a,b,c,d,e,f", l.toList().joinToString(","))
+        assertEquals("a,b,c,d,e,f", l.str)
         assertEquals("a", l.first)
         assertEquals("f", l.last)
         assertEquals(6, l.size)
@@ -20,16 +22,16 @@ class LinkedListJvmTest {
         assertEquals(5, l.size)
         l.removeAt(l.size - 2)
         assertEquals(4, l.size)
-        assertEquals("a,c,d,f", l.toList().joinToString(","))
+        assertEquals("a,c,d,f", l.str)
         l.remove("d")
         assertEquals(3, l.size)
-        assertEquals("a,c,f", l.toList().joinToString(","))
+        assertEquals("a,c,f", l.str)
         l.retainAll(listOf("a", "f"))
         assertEquals(2, l.size)
-        assertEquals("a,f", l.toList().joinToString(","))
+        assertEquals("a,f", l.str)
         l.removeAll(listOf("a"))
         assertEquals(1, l.size)
-        assertEquals("f", l.toList().joinToString(","))
+        assertEquals("f", l.str)
     }
 
     @Test
@@ -41,7 +43,7 @@ class LinkedListJvmTest {
             l.removeLast()
         }
         assertEquals(10, l.size)
-        assertEquals("495,496,497,498,499,500,501,502,503,504", l.joinToString(","))
+        assertEquals("495,496,497,498,499,500,501,502,503,504", l.str)
     }
 
     @Test
@@ -90,7 +92,7 @@ class LinkedListJvmTest {
                 it.remove()
             }
         }
-        assertEquals("1,3,5,7,9", l.joinToString(","))
+        assertEquals("1,3,5,7,9", l.str)
     }
 
     @Test
@@ -99,7 +101,7 @@ class LinkedListJvmTest {
         val aSlot = l.addLast("a")
         val cSlot = l.addLast("c")
         l.addAfterSlot(aSlot, "b")
-        assertEquals("a,b,c", l.joinToString(","))
+        assertEquals("a,b,c", l.str)
     }
 
     @Test
@@ -108,7 +110,7 @@ class LinkedListJvmTest {
         val aSlot = l.addLast("a")
         val cSlot = l.addLast("c")
         l.addAfterSlot(cSlot, "b")
-        assertEquals("a,c,b", l.joinToString(","))
+        assertEquals("a,c,b", l.str)
     }
 
     @Test
@@ -117,7 +119,7 @@ class LinkedListJvmTest {
         val aSlot = l.addLast("a")
         val cSlot = l.addLast("c")
         l.addBeforeSlot(aSlot, "b")
-        assertEquals("b,a,c", l.joinToString(","))
+        assertEquals("b,a,c", l.str)
     }
 
     @Test
@@ -126,6 +128,24 @@ class LinkedListJvmTest {
         val aSlot = l.addLast("a")
         val cSlot = l.addLast("c")
         l.addBeforeSlot(cSlot, "b")
-        assertEquals("a,b,c", l.joinToString(","))
+        assertEquals("a,b,c", l.str)
+    }
+
+    @Test
+    fun removeAt() {
+        val l = create<String>()
+        l.addAll(listOf("a", "b", "c", "d", "e", "f", "g"))
+        l.removeAt(1)
+        assertEquals("a,c,d,e,f,g", l.str)
+        l.removeAt(4)
+        assertEquals("a,c,d,e,g", l.str)
+        l.addAt(2, "*")
+        assertEquals("a,c,*,d,e,g", l.str)
+        l.addAt(0, "+")
+        assertEquals("+,a,c,*,d,e,g", l.str)
+        l.addAt(6, "-")
+        assertEquals("+,a,c,*,d,e,-,g", l.str)
+        l.addAt(8, "/")
+        assertEquals("+,a,c,*,d,e,-,g,/", l.str)
     }
 }
