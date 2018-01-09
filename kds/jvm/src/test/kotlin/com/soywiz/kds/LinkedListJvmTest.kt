@@ -77,4 +77,19 @@ class LinkedListJvmTest {
 
     @Test
     fun simpleRemove32() = simpleRemove(32)
+
+
+    @Test
+    fun mutableIteratorRemove() {
+        val l = create<Int>()
+        for (n in 0 until 10) l.addLast(n)
+        val it = l.iterator()
+        while (it.hasNext()) {
+            val item = it.next()
+            if (item % 2 == 0) {
+                it.remove()
+            }
+        }
+        assertEquals("1,3,5,7,9", l.joinToString(","))
+    }
 }

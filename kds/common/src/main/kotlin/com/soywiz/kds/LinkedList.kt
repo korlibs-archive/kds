@@ -1,5 +1,6 @@
 package com.soywiz.kds
 
+// @TODO: Requires more work
 class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
     constructor() : this(false)
 
@@ -211,15 +212,17 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
 
     override fun iterator(): MutableIterator<T> = object : MutableIterator<T> {
         var cslot = firstSlot
+        private var lastCslot = cslot
 
         override fun hasNext(): Boolean = cslot != NONE
 
         override fun next(): T {
+            lastCslot = cslot
             return items[cslot].apply { cslot = next[cslot] }
         }
 
         override fun remove() {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            removeSlot(lastCslot)
         }
     }
 
