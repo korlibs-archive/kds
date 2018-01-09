@@ -2,6 +2,7 @@ package com.soywiz.kds
 
 // @TODO: Requires more work
 class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
+//class LinkedList<T>(private val debug: Boolean) {
     constructor() : this(false)
 
     companion object {
@@ -104,11 +105,59 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
         checkInternalState()
     }
 
-    fun addAt(index: Int, item: T): Int = addAtSlot(slotOfIndex(index), item)
+    fun addAt(index: Int, item: T): Int {
+        if (index == 0) return addFirst(item)
+        if (index == size) return addLast(item)
+        return addBeforeSlot(slotOfIndex(index), item)
+    }
 
-    fun addAtSlot(slot: Int, item: T): Int {
-        TODO()
+    fun addBeforeSlot(slot: Int, item: T): Int {
+        if (slot == NONE) throw IllegalArgumentException()
+        val newSlot = allocateSlot()
+
+        items[newSlot] = item
+
+        prev[newSlot] = prev[slot]
+        next[newSlot] = slot
+
+        if (prev[slot] != NONE) {
+            next[prev[slot]] = newSlot
+        }
+
+        prev[slot] = newSlot
+
+        if (firstSlot == slot) {
+            firstSlot = newSlot
+        }
+
+        size++
+
         checkInternalState()
+        return newSlot
+    }
+
+    fun addAfterSlot(slot: Int, item: T): Int {
+        val newSlot = allocateSlot()
+
+        next[newSlot] = next[slot]
+        prev[newSlot] = slot
+
+        if (next[slot] != NONE) {
+            prev[next[slot]] = newSlot
+        }
+
+        next[slot] = newSlot
+
+        items[newSlot] = item
+
+        if (lastSlot == slot) {
+            lastSlot = newSlot
+        }
+
+        size++
+
+        checkInternalState()
+        return newSlot
     }
 
     fun indexOf(item: T): Int {
@@ -212,13 +261,13 @@ class LinkedList<T>(private val debug: Boolean) : MutableCollection<T> {
         }
     }
 
-    override fun iterator(): MutableIterator<T> = object : MutableIterator<T> {
+    override operator fun iterator(): MutableIterator<T> = object : MutableIterator<T> {
         var cslot = firstSlot
         private var lastCslot = cslot
 
-        override fun hasNext(): Boolean = cslot != NONE
+        override operator fun hasNext(): Boolean = cslot != NONE
 
-        override fun next(): T {
+        override operator fun next(): T {
             lastCslot = cslot
             return items[cslot].apply { cslot = next[cslot] }
         }

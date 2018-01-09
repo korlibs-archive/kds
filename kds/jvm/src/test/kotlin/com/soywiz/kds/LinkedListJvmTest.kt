@@ -92,4 +92,40 @@ class LinkedListJvmTest {
         }
         assertEquals("1,3,5,7,9", l.joinToString(","))
     }
+
+    @Test
+    fun insertAfter() {
+        val l = create<String>()
+        val aSlot = l.addLast("a")
+        val cSlot = l.addLast("c")
+        l.addAfterSlot(aSlot, "b")
+        assertEquals("a,b,c", l.joinToString(","))
+    }
+
+    @Test
+    fun insertAfterLast() {
+        val l = create<String>()
+        val aSlot = l.addLast("a")
+        val cSlot = l.addLast("c")
+        l.addAfterSlot(cSlot, "b")
+        assertEquals("a,c,b", l.joinToString(","))
+    }
+
+    @Test
+    fun insertBefore() {
+        val l = create<String>()
+        val aSlot = l.addLast("a")
+        val cSlot = l.addLast("c")
+        l.addBeforeSlot(aSlot, "b")
+        assertEquals("b,a,c", l.joinToString(","))
+    }
+
+    @Test
+    fun insertBeforeFirst() {
+        val l = create<String>()
+        val aSlot = l.addLast("a")
+        val cSlot = l.addLast("c")
+        l.addBeforeSlot(cSlot, "b")
+        assertEquals("a,b,c", l.joinToString(","))
+    }
 }
