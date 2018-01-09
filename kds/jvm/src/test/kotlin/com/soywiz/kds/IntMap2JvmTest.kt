@@ -59,14 +59,28 @@ class IntMap2JvmTest {
             ref[key] = "n$n"
             imp[key] = "n$n"
         }
+
+        fun checkValues() {
+            val rand = Random(0L)
+            assertEquals(ref.size, imp.size)
+            for (n in 0 until 10000) {
+                val key = rand.nextInt()
+                assertEquals(key in ref, key in imp)
+                assertEquals(ref[key], imp[key])
+            }
+        }
+        checkValues()
+
         val rand2 = Random(0L)
-        for (n in 0 until 10000) {
+        for (n in 0 until 5000) {
             val key = rand2.nextInt()
-            assertEquals(ref[key], imp[key])
+            ref.remove(key)
+            imp.remove(key)
         }
-        for (n in 0 until 10000) {
-            val key = rand2.nextInt()
-            assertEquals(ref[key], imp[key])
-        }
+        checkValues()
+
+        ref.clear()
+        imp.clear()
+        checkValues()
     }
 }
