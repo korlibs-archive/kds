@@ -42,7 +42,7 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
 	}
 
 	fun add(values: IntArrayList) = add(values.data, 0, values.length)
-	fun add(value: Iterable<Int>) = run { for (v in value) add(v) }
+	fun add(values: Iterable<Int>) = run { for (v in values) add(v) }
 
 	operator fun get(index: Int) = data[index]
 	operator fun set(index: Int, value: Int) = run { data[index] = value }
@@ -62,18 +62,17 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
 	@Suppress("ReplaceSizeZeroCheckWithIsEmpty")
 	override fun isEmpty(): Boolean = this.size == 0
 
-	fun indexOf(value: Int): Int {
-		for (n in 0 until size) if (data[n] == value) return n
+	fun indexOf(value: Int, start: Int = 0, end: Int = this.size): Int {
+		for (n in start until end) if (data[n] == value) return n
 		return -1
-		//val index = data.indexOf(value)
-		//if (index < 0 || index >= length) return -1
-		//return index
 	}
 
-	fun removeAt(index: Int) {
+	fun removeAt(index: Int): Int {
 		if (index < 0 || index >= length) throw IndexOutOfBoundsException()
-		arraycopy(data, index + 1, data, index, length - index - 1)
+		val out = data[index]
+		if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
 		length--
+		return out
 	}
 }
 
