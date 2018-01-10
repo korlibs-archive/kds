@@ -1,4 +1,4 @@
-package com.soywiz.korma.ds
+package com.soywiz.kds
 
 /**
  * @TODO Optimize!!
