@@ -1,5 +1,5 @@
 buildscript {
-	ext.projectVersion = '0.5.0'
+	ext.projectVersion = '0.5.1-SNAPSHOT'
 	ext.projectName = 'kds'
 	ext.projectGroup = 'com.soywiz'
 	ext.projectDesc = 'Kds: Kotlin Data Structures for JVM, JS and Common'
