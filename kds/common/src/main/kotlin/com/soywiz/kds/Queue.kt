@@ -16,8 +16,5 @@ class Queue<T>() {
         items.addLast(v)
     }
 
-    @Deprecated("", ReplaceWith("enqueue(v)"))
-    fun queue(v: T) = enqueue(v)
-
     fun dequeue(): T = items.removeFirst()
 }
