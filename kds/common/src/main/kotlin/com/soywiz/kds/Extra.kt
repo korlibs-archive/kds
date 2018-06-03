@@ -1,6 +1,6 @@
 package com.soywiz.kds
 
-import kotlin.reflect.KProperty
+import kotlin.reflect.*
 
 interface Extra {
 	var extra: LinkedHashMap<String, Any?>?
@@ -22,8 +22,7 @@ interface Extra {
 
 		inline operator fun setValue(thisRef: Extra, property: KProperty<*>, value: T): Unit = run {
 			//beforeSet(value)
-			if (thisRef.extra == null) thisRef.extra = lmapOf()
-			thisRef.extra?.set(name ?: property.name, value as Any?)
+			thisRef.setExtra(name ?: property.name, value as Any?)
 			//afterSet(value)
 		}
 	}
@@ -48,11 +47,20 @@ interface Extra {
 	}
 }
 
+fun <T : Any> Extra.getExtraTyped(name: String): T? = extra?.get(name) as T?
+fun Extra.getExtra(name: String): Any? = extra?.get(name)
+fun Extra.setExtra(name: String, value: Any?): Unit {
+	if (extra == null) extra = LinkedHashMap()
+	extra?.set(name, value)
+}
+
 @Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")
-class extraProperty<T : Any?>(val name: String, val default: T) {
-	inline operator fun getValue(thisRef: Extra, property: KProperty<*>): T = (thisRef.extra?.get(name) as T?) ?: default
+class extraProperty<T : Any?>(val name: String? = null, val default: () -> T) {
+	inline operator fun getValue(thisRef: Extra, property: KProperty<*>): T =
+		(thisRef.extra?.get(name ?: property.name) as T?) ?: default()
+
 	inline operator fun setValue(thisRef: Extra, property: KProperty<*>, value: T): Unit = run {
 		if (thisRef.extra == null) thisRef.extra = lmapOf()
-		thisRef.extra?.set(name, value as Any?)
+		thisRef.extra?.set(name ?: property.name, value as Any?)
 	}
 }

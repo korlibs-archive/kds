@@ -1,5 +1,5 @@
 buildscript {
-	ext.projectVersion = '0.6.1-SNAPSHOT'
+	ext.projectVersion = '0.22.0'
 	ext.projectName = 'kds'
 	ext.projectGroup = 'com.soywiz'
 	ext.projectDesc = 'Kds: Kotlin Data Structures for JVM, JS and Common'
@@ -10,8 +10,7 @@ buildscript {
 	ext.projectDevelName = 'Carlos Ballesteros Velasco'
 	ext.projectInceptionYear = 2017
 
-	ext.kmemVersion = '0.5.0'
-	ext.kotlinVersion = '1.2.20'
+	ext.kotlinVersion = '1.2.41'
 
 	repositories {
 		mavenLocal()
@@ -21,7 +20,7 @@ buildscript {
 
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-		classpath "gradle.plugin.com.soywiz:korlibs-build-gradle-plugin:0.1.6"
+		classpath "gradle.plugin.com.soywiz:korlibs-build-gradle-plugin:0.1.7"
 	}
 }
 
