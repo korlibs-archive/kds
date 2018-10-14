@@ -4,6 +4,10 @@ This library includes a set of optimized data structures written in Kotlin Commo
 JVM, JS and future common targets. Those structures are designed to be allocation-efficient and fast, so kds
 include specialized versions for primitives like int or double.
 
+[![Build Status](https://travis-ci.org/korlibs/kds.svg?branch=master)](https://travis-ci.org/korlibs/kds)
+[![Maven Version](https://img.shields.io/github/tag/korlibs/kds.svg?style=flat&label=maven)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22kds%22)
+[![Gitter](https://img.shields.io/gitter/room/korlibs/korlibs.svg)](https://gitter.im/korlibs/Lobby)
+
 ## IntArrayList and DoubleArrayList
 
 Kds provides specialized equivalents of ArrayList so it doesn't involve object allocation through boxing.
