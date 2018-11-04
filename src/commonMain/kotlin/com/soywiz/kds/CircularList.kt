@@ -153,7 +153,7 @@ class CircularList<T> : MutableCollection<T> {
 class IntCircularList : IntMutableCollection {
 	private var _start: Int = 0
 	private var _size: Int = 0
-	private var data: IntArray = arrayOfNulls<Any>(16) as IntArray
+	private var data: IntArray = IntArray(16) as IntArray
 	private val capacity: Int get() = data.size
 
 	override val size: Int get() = _size
@@ -165,7 +165,7 @@ class IntCircularList : IntMutableCollection {
 		if (size + count > capacity) {
 			val i = this.data
 			val istart = this._start
-			val o = arrayOfNulls<Any>(this.data.size * 2) as IntArray
+			val o = IntArray(this.data.size * 2) as IntArray
 			copyCyclic(i, istart, o, this._size)
 			this.data = o
 			this._start = 0
@@ -287,7 +287,7 @@ class IntCircularList : IntMutableCollection {
 class DoubleCircularList : DoubleMutableCollection {
 	private var _start: Int = 0
 	private var _size: Int = 0
-	private var data: DoubleArray = arrayOfNulls<Any>(16) as DoubleArray
+	private var data: DoubleArray = DoubleArray(16) as DoubleArray
 	private val capacity: Int get() = data.size
 
 	override val size: Int get() = _size
@@ -299,7 +299,7 @@ class DoubleCircularList : DoubleMutableCollection {
 		if (size + count > capacity) {
 			val i = this.data
 			val istart = this._start
-			val o = arrayOfNulls<Any>(this.data.size * 2) as DoubleArray
+			val o = DoubleArray(this.data.size * 2) as DoubleArray
 			copyCyclic(i, istart, o, this._size)
 			this.data = o
 			this._start = 0
