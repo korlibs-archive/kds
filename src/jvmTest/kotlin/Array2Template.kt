@@ -1,5 +1,3 @@
-package com.soywiz.kds
-
 @Suppress("NOTHING_TO_INLINE")
 data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iterable<T> {
 	companion object {

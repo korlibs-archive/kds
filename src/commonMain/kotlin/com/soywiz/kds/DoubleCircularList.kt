@@ -1,5 +1,6 @@
 package com.soywiz.kds
 
+import com.soywiz.kds.internal.*
 import kotlin.collections.set
 
 // Accessing by index: 1

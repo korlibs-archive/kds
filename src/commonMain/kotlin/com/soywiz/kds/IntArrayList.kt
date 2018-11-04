@@ -1,5 +1,6 @@
 package com.soywiz.kds
 
+import com.soywiz.kds.internal.*
 import kotlin.math.*
 
 class IntArrayList(capacity: Int = 7) : NumberArrayList(), Collection<Int> {

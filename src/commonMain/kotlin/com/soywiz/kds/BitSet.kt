@@ -1,5 +1,7 @@
 package com.soywiz.kds
 
+import com.soywiz.kds.internal.*
+
 class BitSet(val size: Int) {
 	val data = IntArray(KdsExt { size divCeil 4 })
 

@@ -2,6 +2,8 @@
 
 package com.soywiz.kds
 
+import com.soywiz.kds.internal.*
+
 class IntMap<T> private constructor(private var nbits: Int, private val loadFactor: Double) {
 	constructor(loadFactor: Double = 0.75) : this(4, loadFactor)
 
