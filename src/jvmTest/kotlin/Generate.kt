@@ -21,7 +21,7 @@ object Generate {
         val floatText = if (includeFloat) generic.replaceTemplate("Float") else ""
         val doubleText = generic.replaceTemplate("Double")
         val newSpecific = listOf(intText, floatText, doubleText).filter { it.isNotEmpty() }.joinToString("\n\n")
-        this.writeText("$head\n\n// GENERIC\n\n$generic\n\n// SPECIFIC - Do not modify from here\n\n$newSpecific")
+        this.writeText("$head\n\n// GENERIC\n\n$generic\n\n// SPECIFIC - Do not modify from here\n\n$newSpecific\n")
     }
 
     fun String.replaceTemplate(kind: String): String {
