@@ -17,7 +17,7 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
 	private var hasZero = false
 	private var zeroValue: T? = null
 	private var mask = capacity - 1
-	private var stashSize = KdsExt { 1 + ilog2(capacity) }
+	private var stashSize = 1 + ilog2(capacity)
 	private var _keys = IntArray(capacity + stashSize)
 	private var _values = arrayOfNulls<Any>(capacity + stashSize) as Array<T?>
 	private val stashStart get() = _keys.size - stashSize

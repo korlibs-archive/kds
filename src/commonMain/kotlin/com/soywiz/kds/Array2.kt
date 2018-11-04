@@ -1,6 +1,6 @@
 package com.soywiz.kds
 
-@Suppress("NOTHING_TO_INLINE")
+@Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iterable<T> {
 	companion object {
 		//inline operator fun <reified T> invoke(width: Int, height: Int, gen: () -> T) = Array2(width, height, Array(width * height) { gen() })
@@ -13,7 +13,7 @@ data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iter
 			val width = rows[0].size
 			val height = rows.size
 			val anyCell = rows[0][0]
-			return (Array2(width, height) { anyCell }).apply { set(rows) }
+			return (Array2<T>(width, height) { anyCell }).apply { set(rows) }
 		}
 
 		inline operator fun <reified T> invoke(
@@ -34,7 +34,7 @@ data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iter
 			val width = lines.map { it.length }.max() ?: 0
 			val height = lines.size
 
-			return Array2(width, height) { n ->
+			return Array2<T>(width, height) { n ->
 				val x = n % width
 				val y = n / width
 				gen(lines.getOrNull(y)?.getOrNull(x) ?: ' ', x, y)
@@ -139,7 +139,4 @@ data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iter
 
 // GENERIC
 
-
-
 // SPECIFIC - Do not modify from here
-

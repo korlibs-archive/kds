@@ -45,20 +45,20 @@ class IntCircularList() : MutableCollection<Int> {
 
 	fun addFirst(item: Int) {
 		resizeIfRequiredFor(1)
-		_start = KdsExt { (_start - 1) umod capacity }
+		_start = (_start - 1) umod capacity
 		_size++
 		data[_start] = item
 	}
 
 	fun addLast(item: Int) {
 		resizeIfRequiredFor(1)
-		KdsExt { data[(_start + size) umod capacity] = item }
+		data[(_start + size) umod capacity] = item
 		_size++
 	}
 
 	fun removeFirst(): Int {
 		if (_size <= 0) throw IndexOutOfBoundsException()
-		return first.apply { KdsExt { _start = (_start + 1) umod capacity; _size-- } }
+		return first.apply { _start = (_start + 1) umod capacity; _size-- }
 	}
 
 	fun removeLast(): Int {
@@ -111,7 +111,7 @@ class IntCircularList() : MutableCollection<Int> {
 	val first: Int get() = data[_start]
 	val last: Int get() = data[internalIndex(size - 1)]
 
-	private fun internalIndex(index: Int) = KdsExt { (_start + index) umod capacity }
+	private fun internalIndex(index: Int) = (_start + index) umod capacity
 
 	operator fun set(index: Int, value: Int): Unit = run { data[internalIndex(index)] = value }
 	operator fun get(index: Int): Int = data[internalIndex(index)]

@@ -45,20 +45,20 @@ class DoubleCircularList() : MutableCollection<Double> {
 
 	fun addFirst(item: Double) {
 		resizeIfRequiredFor(1)
-		KdsExt { _start = (_start - 1) umod capacity }
+		_start = (_start - 1) umod capacity
 		_size++
 		data[_start] = item
 	}
 
 	fun addLast(item: Double) {
 		resizeIfRequiredFor(1)
-		KdsExt { data[(_start + size) umod capacity] = item }
+		data[(_start + size) umod capacity] = item
 		_size++
 	}
 
 	fun removeFirst(): Double {
 		if (_size <= 0) throw IndexOutOfBoundsException()
-		return first.apply { KdsExt { _start = (_start + 1) umod capacity; _size-- } }
+		return first.apply { _start = (_start + 1) umod capacity; _size-- }
 	}
 
 	fun removeLast(): Double {
@@ -111,7 +111,7 @@ class DoubleCircularList() : MutableCollection<Double> {
 	val first: Double get() = data[_start]
 	val last: Double get() = data[internalIndex(size - 1)]
 
-	private fun internalIndex(index: Int) = KdsExt { (_start + index) umod capacity }
+	private fun internalIndex(index: Int) = (_start + index) umod capacity
 
 	operator fun set(index: Int, value: Double): Unit = run { data[internalIndex(index)] = value }
 	operator fun get(index: Int): Double = data[internalIndex(index)]
