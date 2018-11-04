@@ -3,7 +3,7 @@ package com.soywiz.kds
 import com.soywiz.kds.internal.*
 import kotlin.math.*
 
-class DoubleArrayList(capacity: Int = 7) : NumberArrayList(), Collection<Double> {
+class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
 	var data: DoubleArray = DoubleArray(capacity); private set
 	internal val capacity: Int get() = data.size
 	private var length: Int = 0
@@ -84,9 +84,6 @@ class DoubleArrayList(capacity: Int = 7) : NumberArrayList(), Collection<Double>
 		length--
 		return out
 	}
-
-	override fun getDouble(index: Int): Double = this[index]
-	override fun setDouble(index: Int, value: Double) = run { this[index] = value }
 
 	fun toDoubleArray() = this.data.copyOf(length)
 }

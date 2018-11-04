@@ -3,7 +3,7 @@ package com.soywiz.kds
 import com.soywiz.kds.internal.*
 import kotlin.math.*
 
-class FloatArrayList(capacity: Int = 7) : NumberArrayList(), Collection<Float> {
+class FloatArrayList(capacity: Int = 7) : Collection<Float> {
 	var data: FloatArray = FloatArray(capacity); private set
 	internal val capacity: Int get() = data.size
 	private var length: Int = 0
@@ -91,9 +91,6 @@ class FloatArrayList(capacity: Int = 7) : NumberArrayList(), Collection<Float> {
 
 	fun getFloat(index: Int): Float = this[index]
 	fun setFloat(index: Int, value: Float) = run { this[index] = value }
-
-	override fun getDouble(index: Int): Double = this[index].toDouble()
-	override fun setDouble(index: Int, value: Double) = run { this[index] = value.toFloat() }
 
 	fun toFloatArray() = this.data.copyOf(length)
 }

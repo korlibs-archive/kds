@@ -23,4 +23,3 @@ fun <T> ListReader<T>.expect(value: T): T {
 	if (v != value) error("Expecting '$value' but found '$v'")
 	return v
 }
-
