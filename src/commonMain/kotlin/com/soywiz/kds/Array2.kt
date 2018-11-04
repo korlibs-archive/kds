@@ -103,7 +103,7 @@ data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iter
 		}
 	}
 
-	inline fun <reified TR> map2(gen: (x: Int, y: Int, v: T) -> TR): Array2<TR> = Array2<TR>(width, height) {
+	inline fun <reified R> map2(gen: (x: Int, y: Int, v: T) -> R): Array2<R> = Array2<R>(width, height) {
 		val x = it % width
 		val y = it / width
 		//println("$it: ($x, $y), ($width, $height)")
@@ -139,4 +139,7 @@ data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iter
 
 // GENERIC
 
+
+
 // SPECIFIC - Do not modify from here
+

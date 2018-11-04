@@ -5,6 +5,7 @@ object Generate {
     fun main(args: Array<String>) {
         File("src/commonMain/kotlin/com/soywiz/kds/Stack.kt").synchronize()
         File("src/commonMain/kotlin/com/soywiz/kds/Queue.kt").synchronize(includeFloat = false)
+        File("src/commonMain/kotlin/com/soywiz/kds/CircularList.kt").synchronize(includeFloat = false)
         File("src/commonMain/kotlin/com/soywiz/kds/Array2.kt").synchronize()
     }
 
@@ -31,6 +32,7 @@ object Generate {
             .replace(Regex("""(\w+)<T>""")) { kind + it.groupValues[1] }
             .replace(": T", ": $kind")
             .replace("-> T", "-> $kind")
+            .replace("as T", "as $kind")
             .replace("(T)", "($kind)")
             .replace("T, ", "$kind, ")
     }

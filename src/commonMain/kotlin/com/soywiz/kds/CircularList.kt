@@ -11,10 +11,13 @@ import kotlin.collections.set
 // Locating an index: 1 .. N
 
 // Is this called ArrayDeque?
+
+// GENERIC
+
 class CircularList<T> : MutableCollection<T> {
 	private var _start: Int = 0
 	private var _size: Int = 0
-	private var data: Array<Any> = arrayOfNulls<Any>(16) as Array<Any>
+	private var data: Array<T> = arrayOfNulls<Any>(16) as Array<T>
 	private val capacity: Int get() = data.size
 
 	override val size: Int get() = _size
@@ -26,14 +29,14 @@ class CircularList<T> : MutableCollection<T> {
 		if (size + count > capacity) {
 			val i = this.data
 			val istart = this._start
-			val o = arrayOfNulls<Any>(this.data.size * 2) as Array<Any>
+			val o = arrayOfNulls<Any>(this.data.size * 2) as Array<T>
 			copyCyclic(i, istart, o, this._size)
 			this.data = o
 			this._start = 0
 		}
 	}
 
-	private fun copyCyclic(i: Array<Any>, istart: Int, o: Array<Any>, count: Int) {
+	private fun copyCyclic(i: Array<T>, istart: Int, o: Array<T>, count: Int) {
 		val size1 = kotlin.math.min(i.size - istart, count)
 		val size2 = count - size1
 		MemTools.arraycopy(i, istart, o, 0, size1)
@@ -49,12 +52,12 @@ class CircularList<T> : MutableCollection<T> {
 		resizeIfRequiredFor(1)
 		_start = (_start - 1) umod capacity
 		_size++
-		data[_start] = item as Any
+		data[_start] = item
 	}
 
 	fun addLast(item: T) {
 		resizeIfRequiredFor(1)
-		data[(_start + size) umod capacity] = item as Any
+		data[(_start + size) umod capacity] = item
 		_size++
 	}
 
@@ -101,7 +104,7 @@ class CircularList<T> : MutableCollection<T> {
 		for (n in 0 until size) {
 			val c = this[n]
 			if ((c in eset) == retain) {
-				temp[tsize++] = c as Any
+				temp[tsize++] = c
 			}
 		}
 		this.data = temp
@@ -110,13 +113,13 @@ class CircularList<T> : MutableCollection<T> {
 		return tsize != osize
 	}
 
-	val first: T get() = data[_start] as T
-	val last: T get() = data[internalIndex(size - 1)] as T
+	val first: T get() = data[_start]
+	val last: T get() = data[internalIndex(size - 1)]
 
 	private fun internalIndex(index: Int) = (_start + index) umod capacity
 
-	operator fun set(index: Int, value: T): Unit = run { data[internalIndex(index)] = value as Any }
-	operator fun get(index: Int): T = data[internalIndex(index)] as T
+	operator fun set(index: Int, value: T): Unit = run { data[internalIndex(index)] = value }
+	operator fun get(index: Int): T = data[internalIndex(index)]
 
 	override fun contains(element: T): Boolean = (0 until size).any { this[it] == element }
 
@@ -135,11 +138,14 @@ class CircularList<T> : MutableCollection<T> {
 	}
 
 	override fun iterator(): MutableIterator<T> {
+		val that = this
 		return object : MutableIterator<T> {
 			var index = 0
-			override fun next(): T = this@CircularList[index++]
+			override fun next(): T = that[index++]
 			override fun hasNext(): Boolean = index < size
 			override fun remove() = TODO()
 		}
 	}
 }
+
+// SPECIFIC - Do not modify from here
