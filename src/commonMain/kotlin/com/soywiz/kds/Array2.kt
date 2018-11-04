@@ -136,3 +136,10 @@ data class Array2<T>(val width: Int, val height: Int, val data: Array<T>) : Iter
 
 	fun toString(map: Map<T, Char>, margin: String = ""): String = toString(margin = margin) { map[it] ?: ' ' }
 }
+
+// GENERIC
+
+
+
+// SPECIFIC - Do not modify from here
+
