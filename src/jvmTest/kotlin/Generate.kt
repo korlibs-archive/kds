@@ -8,6 +8,7 @@ object Generate {
         File("src/commonMain/kotlin/com/soywiz/kds/CircularList.kt").synchronize(includeFloat = false)
         File("src/commonMain/kotlin/com/soywiz/kds/LinkedList.kt").synchronize(includeFloat = false)
         File("src/commonMain/kotlin/com/soywiz/kds/Array2.kt").synchronize()
+        File("src/commonMain/kotlin/com/soywiz/kds/ArrayList.kt").synchronize()
     }
 
     fun File.synchronize(includeFloat: Boolean = true) {
@@ -30,12 +31,24 @@ object Generate {
         return this
             .replace("arrayListOf<T>", "${lkind}ArrayListOf")
             .replace("Array<T>", "${kind}Array")
-            .replace(Regex("""(\w+)<T>""")) { kind + it.groupValues[1] }
+            .replace("Array<out T>", "${kind}Array")
+            .replace(Regex("""(\w+)<T>""")) {
+                val base = it.groupValues[1]
+                val name = base.replace("Generic", "")
+                if (base == "Iterator") {
+                    "Iterator<$kind>"
+                } else {
+                    "$kind$name"
+                }
+            }
             .replace(": T", ": $kind")
             .replace("-> T", "-> $kind")
             .replace("as T", "as $kind")
             .replace("(T)", "($kind)")
             .replace("T, ", "$kind, ")
             .replace("arrayOfNulls<Any>", "${kind}Array")
+            .replace("Generic", kind)
+            .replace("generic", lkind)
+            .replace("fun <T> ", "fun ")
     }
 }
