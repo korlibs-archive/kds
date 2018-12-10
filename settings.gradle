@@ -9,7 +9,6 @@ pluginManagement {
 
 	repositories {
 		mavenLocal()
-		maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
 		mavenCentral()
 		maven { url 'https://plugins.gradle.org/m2/' }
 	}
@@ -17,4 +16,4 @@ pluginManagement {
 
 rootProject.name = 'kds'
 
-enableFeaturePreview('GRADLE_METADATA')
+//enableFeaturePreview('GRADLE_METADATA')
