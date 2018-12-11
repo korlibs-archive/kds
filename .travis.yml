@@ -21,7 +21,7 @@ matrix:
   - os: osx
     env: KBUILD=macos
     language: java
-    jdk: oraclejdk9
+    jdk: openjdk11
     install:
     - nvm install 8
     - nvm use 8
