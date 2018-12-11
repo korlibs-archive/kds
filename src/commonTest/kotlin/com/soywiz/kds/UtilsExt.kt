@@ -1,4 +1,4 @@
-package com.soywiz.kds.util
+package com.soywiz.kds
 
 import kotlin.math.*
 

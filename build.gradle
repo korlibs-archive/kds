@@ -120,12 +120,12 @@ apply plugin: 'maven-publish'
 def pomBaseData = {
     licenses {
         license {
-            name "MIT License"
-            url "https://raw.githubusercontent.com/korlibs/kds/master/LICENSE"
+            name project.property("project.license.name")
+            url project.property("project.license.url")
         }
     }
     scm {
-        url "https://github.com/korlibs/kds"
+        url project.property("project.scm.url")
     }
 }
 
@@ -133,8 +133,8 @@ def generatePom = { pom ->
     pom.withXml {
         def root = it.asNode()
         root.appendNode('name', project.name)
-        root.appendNode('description', 'Kotlin Optimized Data Structures for JVM, JS, Native and COMMON')
-        root.appendNode('url', 'https://github.com/korlibs/kds')
+        root.appendNode('description', project.property("project.description"))
+        root.appendNode('url', project.property("project.scm.url"))
         root.children().last() + pomBaseData
     }
 }
@@ -161,4 +161,8 @@ if (publishUser && publishPassword) {
             generatePom(pom)
         }
     }
+}
+
+if (project.file('build.project.gradle').exists()) {
+    apply from: project.file('build.project.gradle')
 }

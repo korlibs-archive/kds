@@ -1,6 +1,5 @@
-package com.soywiz.kds.specialized
+package com.soywiz.kds
 
-import com.soywiz.kds.*
 import kotlin.test.*
 
 class IntArrayListTest {
