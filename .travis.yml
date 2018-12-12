@@ -16,7 +16,9 @@ matrix:
     language: java
     jdk: oraclejdk10
     script:
-    - ./gradlew -Dorg.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false -s -i check build
+    - mkdir -p ~/.gradle
+    - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
+    - ./gradlew -s -i check build
 
 #before_cache:
 #  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
