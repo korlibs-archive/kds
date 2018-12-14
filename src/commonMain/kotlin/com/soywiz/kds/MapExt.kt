@@ -2,6 +2,15 @@ package com.soywiz.kds
 
 fun <K, V> Map<K, V>.flip(): Map<V, K> = this.map { Pair(it.value, it.key) }.toMap()
 
+fun <T> List<T>.countMap(): Map<T, Int> {
+	val counts = hashMapOf<T, Int>()
+	for (key in this) {
+		if (key !in counts) counts[key] = 0
+		counts[key] = counts[key]!! + 1
+	}
+	return counts
+}
+
 fun <K> MutableMap<K, Int>.incr(key: K, delta: Int = +1): Int {
 	val next = this.getOrPut(key) { 0 } + delta
 	this[key] = next

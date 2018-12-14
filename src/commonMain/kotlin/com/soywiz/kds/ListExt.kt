@@ -1,4 +1,6 @@
 package com.soywiz.kds
 
-fun <T> List<T>.getCyclic(index: Int) = this[index % this.size]
-fun <T> Array<T>.getCyclic(index: Int) = this[index % this.size]
+import com.soywiz.kds.internal.umod
+
+fun <T> List<T>.getCyclic(index: Int) = this[index umod this.size]
+fun <T> Array<T>.getCyclic(index: Int) = this[index umod this.size]

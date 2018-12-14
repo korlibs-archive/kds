@@ -138,8 +138,8 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
 	val pooledValues get() = ValueIterable()
 	val pooledEntries get() = EntryIterable()
 
-	inner class KeyIterable() {
-		operator fun iterator() = KeyIterator()
+	inner class KeyIterable() : Iterable<Int> {
+		override operator fun iterator() = KeyIterator()
 	}
 
 	inner class ValueIterable() {
@@ -150,9 +150,9 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
 		operator fun iterator() = EntryIterator()
 	}
 
-	inner class KeyIterator(private val it: Iterator = Iterator()) {
-		operator fun hasNext() = it.hasNext()
-		operator fun next() = it.nextKey()
+	inner class KeyIterator(private val it: Iterator = Iterator()) : kotlin.collections.Iterator<Int> {
+		override operator fun hasNext() = it.hasNext()
+		override operator fun next() = it.nextKey()
 	}
 
 	inner class ValueIterator(private val it: Iterator = Iterator()) {

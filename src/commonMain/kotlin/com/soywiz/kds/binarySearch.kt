@@ -1,5 +1,21 @@
 package com.soywiz.kds
 
+/**
+ * Returns the index of an item or a negative number in the case the item is not found.
+ * The negative index represents the nearest position after negating + 1.
+ */
+fun IntArray.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
+    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+
+fun DoubleArray.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
+    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+
+fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
+    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+
+fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
+    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+
 inline fun binarySearch(fromIndex: Int, toIndex: Int, invalid: (from: Int, to: Int, low: Int, high: Int) -> Int = { from, to, low, high -> -low - 1 }, check: (value: Int) -> Int): Int {
     var low = fromIndex
     var high = toIndex - 1
@@ -23,18 +39,3 @@ inline class BSearchResult(val raw: Int) {
     val nearIndex: Int get() = if (found) raw else -raw - 1
 }
 
-/**
- * Returns the index of an item or a negative number in the case the item is not found.
- * The negative index represents the nearest position after negating + 1.
- */
-fun IntArray.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
-    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-
-fun DoubleArray.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
-    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-
-fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
-    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-
-fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult =
-    BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })

@@ -2,6 +2,9 @@ package com.soywiz.kds
 
 import com.soywiz.kds.internal.*
 
+/**
+ * Fixed size [BitSet]. Similar to a [BooleanArray] but tightly packed to reduce memory usage.
+ */
 class BitSet(val size: Int) {
 	val data = IntArray(size divCeil 4)
 
