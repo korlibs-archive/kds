@@ -1,6 +1,58 @@
-import java.io.*
+import java.io.File
 
 object Generate {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        println("CWD: ${File(".").absolutePath}")
+        synchronize(
+            File("template/src/main/kotlin/com/soywiz/kds/TGenArrayList.kt"),
+            File("src/commonMain/kotlin/com/soywiz/kds/ArrayList.kt"),
+            includeFloat = true
+        )
+    }
+
+    fun synchronize(src: File, dst: File, includeFloat: Boolean = true) {
+        val content = src.readText()
+        val parts = content.split("// GENERIC\n")
+        val head = parts[0].trim()
+        val generic = parts.getOrElse(1) { "" }
+
+        val types = listOf("Int", "Double") + if (includeFloat) listOf("Float") else listOf()
+
+        dst.writeText(
+            "$head\n\n" + types.map { "// $it\n" + generic.replaceTemplate(it) }.joinToString("\n\n")
+        )
+    }
+
+    fun String.replaceTemplate(kind: String): String {
+        val lkind = kind.toLowerCase()
+        return this
+            .replace("Iterable<TGen>", "Iterable<$kind>")
+            .replace("Collection<TGen>", "Collection<$kind>")
+            .replace("fun <TGen>", "fun")
+            .replace("arrayListOf<TGen>", "${lkind}ArrayListOf")
+            .replace("Array<TGen>", "${kind}Array")
+            .replace("Array<out TGen>", "${kind}Array")
+            .replace(Regex("""(\w+)<TGen>""")) {
+                val base = it.groupValues[1]
+                val name = base.replace("TGen", "")
+                if (base == "Iterator") {
+                    "Iterator<$kind>"
+                } else {
+                    "$kind$name"
+                }
+            }
+            .replace(": TGen", ": $kind")
+            .replace("-> TGen", "-> $kind")
+            .replace("as TGen", "as $kind")
+            .replace("(TGen)", "($kind)")
+            .replace("TGen, ", "$kind, ")
+            .replace("arrayOfNulls<Any>", "${kind}Array")
+            .replace("TGen", kind)
+            .replace("tgen", lkind)
+    }
+
+    /*
     @JvmStatic
     fun main(args: Array<String>) {
         File("src/commonMain/kotlin/com/soywiz/kds/Stack.kt").synchronize()
@@ -51,4 +103,5 @@ object Generate {
             .replace("generic", lkind)
             .replace("fun <T> ", "fun ")
     }
+    */
 }
