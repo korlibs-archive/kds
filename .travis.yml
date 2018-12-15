@@ -22,8 +22,6 @@ matrix:
     before_install:
     - cp $(/usr/libexec/java_home)/lib/security/cacerts "${JAVA_HOME}/lib/security/cacerts"
     script:
-    - mkdir -p ~/.gradle
-    - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
     - ./gradlew -s -i check build
 
 # https://www.deps.co/guides/travis-ci-latest-java/
