@@ -33,6 +33,12 @@ object Generate {
             includeFloat = true,
             includeGeneric = true
         )
+        synchronize(
+            File("template/src/main/kotlin/com/soywiz/kds/TGenStack.kt"),
+            File("src/commonMain/kotlin/com/soywiz/kds/Stack.kt"),
+            includeFloat = true,
+            includeGeneric = true
+        )
     }
 
     fun synchronize(src: File, dst: File, includeFloat: Boolean = true, includeGeneric: Boolean = false) {

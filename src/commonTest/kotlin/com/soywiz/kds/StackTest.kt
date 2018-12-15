@@ -2,7 +2,7 @@ package com.soywiz.kds
 
 import kotlin.test.*
 
-class IntStackTest {
+class StackTest {
 	@Test
 	fun name() {
 		val s = IntStack()
@@ -23,5 +23,11 @@ class IntStackTest {
 		val s = IntStack()
 		for (n in 0..999) s.push(n)
 		for (n in 999 downTo 0) assertEquals(n, s.pop())
+	}
+
+	@Test
+	fun collection() {
+		val s = IntStack(1, 2, 3)
+		assertEquals(listOf(1, 2, 3), s.toList())
 	}
 }
