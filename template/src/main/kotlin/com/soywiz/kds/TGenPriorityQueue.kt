@@ -59,6 +59,39 @@ class PriorityQueue<TGen>
         return root
     }
 
+    fun indexOf(element: TGen): Int {
+        for (n in 0 until size) {
+            if (this.data[n] == element) return n
+        }
+        return -1
+    }
+
+    fun updateObject(element: TGen) {
+        val index = indexOf(element)
+        if (index >= 0) updateAt(index)
+    }
+
+    fun updateAt(index: Int) {
+        val value = index.value
+        removeAt(index)
+        add(value)
+    }
+
+    override fun remove(element: TGen): Boolean {
+        val index = indexOf(element)
+        if (index >= 0) removeAt(index)
+        return index >= 0
+    }
+
+    fun removeAt(index: Int) {
+        var i = index
+        while (i != 0) {
+            swap(i, i.parent)
+            i = i.parent
+        }
+        removeHead()
+    }
+
     private fun ensure(index: Int) {
         if (index >= capacity) {
             data = data.copyOf(2 + capacity * 2) as Array<TGen>
@@ -99,14 +132,6 @@ class PriorityQueue<TGen>
     override fun addAll(elements: Collection<TGen>): Boolean = run { for (e in elements) add(e); elements.isNotEmpty() }
     override fun clear() = run { size = 0 }
 
-    override fun remove(element: TGen): Boolean {
-        val temp = ArrayList(toList())
-        val res = temp.remove(element)
-        clear()
-        addAll(temp)
-        return res
-    }
-
     override fun removeAll(elements: Collection<TGen>): Boolean {
         val temp = ArrayList(toList())
         val res = temp.removeAll(elements)
@@ -131,4 +156,13 @@ class PriorityQueue<TGen>
             override fun remove() = TODO()
         }
     }
+
+    fun toArraySorted(): Array<TGen> {
+        val out = arrayOfNulls<Any>(size) as Array<TGen>
+        for (n in 0 until size) out[n] = removeHead()
+        for (v in out) add(v)
+        return out
+    }
+
+    override fun toString(): String = toList().toString()
 }

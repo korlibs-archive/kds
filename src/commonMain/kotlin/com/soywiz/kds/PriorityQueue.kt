@@ -60,6 +60,39 @@ class PriorityQueue<TGen>
         return root
     }
 
+    fun indexOf(element: TGen): Int {
+        for (n in 0 until size) {
+            if (this.data[n] == element) return n
+        }
+        return -1
+    }
+
+    fun updateObject(element: TGen) {
+        val index = indexOf(element)
+        if (index >= 0) updateAt(index)
+    }
+
+    fun updateAt(index: Int) {
+        val value = index.value
+        removeAt(index)
+        add(value)
+    }
+
+    override fun remove(element: TGen): Boolean {
+        val index = indexOf(element)
+        if (index >= 0) removeAt(index)
+        return index >= 0
+    }
+
+    fun removeAt(index: Int) {
+        var i = index
+        while (i != 0) {
+            swap(i, i.parent)
+            i = i.parent
+        }
+        removeHead()
+    }
+
     private fun ensure(index: Int) {
         if (index >= capacity) {
             data = data.copyOf(2 + capacity * 2) as Array<TGen>
@@ -100,14 +133,6 @@ class PriorityQueue<TGen>
     override fun addAll(elements: Collection<TGen>): Boolean = run { for (e in elements) add(e); elements.isNotEmpty() }
     override fun clear() = run { size = 0 }
 
-    override fun remove(element: TGen): Boolean {
-        val temp = ArrayList(toList())
-        val res = temp.remove(element)
-        clear()
-        addAll(temp)
-        return res
-    }
-
     override fun removeAll(elements: Collection<TGen>): Boolean {
         val temp = ArrayList(toList())
         val res = temp.removeAll(elements)
@@ -132,6 +157,15 @@ class PriorityQueue<TGen>
             override fun remove() = TODO()
         }
     }
+
+    fun toArraySorted(): Array<TGen> {
+        val out = arrayOfNulls<Any>(size) as Array<TGen>
+        for (n in 0 until size) out[n] = removeHead()
+        for (v in out) add(v)
+        return out
+    }
+
+    override fun toString(): String = toList().toString()
 }
 
 
@@ -194,6 +228,39 @@ class IntPriorityQueue
         return root
     }
 
+    fun indexOf(element: Int): Int {
+        for (n in 0 until size) {
+            if (this.data[n] == element) return n
+        }
+        return -1
+    }
+
+    fun updateObject(element: Int) {
+        val index = indexOf(element)
+        if (index >= 0) updateAt(index)
+    }
+
+    fun updateAt(index: Int) {
+        val value = index.value
+        removeAt(index)
+        add(value)
+    }
+
+    override fun remove(element: Int): Boolean {
+        val index = indexOf(element)
+        if (index >= 0) removeAt(index)
+        return index >= 0
+    }
+
+    fun removeAt(index: Int) {
+        var i = index
+        while (i != 0) {
+            swap(i, i.parent)
+            i = i.parent
+        }
+        removeHead()
+    }
+
     private fun ensure(index: Int) {
         if (index >= capacity) {
             data = data.copyOf(2 + capacity * 2) as IntArray
@@ -234,14 +301,6 @@ class IntPriorityQueue
     override fun addAll(elements: Collection<Int>): Boolean = run { for (e in elements) add(e); elements.isNotEmpty() }
     override fun clear() = run { size = 0 }
 
-    override fun remove(element: Int): Boolean {
-        val temp = ArrayList(toList())
-        val res = temp.remove(element)
-        clear()
-        addAll(temp)
-        return res
-    }
-
     override fun removeAll(elements: Collection<Int>): Boolean {
         val temp = ArrayList(toList())
         val res = temp.removeAll(elements)
@@ -266,6 +325,15 @@ class IntPriorityQueue
             override fun remove() = TODO()
         }
     }
+
+    fun toArraySorted(): IntArray {
+        val out = IntArray(size) as IntArray
+        for (n in 0 until size) out[n] = removeHead()
+        for (v in out) add(v)
+        return out
+    }
+
+    override fun toString(): String = toList().toString()
 }
 
 
@@ -328,6 +396,39 @@ class DoublePriorityQueue
         return root
     }
 
+    fun indexOf(element: Double): Int {
+        for (n in 0 until size) {
+            if (this.data[n] == element) return n
+        }
+        return -1
+    }
+
+    fun updateObject(element: Double) {
+        val index = indexOf(element)
+        if (index >= 0) updateAt(index)
+    }
+
+    fun updateAt(index: Int) {
+        val value = index.value
+        removeAt(index)
+        add(value)
+    }
+
+    override fun remove(element: Double): Boolean {
+        val index = indexOf(element)
+        if (index >= 0) removeAt(index)
+        return index >= 0
+    }
+
+    fun removeAt(index: Int) {
+        var i = index
+        while (i != 0) {
+            swap(i, i.parent)
+            i = i.parent
+        }
+        removeHead()
+    }
+
     private fun ensure(index: Int) {
         if (index >= capacity) {
             data = data.copyOf(2 + capacity * 2) as DoubleArray
@@ -368,14 +469,6 @@ class DoublePriorityQueue
     override fun addAll(elements: Collection<Double>): Boolean = run { for (e in elements) add(e); elements.isNotEmpty() }
     override fun clear() = run { size = 0 }
 
-    override fun remove(element: Double): Boolean {
-        val temp = ArrayList(toList())
-        val res = temp.remove(element)
-        clear()
-        addAll(temp)
-        return res
-    }
-
     override fun removeAll(elements: Collection<Double>): Boolean {
         val temp = ArrayList(toList())
         val res = temp.removeAll(elements)
@@ -400,6 +493,15 @@ class DoublePriorityQueue
             override fun remove() = TODO()
         }
     }
+
+    fun toArraySorted(): DoubleArray {
+        val out = DoubleArray(size) as DoubleArray
+        for (n in 0 until size) out[n] = removeHead()
+        for (v in out) add(v)
+        return out
+    }
+
+    override fun toString(): String = toList().toString()
 }
 
 
@@ -462,6 +564,39 @@ class FloatPriorityQueue
         return root
     }
 
+    fun indexOf(element: Float): Int {
+        for (n in 0 until size) {
+            if (this.data[n] == element) return n
+        }
+        return -1
+    }
+
+    fun updateObject(element: Float) {
+        val index = indexOf(element)
+        if (index >= 0) updateAt(index)
+    }
+
+    fun updateAt(index: Int) {
+        val value = index.value
+        removeAt(index)
+        add(value)
+    }
+
+    override fun remove(element: Float): Boolean {
+        val index = indexOf(element)
+        if (index >= 0) removeAt(index)
+        return index >= 0
+    }
+
+    fun removeAt(index: Int) {
+        var i = index
+        while (i != 0) {
+            swap(i, i.parent)
+            i = i.parent
+        }
+        removeHead()
+    }
+
     private fun ensure(index: Int) {
         if (index >= capacity) {
             data = data.copyOf(2 + capacity * 2) as FloatArray
@@ -502,14 +637,6 @@ class FloatPriorityQueue
     override fun addAll(elements: Collection<Float>): Boolean = run { for (e in elements) add(e); elements.isNotEmpty() }
     override fun clear() = run { size = 0 }
 
-    override fun remove(element: Float): Boolean {
-        val temp = ArrayList(toList())
-        val res = temp.remove(element)
-        clear()
-        addAll(temp)
-        return res
-    }
-
     override fun removeAll(elements: Collection<Float>): Boolean {
         val temp = ArrayList(toList())
         val res = temp.removeAll(elements)
@@ -534,4 +661,13 @@ class FloatPriorityQueue
             override fun remove() = TODO()
         }
     }
+
+    fun toArraySorted(): FloatArray {
+        val out = FloatArray(size) as FloatArray
+        for (n in 0 until size) out[n] = removeHead()
+        for (v in out) add(v)
+        return out
+    }
+
+    override fun toString(): String = toList().toString()
 }

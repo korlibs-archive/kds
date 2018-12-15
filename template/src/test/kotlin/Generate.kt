@@ -93,6 +93,7 @@ object Generate {
             .replace("Collection<TGen>", "Collection<$kind>")
             .replace("fun <TGen>", "fun")
             .replace("arrayListOf<TGen>", "${lkind}ArrayListOf")
+            //.replace("List<TGen>", "${kind}ArrayList")
             .replace("Array<TGen>", "${kind}Array")
             .replace("Array<out TGen>", "${kind}Array")
             .replace(Regex("""(\w+)<TGen>""")) {
