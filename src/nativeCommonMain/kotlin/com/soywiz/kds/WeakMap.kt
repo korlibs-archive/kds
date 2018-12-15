@@ -2,6 +2,7 @@ package com.soywiz.kds
 
 import kotlin.native.ref.*
 
+// @TODO: use a IntFastMap using the hash of the key to reduce the complexity on big collections.
 actual class WeakMap<K : Any, V> {
 	private val keys = ArrayList<WeakReference<K>>()
 	private val values = ArrayList<V>()

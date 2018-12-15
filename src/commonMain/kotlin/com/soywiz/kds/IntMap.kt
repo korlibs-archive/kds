@@ -125,7 +125,22 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
     private fun hash3(key: Int) = (key * (-1262997959)) and mask
 
     fun removeRange(src: Int, dst: Int): Unit {
-        for (n in _keys.indices) if (_keys[n] in src..dst) _values[n] = null
+        //println("removeRange($src, $dst)")
+        if (0 in src..dst && hasZero) {
+            size--
+            hasZero = false
+            zeroValue = null
+        }
+        for (n in _keys.indices) {
+            //println("$n: ${_keys[n]}")
+            val key = _keys[n]
+            if (key != EMPTY && key in src..dst) {
+                _keys[n] = EMPTY
+                _values[n] = null
+                size--
+            }
+        }
+        //for (key in keys.toList()) if (key in src..dst) remove(key)
     }
 
     data class Entry<T>(var key: Int, var value: T?)
