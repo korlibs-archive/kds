@@ -20,22 +20,11 @@ matrix:
     language: java
     jdk: openjdk10
     before_install:
-    - /usr/libexec/java_home -V
-    - echo $JAVA_HOME
-    - rm "${JAVA_HOME}/lib/security/cacerts"
-    - ln -s $(/usr/libexec/java_home)/lib/security/cacerts "${JAVA_HOME}/lib/security/cacerts"
+    - cp $(/usr/libexec/java_home)/lib/security/cacerts "${JAVA_HOME}/lib/security/cacerts"
     script:
     - mkdir -p ~/.gradle
     - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
     - ./gradlew -s -i check build
-
-#/Applications/Xcode-9.4.1.app/Contents/Applications/Application Loader.app/Contents/itms/java/lib/security/cacerts
-#/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/security/cacerts
-#/Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/security/cacerts
-#/Library/Ruby/Gems/2.3.0/gems/google-api-client-0.21.2/lib/cacerts.pem
-#/Users/travis/.rvm/gems/ruby-2.3.5/gems/google-api-client-0.21.2/lib/cacerts.pem
-#/Users/travis/.rvm/gems/ruby-2.4.3/gems/google-api-client-0.21.2/lib/cacerts.pem
-#/Users/travis/openjdk10/lib/security/cacerts
 
 # https://www.deps.co/guides/travis-ci-latest-java/
 
