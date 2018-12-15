@@ -89,7 +89,7 @@ class WeakProperty<V>(val gen: () -> V) {
     operator fun setValue(obj: Any, property: KProperty<*>, value: V) = run { map[obj] = value }
 }
 
-class WeakPropertyThis<T, V>(val gen: T.() -> V) {
+class WeakPropertyThis<T : Any, V>(val gen: T.() -> V) {
     val map = WeakMap<T, V>()
 
     operator fun getValue(obj: T, property: KProperty<*>): V = map.getOrPut(obj) { gen(obj) }

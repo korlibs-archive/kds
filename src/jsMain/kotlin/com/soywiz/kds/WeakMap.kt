@@ -7,7 +7,7 @@ external class JsWeakMap {
 	fun get(k: dynamic): dynamic
 }
 
-actual class WeakMap<K, V> {
+actual class WeakMap<K : Any, V> {
 	val wm = JsWeakMap()
 
 	actual operator fun contains(key: K): Boolean = wm.has(key)

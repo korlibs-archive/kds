@@ -2,7 +2,7 @@ package com.soywiz.kds
 
 import java.util.*
 
-actual class WeakMap<K, V> {
+actual class WeakMap<K : Any, V> {
 	val wm = WeakHashMap<K, V>()
 	actual operator fun contains(key: K): Boolean = wm.containsKey(key)
 	actual operator fun set(key: K, value: V) = run {
