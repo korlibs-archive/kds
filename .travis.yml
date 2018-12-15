@@ -18,11 +18,16 @@ matrix:
       KBUILD=macos
       JAVA_OPTS=-Xmx2g
     language: java
-    jdk: openjdk9
+    jdk: openjdk10
+    before_install:
+      - rm "${JAVA_HOME}/lib/security/cacerts"
+      - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
     script:
     - mkdir -p ~/.gradle
     - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
     - ./gradlew -s -i check build
+
+# https://www.deps.co/guides/travis-ci-latest-java/
 
 #before_cache:
 #  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
