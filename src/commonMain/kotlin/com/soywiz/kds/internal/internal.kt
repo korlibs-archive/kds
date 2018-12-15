@@ -15,10 +15,18 @@ internal infix fun Int.umod(other: Int): Int {
 // @TODO: Use bit counting instead
 internal fun ilog2(v: Int): Int = log2(v.toDouble()).toInt()
 
-internal fun <T> arraycopy(src: Array<T>, srcPos: Int, dst: Array<T>, dstPos: Int, size: Int) = src.copyInto(dst, dstPos, srcPos, srcPos + size)
-internal fun arraycopy(src: IntArray, srcPos: Int, dst: IntArray, dstPos: Int, size: Int) = src.copyInto(dst, dstPos, srcPos, srcPos + size)
-internal fun arraycopy(src: FloatArray, srcPos: Int, dst: FloatArray, dstPos: Int, size: Int) = src.copyInto(dst, dstPos, srcPos, srcPos + size)
-internal fun arraycopy(src: DoubleArray, srcPos: Int, dst: DoubleArray, dstPos: Int, size: Int) = src.copyInto(dst, dstPos, srcPos, srcPos + size)
+internal fun <T> arraycopy(src: Array<T>, srcPos: Int, dst: Array<T>, dstPos: Int, size: Int) =
+    src.copyInto(dst, dstPos, srcPos, srcPos + size)
+
+internal fun arraycopy(src: IntArray, srcPos: Int, dst: IntArray, dstPos: Int, size: Int) =
+    src.copyInto(dst, dstPos, srcPos, srcPos + size)
+
+internal fun arraycopy(src: FloatArray, srcPos: Int, dst: FloatArray, dstPos: Int, size: Int) =
+    src.copyInto(dst, dstPos, srcPos, srcPos + size)
+
+internal fun arraycopy(src: DoubleArray, srcPos: Int, dst: DoubleArray, dstPos: Int, size: Int) =
+    src.copyInto(dst, dstPos, srcPos, srcPos + size)
+
 internal fun <T> Array<T>.fill(value: T) = run { for (n in 0 until this.size) this[n] = value }
 internal fun IntArray.fill(value: Int) = run { for (n in 0 until this.size) this[n] = value }
 
