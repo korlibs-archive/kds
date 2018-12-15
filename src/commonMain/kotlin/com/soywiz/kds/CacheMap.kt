@@ -1,10 +1,14 @@
 package com.soywiz.kds
 
-class CacheMap<K, V>(
+class CacheMap<K, V> private constructor(
+    private val map: LinkedHashMap<K, V> = LinkedHashMap(),
     val maxSize: Int = 16,
     val free: (K, V) -> Unit = { k, v -> }
-) : MutableMap<K, V> {
-    private val map: LinkedHashMap<K, V> = LinkedHashMap()
+) : MutableMap<K, V> by map {
+    constructor(
+        maxSize: Int = 16,
+        free: (K, V) -> Unit = { k, v -> }
+    ) : this(LinkedHashMap(), maxSize, free)
 
     override val size: Int get() = map.size
 
@@ -14,7 +18,7 @@ class CacheMap<K, V>(
         return value
     }
 
-    override operator fun get(key: K) = map[key]
+    override fun putAll(from: Map<out K, V>) = run { for ((k, v) in from) put(k, v) }
     override fun put(key: K, value: V): V? {
         if (size >= maxSize && !map.containsKey(key)) remove(map.keys.first())
 
@@ -26,23 +30,10 @@ class CacheMap<K, V>(
         return oldValue
     }
 
-    inline fun getOrPut(key: K, callback: (K) -> V): V {
-        if (key !in this) set(key, callback(key))
-        return get(key)!!
-    }
-
     override fun clear() {
         val keys = map.keys.toList()
         for (key in keys) remove(key)
     }
 
     override fun toString(): String = map.toString()
-
-    override val entries: MutableSet<MutableMap.MutableEntry<K, V>> get() = map.entries
-    override val keys: MutableSet<K> get() = map.keys
-    override val values: MutableCollection<V> get() = map.values
-    override fun containsKey(key: K): Boolean = map.containsKey(key)
-    override fun containsValue(value: V): Boolean = map.containsValue(value)
-    override fun isEmpty(): Boolean = map.isEmpty()
-    override fun putAll(from: Map<out K, V>) = run { for ((k, v) in from) put(k, v) }
 }
