@@ -1,6 +1,6 @@
 package com.soywiz.kds
 
-inline fun <TGen, reified RGen> Array2<TGen>.map2(gen: (x: Int, y: Int, v: TGen) -> RGen): Array2<RGen> =
+inline fun <TGen, reified RGen> Array2<TGen>.map(gen: (x: Int, y: Int, v: TGen) -> RGen): Array2<RGen> =
     Array2<RGen>(width, height) {
         val x = it % width
         val y = it / width

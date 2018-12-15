@@ -24,4 +24,19 @@ class QueueTest {
 			queue.dequeue()
 		}
 	}
+
+	@Test
+	fun int() {
+		val queue = IntQueue()
+		queue.enqueue(10)
+		queue.enqueue(20)
+		queue.enqueue(15)
+
+		assertEquals(true, queue.isNotEmpty())
+		assertEquals(3, queue.size); assertEquals(10, queue.dequeue())
+		assertEquals(2, queue.size); assertEquals(20, queue.dequeue())
+		assertEquals(1, queue.size); assertEquals(15, queue.dequeue())
+		assertEquals(0, queue.size)
+		assertEquals(false, queue.isNotEmpty())
+	}
 }

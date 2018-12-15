@@ -46,4 +46,12 @@ class BitSetTest {
 			assertEquals(true, bs[n])
 		}
 	}
+
+	@Test
+	fun unset() {
+		val bs = BitSet(8)
+		for (n in 0 until bs.size) bs[n] = true
+		for (n in 0 until bs.size step 2) bs.unset(n)
+		assertEquals(listOf(false, true, false, true, false, true, false, true), bs.toList())
+	}
 }

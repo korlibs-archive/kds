@@ -39,6 +39,12 @@ object Generate {
             includeFloat = true,
             includeGeneric = true
         )
+        synchronize(
+            File("template/src/main/kotlin/com/soywiz/kds/TGenQueue.kt"),
+            File("src/commonMain/kotlin/com/soywiz/kds/Queue.kt"),
+            includeFloat = true,
+            includeGeneric = true
+        )
     }
 
     fun synchronize(src: File, dst: File, includeFloat: Boolean = true, includeGeneric: Boolean = false) {
