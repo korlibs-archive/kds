@@ -22,7 +22,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
             val width = rows[0].size
             val height = rows.size
             val anyCell = rows[0][0]
-            return ((Array2<Any>(width, height) { anyCell }) as Array2<TGen>).apply { set(rows) }
+            return (Array2<TGen>(width, height) { anyCell }).apply { set(rows) }
         }
 
         inline operator fun <TGen : Any> invoke(

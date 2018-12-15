@@ -95,6 +95,7 @@ object Generate {
             .replace("arrayListOf<TGen>", "${lkind}ArrayListOf")
             //.replace("List<TGen>", "${kind}ArrayList")
             .replace("Array<TGen>", "${kind}Array")
+            .replace("Array<Any>", "${kind}Array")
             .replace("Array<out TGen>", "${kind}Array")
             .replace(Regex("""(\w+)<TGen>""")) {
                 val base = it.groupValues[1]
