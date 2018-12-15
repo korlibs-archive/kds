@@ -1,5 +1,8 @@
 package com.soywiz.kds
 
+/**
+ * [Map] with [String] keys that are treated in a insensitive manner.
+ */
 class CaseInsensitiveStringMap<T> private constructor(
     private val mapOrig: MutableMap<String, T>,
     private val lcToOrig: MutableMap<String, String>,

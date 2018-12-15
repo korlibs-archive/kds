@@ -11,7 +11,7 @@ typealias CircularList<TGen> = Deque<TGen>
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-class Deque<TGen>() : MutableCollection<TGen> {
+class Deque<TGen> : MutableCollection<TGen> {
     private var _start: Int = 0
     private var _size: Int = 0
     private var data: Array<TGen> = arrayOfNulls<Any>(16) as Array<TGen>
@@ -67,15 +67,19 @@ class Deque<TGen>() : MutableCollection<TGen> {
         return last.apply { _size-- }
     }
 
-    // @TODO: This requires potentially linear time. But we can improve it using two arraycopy. Also we can reduce from left or from right.
     fun removeAt(index: Int): TGen {
         if (index < 0 || index >= size) throw IndexOutOfBoundsException()
         if (index == 0) return removeFirst()
         if (index == size - 1) return removeLast()
 
-        // if (index < size / 2) // @TODO: reduce from left
+        // @TODO: We could use two arraycopy per branch to prevent umodding twice per element.
         val old = this[index]
-        for (n in index until size - 1) this[n] = this[n + 1]
+        if (index < size / 2) {
+            for (n in index downTo 1) this[n] = this[n - 1]
+            _start = (_start + 1) umod capacity
+        } else {
+            for (n in index until size - 1) this[n] = this[n + 1]
+        }
 
         _size--
         return old
@@ -140,7 +144,7 @@ class Deque<TGen>() : MutableCollection<TGen> {
             var index = 0
             override fun next(): TGen = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove() = TODO()
+            override fun remove(): Unit = run { removeAt(index - 1) }
         }
     }
 
@@ -165,7 +169,7 @@ typealias IntCircularList = IntDeque
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-class IntDeque() : MutableCollection<Int> {
+class IntDeque : MutableCollection<Int> {
     private var _start: Int = 0
     private var _size: Int = 0
     private var data: IntArray = IntArray(16) as IntArray
@@ -221,15 +225,19 @@ class IntDeque() : MutableCollection<Int> {
         return last.apply { _size-- }
     }
 
-    // @TODO: This requires potentially linear time. But we can improve it using two arraycopy. Also we can reduce from left or from right.
     fun removeAt(index: Int): Int {
         if (index < 0 || index >= size) throw IndexOutOfBoundsException()
         if (index == 0) return removeFirst()
         if (index == size - 1) return removeLast()
 
-        // if (index < size / 2) // @TODO: reduce from left
+        // @TODO: We could use two arraycopy per branch to prevent umodding twice per element.
         val old = this[index]
-        for (n in index until size - 1) this[n] = this[n + 1]
+        if (index < size / 2) {
+            for (n in index downTo 1) this[n] = this[n - 1]
+            _start = (_start + 1) umod capacity
+        } else {
+            for (n in index until size - 1) this[n] = this[n + 1]
+        }
 
         _size--
         return old
@@ -294,7 +302,7 @@ class IntDeque() : MutableCollection<Int> {
             var index = 0
             override fun next(): Int = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove() = TODO()
+            override fun remove(): Unit = run { removeAt(index - 1) }
         }
     }
 
@@ -319,7 +327,7 @@ typealias DoubleCircularList = DoubleDeque
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-class DoubleDeque() : MutableCollection<Double> {
+class DoubleDeque : MutableCollection<Double> {
     private var _start: Int = 0
     private var _size: Int = 0
     private var data: DoubleArray = DoubleArray(16) as DoubleArray
@@ -375,15 +383,19 @@ class DoubleDeque() : MutableCollection<Double> {
         return last.apply { _size-- }
     }
 
-    // @TODO: This requires potentially linear time. But we can improve it using two arraycopy. Also we can reduce from left or from right.
     fun removeAt(index: Int): Double {
         if (index < 0 || index >= size) throw IndexOutOfBoundsException()
         if (index == 0) return removeFirst()
         if (index == size - 1) return removeLast()
 
-        // if (index < size / 2) // @TODO: reduce from left
+        // @TODO: We could use two arraycopy per branch to prevent umodding twice per element.
         val old = this[index]
-        for (n in index until size - 1) this[n] = this[n + 1]
+        if (index < size / 2) {
+            for (n in index downTo 1) this[n] = this[n - 1]
+            _start = (_start + 1) umod capacity
+        } else {
+            for (n in index until size - 1) this[n] = this[n + 1]
+        }
 
         _size--
         return old
@@ -448,7 +460,7 @@ class DoubleDeque() : MutableCollection<Double> {
             var index = 0
             override fun next(): Double = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove() = TODO()
+            override fun remove(): Unit = run { removeAt(index - 1) }
         }
     }
 
@@ -473,7 +485,7 @@ typealias FloatCircularList = FloatDeque
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-class FloatDeque() : MutableCollection<Float> {
+class FloatDeque : MutableCollection<Float> {
     private var _start: Int = 0
     private var _size: Int = 0
     private var data: FloatArray = FloatArray(16) as FloatArray
@@ -529,15 +541,19 @@ class FloatDeque() : MutableCollection<Float> {
         return last.apply { _size-- }
     }
 
-    // @TODO: This requires potentially linear time. But we can improve it using two arraycopy. Also we can reduce from left or from right.
     fun removeAt(index: Int): Float {
         if (index < 0 || index >= size) throw IndexOutOfBoundsException()
         if (index == 0) return removeFirst()
         if (index == size - 1) return removeLast()
 
-        // if (index < size / 2) // @TODO: reduce from left
+        // @TODO: We could use two arraycopy per branch to prevent umodding twice per element.
         val old = this[index]
-        for (n in index until size - 1) this[n] = this[n + 1]
+        if (index < size / 2) {
+            for (n in index downTo 1) this[n] = this[n - 1]
+            _start = (_start + 1) umod capacity
+        } else {
+            for (n in index until size - 1) this[n] = this[n + 1]
+        }
 
         _size--
         return old
@@ -602,7 +618,7 @@ class FloatDeque() : MutableCollection<Float> {
             var index = 0
             override fun next(): Float = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove() = TODO()
+            override fun remove(): Unit = run { removeAt(index - 1) }
         }
     }
 

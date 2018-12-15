@@ -32,5 +32,8 @@ class CaseInsensitiveStringMapTest {
         map["HELLO"] = 2
         assertEquals(2, map["hello"])
         assertEquals(listOf("HELLO"), map.keys.toList())
+
+        val map2 = CaseInsensitiveStringMap(mapOf("hELLo" to 1))
+        assertEquals(listOf("hELLo"), map2.keys.toList())
     }
 }

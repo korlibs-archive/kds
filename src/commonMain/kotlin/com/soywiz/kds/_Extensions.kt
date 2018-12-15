@@ -34,8 +34,10 @@ fun <K> MutableMap<K, Int>.incr(key: K, delta: Int = +1): Int {
  */
 fun IntArray.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 
+fun FloatArray.binarySearch(v: Float, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 fun DoubleArray.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun FloatArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 
 inline fun binarySearch(
