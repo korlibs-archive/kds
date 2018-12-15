@@ -33,6 +33,8 @@ fun <T, R> Iterable<T>.reduceAcumulate(init: R, reductor: (R, T) -> R): R {
     return acc
 }
 
+fun <T : Comparable<T>> comparator(): Comparator<T> = kotlin.Comparator { a, b -> a.compareTo(b) }
+
 fun <K, V> linkedHashMapOf(vararg pairs: Pair<K, V>): LinkedHashMap<K, V> =
     LinkedHashMap<K, V>().also { for ((key, value) in pairs) it[key] = value }
 

@@ -1,88 +1,125 @@
 package com.soywiz.kds
 
-/**
- * @TODO Optimize!!
- */
-class PriorityQueue<T>(
-    private var compare: Comparator<T>,
-    private var reversed: Boolean = false
-) : MutableCollection<T> {
-    constructor(reversed: Boolean = false, compare: (T, T) -> Int)
-            : this(Comparator(compare), reversed)
 
-    private var dirtyList = ArrayList<T>()
+@Suppress("UNCHECKED_CAST")
+class PriorityQueue<T>
+@PublishedApi internal constructor(private var data: Array<T>, val comparator: Comparator<T>) : MutableCollection<T> {
+    companion object {
+        inline operator fun <reified T> invoke(comparator: Comparator<T>, reversed: Boolean = false) =
+            PriorityQueue(arrayOfNulls<T>(16) as Array<T>, if (reversed) comparator.reversed() else comparator)
 
-    private var dirty: Boolean = false
-
-    val _sortedList: ArrayList<T>
-        get() {
-            if (dirty) {
-                dirtyList.sortWith(compare)
-                dirty = false
-            }
-            return dirtyList
-        }
-
-    override val size: Int get() = dirtyList.size
-    val length: Int get() = dirtyList.size
-
-    fun updateObject(obj: T): Unit {
-        dirty = true
+        inline operator fun <reified T : Comparable<T>> invoke(reversed: Boolean = false) =
+            PriorityQueue<T>(comparator(), reversed)
     }
 
-    override fun contains(element: T): Boolean {
-        return this.dirtyList.indexOf(element) != -1
-    }
+    private var Int.value
+        get() = data[this]
+        set(value) = run { data[this] = value }
+    private val Int.isRoot get() = this == 0
+    private val Int.parent: Int get() = (this - 1) / 2
+    private val Int.left: Int get() = 2 * this + 1
+    private val Int.right: Int get() = 2 * this + 2
+    private operator fun T.compareTo(other: T): Int = comparator.compare(this, other)
 
-    fun push(obj: T): Unit {
-        dirtyList.add(obj)
-        dirty = true
-    }
+    private val capacity get() = data.size
+    override var size = 0; private set
+    val head: T? get() = data.getOrNull(0)
 
     override fun add(element: T): Boolean {
-        dirty = true
-        return dirtyList.add(element)
+        size++
+        ensure(size)
+        var i = (size - 1)
+        i.value = element
+        while (!i.isRoot && i.parent.value > i.value) {
+            swap(i, i.parent)
+            i = i.parent
+        }
+        return true
     }
 
-    override fun addAll(elements: Collection<T>): Boolean {
-        dirty = true
-        return dirtyList.addAll(elements)
+    fun removeHead(): T? {
+        if (size <= 0) return null
+        if (size == 1) {
+            size--
+            return 0.value
+        }
+        val root = 0.value
+        0.value = (size - 1).value
+        size--
+        minHeapify(0)
+        return root
     }
 
-    override fun clear() {
-        dirty = true
-        dirtyList.clear()
-    }
-
-    override fun isEmpty(): Boolean = dirtyList.isEmpty()
-    override fun iterator(): MutableIterator<T> = _sortedList.iterator()
-    override fun remove(element: T): Boolean = _sortedList.remove(element)
-    override fun retainAll(elements: Collection<T>): Boolean = _sortedList.retainAll(elements)
-    override fun containsAll(elements: Collection<T>): Boolean = _sortedList.containsAll(elements)
-    override fun removeAll(elements: Collection<T>): Boolean = _sortedList.removeAll(elements)
-
-    fun add(vararg objs: T): Unit {
-        dirtyList.addAll(objs)
-        dirty = true
-    }
-
-    fun add(objs: Iterable<T>): Unit {
-        dirtyList.addAll(objs)
-        dirty = true
-    }
-
-    val head: T get() = _sortedList[if (this.reversed) (_sortedList.size - 1) else 0]
-
-    fun peek(): T = head
-
-    fun removeHead(): T {
-        if (this.reversed) {
-            return _sortedList.removeAt(_sortedList.size - 1)
-        } else {
-            return _sortedList.removeAt(0)
+    private fun ensure(index: Int) {
+        if (index >= capacity) {
+            data = data.copyOf(2 + capacity * 2) as Array<T>
         }
     }
 
-    // @TODO: Verify
-    fun remove(): T = removeHead()
+    private fun minHeapify(index: Int) {
+        var i = index
+        while (true) {
+            val left = i.left
+            val right = i.right
+            var smallest = i
+            if (left < size && left.value < i.value) smallest = left
+            if (right < size && right.value < smallest.value) smallest = right
+            if (smallest != i) {
+                swap(i, smallest)
+                i = smallest
+            } else {
+                break
+            }
+        }
+    }
+
+    private fun swap(l: Int, r: Int) {
+        val temp = r.value
+        r.value = l.value
+        l.value = temp
+    }
+
+    override operator fun contains(element: T): Boolean = (0 until size).any { it.value == element }
+
+    override fun containsAll(elements: Collection<T>): Boolean {
+        val thisSet = this.toSet()
+        return elements.all { it in thisSet }
+    }
+
+    override fun isEmpty(): Boolean = size == 0
+    override fun addAll(elements: Collection<T>): Boolean = run { for (e in elements) add(e); elements.isNotEmpty() }
+    override fun clear() = run { size = 0 }
+
+    override fun remove(element: T): Boolean {
+        val temp = ArrayList(toList())
+        val res = temp.remove(element)
+        clear()
+        addAll(temp)
+        return res
+    }
+
+    override fun removeAll(elements: Collection<T>): Boolean {
+        val temp = ArrayList(toList())
+        val res = temp.removeAll(elements)
+        clear()
+        addAll(temp)
+        return res
+    }
+
+    override fun retainAll(elements: Collection<T>): Boolean {
+        val temp = ArrayList(toList())
+        val res = temp.retainAll(elements)
+        clear()
+        addAll(temp)
+        return res
+    }
+
+    override fun iterator(): MutableIterator<T> {
+        var index = 0
+        return object : MutableIterator<T> {
+            override fun hasNext(): Boolean = index < size
+            override fun next(): T = (index++).value
+            override fun remove() = TODO()
+        }
+    }
 }
