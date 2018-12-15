@@ -25,5 +25,5 @@ class BitSet(val size: Int) {
 	fun set(index: Int): Unit = set(index, true)
 	fun unset(index: Int): Unit = set(index, false)
 
-	fun clear(): Unit = MemTools.fill(data, 0)
+	fun clear(): Unit = data.fill(0)
 }

@@ -1,6 +1,6 @@
 package com.soywiz.kds
 
-import com.soywiz.kds.internal.MemTools
+import com.soywiz.kds.internal.*
 
 // GENERIC
 
@@ -47,7 +47,7 @@ class TGenArrayList<TGen>(capacity: Int = 7) : Collection<TGen> {
 
     fun add(values: Array<out TGen>, offset: Int = 0, length: Int = values.size) {
         ensure(values.size)
-        MemTools.arraycopy(values as Array<TGen>, offset, data, this.size, length)
+        arraycopy(values as Array<TGen>, offset, data, this.size, length)
         this.size += values.size
     }
 
@@ -87,7 +87,7 @@ class TGenArrayList<TGen>(capacity: Int = 7) : Collection<TGen> {
     fun removeAt(index: Int): TGen {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) MemTools.arraycopy(data, index + 1, data, index, length - index - 1)
+        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
         length--
         return out
     }

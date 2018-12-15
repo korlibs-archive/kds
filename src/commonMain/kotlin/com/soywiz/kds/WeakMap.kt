@@ -1,5 +1,7 @@
 package com.soywiz.kds
 
+import kotlin.reflect.*
+
 expect class WeakMap<K, V>() {
 	operator fun contains(key: K): Boolean
 	operator fun set(key: K, value: V): Unit

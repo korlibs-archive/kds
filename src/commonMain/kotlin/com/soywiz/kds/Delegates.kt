@@ -40,7 +40,7 @@ interface Extra {
 
 		inline operator fun setValue(thisRef: T2, property: KProperty<*>, value: T): Unit = run {
 			//beforeSet(value)
-			if (thisRef.extra == null) thisRef.extra = lmapOf()
+			if (thisRef.extra == null) thisRef.extra = LinkedHashMap()
 			thisRef.extra?.set(name ?: property.name, value as Any?)
 			//afterSet(value)
 		}
@@ -60,7 +60,38 @@ class extraProperty<T : Any?>(val name: String? = null, val default: () -> T) {
 		(thisRef.extra?.get(name ?: property.name) as T?) ?: default()
 
 	inline operator fun setValue(thisRef: Extra, property: KProperty<*>, value: T): Unit = run {
-		if (thisRef.extra == null) thisRef.extra = lmapOf()
+		if (thisRef.extra == null) thisRef.extra = LinkedHashMap()
 		thisRef.extra?.set(name ?: property.name, value as Any?)
 	}
+}
+
+class Computed<K : Computed.WithParent<K>, T>(val prop: KProperty1<K, T?>, val default: () -> T) {
+	interface WithParent<T> {
+		val parent: T?
+	}
+
+	operator fun getValue(thisRef: K?, p: KProperty<*>): T {
+		var current: K? = thisRef
+		while (current != null) {
+			val result = prop.get(current)
+			if (result != null) return result
+			current = current.parent
+		}
+
+		return default()
+	}
+}
+
+class WeakProperty<V>(val gen: () -> V) {
+	val map = WeakMap<Any, V>()
+
+	operator fun getValue(obj: Any, property: KProperty<*>): V = map.getOrPut(obj) { gen() }
+	operator fun setValue(obj: Any, property: KProperty<*>, value: V) = run { map[obj] = value }
+}
+
+class WeakPropertyThis<T, V>(val gen: T.() -> V) {
+	val map = WeakMap<T, V>()
+
+	operator fun getValue(obj: T, property: KProperty<*>): V = map.getOrPut(obj) { gen(obj) }
+	operator fun setValue(obj: T, property: KProperty<*>, value: V) = run { map[obj] = value }
 }

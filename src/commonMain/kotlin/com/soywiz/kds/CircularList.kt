@@ -39,8 +39,8 @@ class CircularList<T> : MutableCollection<T> {
 	private fun copyCyclic(i: Array<T>, istart: Int, o: Array<T>, count: Int) {
 		val size1 = kotlin.math.min(i.size - istart, count)
 		val size2 = count - size1
-		MemTools.arraycopy(i, istart, o, 0, size1)
-		if (size2 > 0) MemTools.arraycopy(i, 0, o, size1, size2)
+		arraycopy(i, istart, o, 0, size1)
+		if (size2 > 0) arraycopy(i, 0, o, size1, size2)
 	}
 
 	fun addAll(items: Iterable<T>) = run {
@@ -175,8 +175,8 @@ class IntCircularList : IntMutableCollection {
 	private fun copyCyclic(i: IntArray, istart: Int, o: IntArray, count: Int) {
 		val size1 = kotlin.math.min(i.size - istart, count)
 		val size2 = count - size1
-		MemTools.arraycopy(i, istart, o, 0, size1)
-		if (size2 > 0) MemTools.arraycopy(i, 0, o, size1, size2)
+		arraycopy(i, istart, o, 0, size1)
+		if (size2 > 0) arraycopy(i, 0, o, size1, size2)
 	}
 
 	fun addAll(items: IntIterable) = run {
@@ -309,8 +309,8 @@ class DoubleCircularList : DoubleMutableCollection {
 	private fun copyCyclic(i: DoubleArray, istart: Int, o: DoubleArray, count: Int) {
 		val size1 = kotlin.math.min(i.size - istart, count)
 		val size2 = count - size1
-		MemTools.arraycopy(i, istart, o, 0, size1)
-		if (size2 > 0) MemTools.arraycopy(i, 0, o, size1, size2)
+		arraycopy(i, istart, o, 0, size1)
+		if (size2 > 0) arraycopy(i, 0, o, size1, size2)
 	}
 
 	fun addAll(items: DoubleIterable) = run {

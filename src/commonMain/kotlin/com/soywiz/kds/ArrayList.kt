@@ -1,6 +1,6 @@
 package com.soywiz.kds
 
-import com.soywiz.kds.internal.MemTools
+import com.soywiz.kds.internal.*
 
 // Int
 
@@ -47,7 +47,7 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
 
     fun add(values: IntArray, offset: Int = 0, length: Int = values.size) {
         ensure(values.size)
-        MemTools.arraycopy(values as IntArray, offset, data, this.size, length)
+        arraycopy(values as IntArray, offset, data, this.size, length)
         this.size += values.size
     }
 
@@ -87,7 +87,7 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
     fun removeAt(index: Int): Int {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) MemTools.arraycopy(data, index + 1, data, index, length - index - 1)
+        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
         length--
         return out
     }
@@ -143,7 +143,7 @@ class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
 
     fun add(values: DoubleArray, offset: Int = 0, length: Int = values.size) {
         ensure(values.size)
-        MemTools.arraycopy(values as DoubleArray, offset, data, this.size, length)
+        arraycopy(values as DoubleArray, offset, data, this.size, length)
         this.size += values.size
     }
 
@@ -183,7 +183,7 @@ class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
     fun removeAt(index: Int): Double {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) MemTools.arraycopy(data, index + 1, data, index, length - index - 1)
+        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
         length--
         return out
     }
@@ -239,7 +239,7 @@ class FloatArrayList(capacity: Int = 7) : Collection<Float> {
 
     fun add(values: FloatArray, offset: Int = 0, length: Int = values.size) {
         ensure(values.size)
-        MemTools.arraycopy(values as FloatArray, offset, data, this.size, length)
+        arraycopy(values as FloatArray, offset, data, this.size, length)
         this.size += values.size
     }
 
@@ -279,7 +279,7 @@ class FloatArrayList(capacity: Int = 7) : Collection<Float> {
     fun removeAt(index: Int): Float {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) MemTools.arraycopy(data, index + 1, data, index, length - index - 1)
+        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
         length--
         return out
     }

@@ -55,26 +55,11 @@ class PriorityQueue<T>(
 	}
 
 	override fun isEmpty(): Boolean = dirtyList.isEmpty()
-
-	override fun iterator(): MutableIterator<T> {
-		return _sortedList.iterator()
-	}
-
-	override fun remove(element: T): Boolean {
-		return _sortedList.remove(element)
-	}
-
-	override fun retainAll(elements: Collection<T>): Boolean {
-		return _sortedList.retainAll(elements)
-	}
-
-	override fun containsAll(elements: Collection<T>): Boolean {
-		return _sortedList.containsAll(elements)
-	}
-
-	override fun removeAll(elements: Collection<T>): Boolean {
-		return _sortedList.removeAll(elements)
-	}
+	override fun iterator(): MutableIterator<T> = _sortedList.iterator()
+	override fun remove(element: T): Boolean = _sortedList.remove(element)
+	override fun retainAll(elements: Collection<T>): Boolean = _sortedList.retainAll(elements)
+	override fun containsAll(elements: Collection<T>): Boolean = _sortedList.containsAll(elements)
+	override fun removeAll(elements: Collection<T>): Boolean = _sortedList.removeAll(elements)
 
 	fun add(vararg objs: T): Unit {
 		dirtyList.addAll(objs)
