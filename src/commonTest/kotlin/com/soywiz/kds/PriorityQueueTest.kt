@@ -45,4 +45,20 @@ class PriorityQueueTest {
         assertEquals(1, pq.size); assertEquals(b, pq.removeHead())
         assertEquals(0, pq.size)
     }
+
+    @Test
+    fun test3() {
+        val pq = IntPriorityQueue { a, b -> (-a).compareTo(-b) }
+        pq.addAll(listOf(1, 2, 3, 4))
+        assertEquals(listOf(4, 3, 2, 1), pq.toList())
+
+    }
+
+    @Test
+    fun test4() {
+        class WI(val v: Int)
+        val pq = PriorityQueue<WI> { a, b -> (-a.v).compareTo(-b.v) }
+        pq.addAll(listOf(1, 2, 3, 4).map { WI(it) })
+        assertEquals(listOf(4, 3, 2, 1), pq.map { it.v })
+    }
 }

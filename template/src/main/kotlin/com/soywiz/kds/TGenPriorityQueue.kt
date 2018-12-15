@@ -6,10 +6,13 @@ package com.soywiz.kds
 class PriorityQueue<TGen>
 @PublishedApi internal constructor(private var data: Array<TGen>, val comparator: Comparator<TGen>) : MutableCollection<TGen> {
     companion object {
-        inline operator fun <reified TGen> invoke(comparator: Comparator<TGen>, reversed: Boolean = false): PriorityQueue<TGen> =
-            PriorityQueue<TGen>(arrayOfNulls<TGen>(16) as Array<TGen>, if (reversed) comparator.reversed() else comparator)
+        operator fun <TGen> invoke(comparator: Comparator<TGen>, reversed: Boolean = false): PriorityQueue<TGen> =
+            PriorityQueue<TGen>(arrayOfNulls<Any>(16) as Array<TGen>, if (reversed) comparator.reversed() else comparator)
 
-        inline operator fun <reified TGen : Comparable<TGen>> invoke(reversed: Boolean = false): PriorityQueue<TGen> =
+        operator fun <TGen> invoke(reversed: Boolean = false, comparator: (left: TGen, right: TGen) -> Int): PriorityQueue<TGen> =
+            PriorityQueue<TGen>(Comparator(comparator), reversed)
+
+        operator fun <TGen : Comparable<TGen>> invoke(reversed: Boolean = false): PriorityQueue<TGen> =
             PriorityQueue<TGen>(comparator(), reversed)
     }
 
@@ -20,7 +23,9 @@ class PriorityQueue<TGen>
     private val Int.parent: Int get() = (this - 1) / 2
     private val Int.left: Int get() = 2 * this + 1
     private val Int.right: Int get() = 2 * this + 2
-    private operator fun TGen.compareTo(other: TGen): Int = comparator.compare(this, other)
+
+    private fun gt(a: TGen, b: TGen) = comparator.compare(a, b) > 0
+    private fun lt(a: TGen, b: TGen) = comparator.compare(a, b) < 0
 
     private val capacity get() = data.size
     override var size = 0; private set
@@ -34,7 +39,7 @@ class PriorityQueue<TGen>
         ensure(size)
         var i = (size - 1)
         i.value = element
-        while (!i.isRoot && i.parent.value > i.value) {
+        while (!i.isRoot && gt(i.parent.value, i.value)) {
             swap(i, i.parent)
             i = i.parent
         }
@@ -66,8 +71,8 @@ class PriorityQueue<TGen>
             val left = i.left
             val right = i.right
             var smallest = i
-            if (left < size && left.value < i.value) smallest = left
-            if (right < size && right.value < smallest.value) smallest = right
+            if (left < size && lt(left.value, i.value)) smallest = left
+            if (right < size && lt(right.value, smallest.value)) smallest = right
             if (smallest != i) {
                 swap(i, smallest)
                 i = smallest

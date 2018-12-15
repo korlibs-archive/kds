@@ -7,10 +7,13 @@ package com.soywiz.kds
 class PriorityQueue<TGen>
 @PublishedApi internal constructor(private var data: Array<TGen>, val comparator: Comparator<TGen>) : MutableCollection<TGen> {
     companion object {
-        inline operator fun <reified TGen> invoke(comparator: Comparator<TGen>, reversed: Boolean = false): PriorityQueue<TGen> =
-            PriorityQueue<TGen>(arrayOfNulls<TGen>(16) as Array<TGen>, if (reversed) comparator.reversed() else comparator)
+        operator fun <TGen> invoke(comparator: Comparator<TGen>, reversed: Boolean = false): PriorityQueue<TGen> =
+            PriorityQueue<TGen>(arrayOfNulls<Any>(16) as Array<TGen>, if (reversed) comparator.reversed() else comparator)
 
-        inline operator fun <reified TGen : Comparable<TGen>> invoke(reversed: Boolean = false): PriorityQueue<TGen> =
+        operator fun <TGen> invoke(reversed: Boolean = false, comparator: (left: TGen, right: TGen) -> Int): PriorityQueue<TGen> =
+            PriorityQueue<TGen>(Comparator(comparator), reversed)
+
+        operator fun <TGen : Comparable<TGen>> invoke(reversed: Boolean = false): PriorityQueue<TGen> =
             PriorityQueue<TGen>(comparator(), reversed)
     }
 
@@ -21,7 +24,9 @@ class PriorityQueue<TGen>
     private val Int.parent: Int get() = (this - 1) / 2
     private val Int.left: Int get() = 2 * this + 1
     private val Int.right: Int get() = 2 * this + 2
-    private operator fun TGen.compareTo(other: TGen): Int = comparator.compare(this, other)
+
+    private fun gt(a: TGen, b: TGen) = comparator.compare(a, b) > 0
+    private fun lt(a: TGen, b: TGen) = comparator.compare(a, b) < 0
 
     private val capacity get() = data.size
     override var size = 0; private set
@@ -35,7 +40,7 @@ class PriorityQueue<TGen>
         ensure(size)
         var i = (size - 1)
         i.value = element
-        while (!i.isRoot && i.parent.value > i.value) {
+        while (!i.isRoot && gt(i.parent.value, i.value)) {
             swap(i, i.parent)
             i = i.parent
         }
@@ -67,8 +72,8 @@ class PriorityQueue<TGen>
             val left = i.left
             val right = i.right
             var smallest = i
-            if (left < size && left.value < i.value) smallest = left
-            if (right < size && right.value < smallest.value) smallest = right
+            if (left < size && lt(left.value, i.value)) smallest = left
+            if (right < size && lt(right.value, smallest.value)) smallest = right
             if (smallest != i) {
                 swap(i, smallest)
                 i = smallest
@@ -136,10 +141,13 @@ class PriorityQueue<TGen>
 class IntPriorityQueue
 @PublishedApi internal constructor(private var data: IntArray, val comparator: Comparator<Int>) : MutableCollection<Int> {
     companion object {
-        inline operator fun  invoke(comparator: Comparator<Int>, reversed: Boolean = false): IntPriorityQueue =
+        operator fun invoke(comparator: Comparator<Int>, reversed: Boolean = false): IntPriorityQueue =
             IntPriorityQueue(IntArray(16) as IntArray, if (reversed) comparator.reversed() else comparator)
 
-        inline operator fun  invoke(reversed: Boolean = false): IntPriorityQueue =
+        operator fun invoke(reversed: Boolean = false, comparator: (left: Int, right: Int) -> Int): IntPriorityQueue =
+            IntPriorityQueue(Comparator(comparator), reversed)
+
+        operator fun  invoke(reversed: Boolean = false): IntPriorityQueue =
             IntPriorityQueue(comparator(), reversed)
     }
 
@@ -150,7 +158,9 @@ class IntPriorityQueue
     private val Int.parent: Int get() = (this - 1) / 2
     private val Int.left: Int get() = 2 * this + 1
     private val Int.right: Int get() = 2 * this + 2
-    private operator fun Int.compareTo(other: Int): Int = comparator.compare(this, other)
+
+    private fun gt(a: Int, b: Int) = comparator.compare(a, b) > 0
+    private fun lt(a: Int, b: Int) = comparator.compare(a, b) < 0
 
     private val capacity get() = data.size
     override var size = 0; private set
@@ -164,7 +174,7 @@ class IntPriorityQueue
         ensure(size)
         var i = (size - 1)
         i.value = element
-        while (!i.isRoot && i.parent.value > i.value) {
+        while (!i.isRoot && gt(i.parent.value, i.value)) {
             swap(i, i.parent)
             i = i.parent
         }
@@ -196,8 +206,8 @@ class IntPriorityQueue
             val left = i.left
             val right = i.right
             var smallest = i
-            if (left < size && left.value < i.value) smallest = left
-            if (right < size && right.value < smallest.value) smallest = right
+            if (left < size && lt(left.value, i.value)) smallest = left
+            if (right < size && lt(right.value, smallest.value)) smallest = right
             if (smallest != i) {
                 swap(i, smallest)
                 i = smallest
@@ -265,10 +275,13 @@ class IntPriorityQueue
 class DoublePriorityQueue
 @PublishedApi internal constructor(private var data: DoubleArray, val comparator: Comparator<Double>) : MutableCollection<Double> {
     companion object {
-        inline operator fun  invoke(comparator: Comparator<Double>, reversed: Boolean = false): DoublePriorityQueue =
+        operator fun invoke(comparator: Comparator<Double>, reversed: Boolean = false): DoublePriorityQueue =
             DoublePriorityQueue(DoubleArray(16) as DoubleArray, if (reversed) comparator.reversed() else comparator)
 
-        inline operator fun  invoke(reversed: Boolean = false): DoublePriorityQueue =
+        operator fun invoke(reversed: Boolean = false, comparator: (left: Double, right: Double) -> Int): DoublePriorityQueue =
+            DoublePriorityQueue(Comparator(comparator), reversed)
+
+        operator fun  invoke(reversed: Boolean = false): DoublePriorityQueue =
             DoublePriorityQueue(comparator(), reversed)
     }
 
@@ -279,7 +292,9 @@ class DoublePriorityQueue
     private val Int.parent: Int get() = (this - 1) / 2
     private val Int.left: Int get() = 2 * this + 1
     private val Int.right: Int get() = 2 * this + 2
-    private operator fun Double.compareTo(other: Double): Int = comparator.compare(this, other)
+
+    private fun gt(a: Double, b: Double) = comparator.compare(a, b) > 0
+    private fun lt(a: Double, b: Double) = comparator.compare(a, b) < 0
 
     private val capacity get() = data.size
     override var size = 0; private set
@@ -293,7 +308,7 @@ class DoublePriorityQueue
         ensure(size)
         var i = (size - 1)
         i.value = element
-        while (!i.isRoot && i.parent.value > i.value) {
+        while (!i.isRoot && gt(i.parent.value, i.value)) {
             swap(i, i.parent)
             i = i.parent
         }
@@ -325,8 +340,8 @@ class DoublePriorityQueue
             val left = i.left
             val right = i.right
             var smallest = i
-            if (left < size && left.value < i.value) smallest = left
-            if (right < size && right.value < smallest.value) smallest = right
+            if (left < size && lt(left.value, i.value)) smallest = left
+            if (right < size && lt(right.value, smallest.value)) smallest = right
             if (smallest != i) {
                 swap(i, smallest)
                 i = smallest
@@ -394,10 +409,13 @@ class DoublePriorityQueue
 class FloatPriorityQueue
 @PublishedApi internal constructor(private var data: FloatArray, val comparator: Comparator<Float>) : MutableCollection<Float> {
     companion object {
-        inline operator fun  invoke(comparator: Comparator<Float>, reversed: Boolean = false): FloatPriorityQueue =
+        operator fun invoke(comparator: Comparator<Float>, reversed: Boolean = false): FloatPriorityQueue =
             FloatPriorityQueue(FloatArray(16) as FloatArray, if (reversed) comparator.reversed() else comparator)
 
-        inline operator fun  invoke(reversed: Boolean = false): FloatPriorityQueue =
+        operator fun invoke(reversed: Boolean = false, comparator: (left: Float, right: Float) -> Int): FloatPriorityQueue =
+            FloatPriorityQueue(Comparator(comparator), reversed)
+
+        operator fun  invoke(reversed: Boolean = false): FloatPriorityQueue =
             FloatPriorityQueue(comparator(), reversed)
     }
 
@@ -408,7 +426,9 @@ class FloatPriorityQueue
     private val Int.parent: Int get() = (this - 1) / 2
     private val Int.left: Int get() = 2 * this + 1
     private val Int.right: Int get() = 2 * this + 2
-    private operator fun Float.compareTo(other: Float): Int = comparator.compare(this, other)
+
+    private fun gt(a: Float, b: Float) = comparator.compare(a, b) > 0
+    private fun lt(a: Float, b: Float) = comparator.compare(a, b) < 0
 
     private val capacity get() = data.size
     override var size = 0; private set
@@ -422,7 +442,7 @@ class FloatPriorityQueue
         ensure(size)
         var i = (size - 1)
         i.value = element
-        while (!i.isRoot && i.parent.value > i.value) {
+        while (!i.isRoot && gt(i.parent.value, i.value)) {
             swap(i, i.parent)
             i = i.parent
         }
@@ -454,8 +474,8 @@ class FloatPriorityQueue
             val left = i.left
             val right = i.right
             var smallest = i
-            if (left < size && left.value < i.value) smallest = left
-            if (right < size && right.value < smallest.value) smallest = right
+            if (left < size && lt(left.value, i.value)) smallest = left
+            if (right < size && lt(right.value, smallest.value)) smallest = right
             if (smallest != i) {
                 swap(i, smallest)
                 i = smallest

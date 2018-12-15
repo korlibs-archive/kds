@@ -88,6 +88,7 @@ object Generate {
             .replace("<reified TGen>", "")
             .replace("<TGen : Any>", "")
             .replace("<reified TGen : Comparable<TGen>>", "")
+            .replace("<TGen : Comparable<TGen>>", "")
             .replace("Iterable<TGen>", "Iterable<$kind>")
             .replace("Collection<TGen>", "Collection<$kind>")
             .replace("fun <TGen>", "fun")
