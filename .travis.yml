@@ -21,6 +21,7 @@ matrix:
     jdk: openjdk10
     before_install:
     - /usr/libexec/java_home -V
+    - find / | grep cacerts
     - rm "${JAVA_HOME}/lib/security/cacerts"
     - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
     script:
