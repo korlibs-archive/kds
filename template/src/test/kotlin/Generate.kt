@@ -27,6 +27,12 @@ object Generate {
             includeFloat = true,
             includeGeneric = true
         )
+        synchronize(
+            File("template/src/main/kotlin/com/soywiz/kds/TGenPriorityQueue.kt"),
+            File("src/commonMain/kotlin/com/soywiz/kds/PriorityQueue.kt"),
+            includeFloat = true,
+            includeGeneric = true
+        )
     }
 
     fun synchronize(src: File, dst: File, includeFloat: Boolean = true, includeGeneric: Boolean = false) {
@@ -57,12 +63,18 @@ object Generate {
             .replace("${kind}Iterable", "Iterable<$kind>")
             .replace("${kind}Iterator", "Iterator<$kind>")
             .replace("${kind}Collection", "Collection<$kind>")
+
+            .replace("${kind}Comparable", "Comparable<$kind>")
+            .replace("${kind}Comparator", "Comparator<$kind>")
     }
 
     fun String.replaceTemplate(kind: String): String {
         val lkind = kind.toLowerCase()
         return this
+            .replace("arrayOfNulls<Any>", "${kind}Array")
+            .replace("arrayOfNulls<TGen>", "${kind}Array")
             .replace("<reified TGen>", "")
+            .replace("<reified TGen : Comparable<TGen>>", "")
             .replace("Iterable<TGen>", "Iterable<$kind>")
             .replace("Collection<TGen>", "Collection<$kind>")
             .replace("fun <TGen>", "fun")
@@ -92,7 +104,6 @@ object Generate {
             .replace("as TGen", "as $kind")
             .replace("(TGen)", "($kind)")
             .replace("TGen, ", "$kind, ")
-            .replace("arrayOfNulls<Any>", "${kind}Array")
             .replace("TGen", kind)
             .replace("tgen", lkind)
 
