@@ -12,6 +12,9 @@ inline fun <TGen : Any, RGen : Any> Array2<TGen>.map2(gen: (x: Int, y: Int, v: T
 @Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) : Iterable<TGen> {
     companion object {
+        inline operator fun <TGen : Any> invoke(width: Int, height: Int, fill: TGen): Array2<TGen> =
+            Array2<TGen>(width, height, Array<Any>(width * height) { fill } as Array<TGen>)
+
         inline operator fun <TGen : Any> invoke(width: Int, height: Int, gen: (n: Int) -> TGen): Array2<TGen> =
             Array2<TGen>(width, height, Array<Any>(width * height) { gen(it) } as Array<TGen>)
 
@@ -142,4 +145,8 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
         toStringList(charMap, margin = margin).joinToString("\n")
 
     fun toString(map: Map<TGen, Char>, margin: String = ""): String = toString(margin = margin) { map[it] ?: ' ' }
+
+    override fun toString(): String = (0 until height).map { y ->
+        (0 until width).map { x -> this[x, y] }.joinToString(", ")
+    }.joinToString("\n")
 }

@@ -13,6 +13,9 @@ inline fun <TGen : Any, RGen : Any> Array2<TGen>.map2(gen: (x: Int, y: Int, v: T
 @Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) : Iterable<TGen> {
     companion object {
+        inline operator fun <TGen : Any> invoke(width: Int, height: Int, fill: TGen): Array2<TGen> =
+            Array2<TGen>(width, height, Array<Any>(width * height) { fill } as Array<TGen>)
+
         inline operator fun <TGen : Any> invoke(width: Int, height: Int, gen: (n: Int) -> TGen): Array2<TGen> =
             Array2<TGen>(width, height, Array<Any>(width * height) { gen(it) } as Array<TGen>)
 
@@ -143,6 +146,10 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
         toStringList(charMap, margin = margin).joinToString("\n")
 
     fun toString(map: Map<TGen, Char>, margin: String = ""): String = toString(margin = margin) { map[it] ?: ' ' }
+
+    override fun toString(): String = (0 until height).map { y ->
+        (0 until width).map { x -> this[x, y] }.joinToString(", ")
+    }.joinToString("\n")
 }
 
 
@@ -151,6 +158,9 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
 @Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class IntArray2(val width: Int, val height: Int, val data: IntArray) : Iterable<Int> {
     companion object {
+        inline operator fun  invoke(width: Int, height: Int, fill: Int): IntArray2 =
+            IntArray2(width, height, IntArray(width * height) { fill } as IntArray)
+
         inline operator fun  invoke(width: Int, height: Int, gen: (n: Int) -> Int): IntArray2 =
             IntArray2(width, height, IntArray(width * height) { gen(it) } as IntArray)
 
@@ -281,6 +291,10 @@ data class IntArray2(val width: Int, val height: Int, val data: IntArray) : Iter
         toStringList(charMap, margin = margin).joinToString("\n")
 
     fun toString(map: Map<Int, Char>, margin: String = ""): String = toString(margin = margin) { map[it] ?: ' ' }
+
+    override fun toString(): String = (0 until height).map { y ->
+        (0 until width).map { x -> this[x, y] }.joinToString(", ")
+    }.joinToString("\n")
 }
 
 
@@ -289,6 +303,9 @@ data class IntArray2(val width: Int, val height: Int, val data: IntArray) : Iter
 @Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class DoubleArray2(val width: Int, val height: Int, val data: DoubleArray) : Iterable<Double> {
     companion object {
+        inline operator fun  invoke(width: Int, height: Int, fill: Double): DoubleArray2 =
+            DoubleArray2(width, height, DoubleArray(width * height) { fill } as DoubleArray)
+
         inline operator fun  invoke(width: Int, height: Int, gen: (n: Int) -> Double): DoubleArray2 =
             DoubleArray2(width, height, DoubleArray(width * height) { gen(it) } as DoubleArray)
 
@@ -419,6 +436,10 @@ data class DoubleArray2(val width: Int, val height: Int, val data: DoubleArray) 
         toStringList(charMap, margin = margin).joinToString("\n")
 
     fun toString(map: Map<Double, Char>, margin: String = ""): String = toString(margin = margin) { map[it] ?: ' ' }
+
+    override fun toString(): String = (0 until height).map { y ->
+        (0 until width).map { x -> this[x, y] }.joinToString(", ")
+    }.joinToString("\n")
 }
 
 
@@ -427,6 +448,9 @@ data class DoubleArray2(val width: Int, val height: Int, val data: DoubleArray) 
 @Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class FloatArray2(val width: Int, val height: Int, val data: FloatArray) : Iterable<Float> {
     companion object {
+        inline operator fun  invoke(width: Int, height: Int, fill: Float): FloatArray2 =
+            FloatArray2(width, height, FloatArray(width * height) { fill } as FloatArray)
+
         inline operator fun  invoke(width: Int, height: Int, gen: (n: Int) -> Float): FloatArray2 =
             FloatArray2(width, height, FloatArray(width * height) { gen(it) } as FloatArray)
 
@@ -557,4 +581,8 @@ data class FloatArray2(val width: Int, val height: Int, val data: FloatArray) : 
         toStringList(charMap, margin = margin).joinToString("\n")
 
     fun toString(map: Map<Float, Char>, margin: String = ""): String = toString(margin = margin) { map[it] ?: ' ' }
+
+    override fun toString(): String = (0 until height).map { y ->
+        (0 until width).map { x -> this[x, y] }.joinToString(", ")
+    }.joinToString("\n")
 }
