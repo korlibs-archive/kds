@@ -18,7 +18,7 @@ matrix:
       KBUILD=macos
       JAVA_OPTS=-Xmx2g
     language: java
-    jdk: oraclejdk9
+    jdk: openjdk9
     script:
     - mkdir -p ~/.gradle
     - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
