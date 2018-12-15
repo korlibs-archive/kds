@@ -2,6 +2,9 @@ package com.soywiz.kds
 
 // GENERIC
 
+/**
+ * A LIFO (Last In First Out) structure.
+ */
 class Stack<TGen>() : Collection<TGen> {
     private val items = arrayListOf<TGen>()
 

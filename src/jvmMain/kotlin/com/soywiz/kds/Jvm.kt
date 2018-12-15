@@ -2,6 +2,8 @@
 
 package com.soywiz.kds
 
+import java.util.*
+
 actual typealias FastIntMap<T> = IntMap<T>
 
 actual inline fun <T> FastIntMap(): FastIntMap<T> = IntMap()
@@ -26,3 +28,13 @@ actual inline operator fun <T> FastStringMap<T>.contains(key: String): Boolean =
 actual inline fun <T> FastStringMap<T>.remove(key: String): Unit = run { (this.map).remove(key) }
 actual inline fun <T> FastStringMap<T>.clear() = (this.map).clear()
 actual fun <T> FastStringMap<T>.keys(): List<String> = map.keys.toList()
+
+actual class WeakMap<K : Any, V> {
+    val wm = WeakHashMap<K, V>()
+    actual operator fun contains(key: K): Boolean = wm.containsKey(key)
+    actual operator fun set(key: K, value: V) = run {
+        if (key is String) error("Can't use String as WeakMap keys")
+        wm[key] = value
+    }
+    actual operator fun get(key: K): V? = wm[key]
+}

@@ -11,6 +11,7 @@ class ListReader<T>(val list: List<T>) {
     fun peek(): T = list[position]
     fun skip(count: Int = 1) = this.apply { this.position += count }
     fun read(): T = peek().apply { skip(1) }
+    override fun toString(): String = "ListReader($list)"
 }
 
 fun <T> List<T>.reader() = ListReader(this)

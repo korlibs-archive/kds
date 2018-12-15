@@ -7,6 +7,12 @@ typealias LinkedHashMapList<K, V> = LinkedHashMap<K, ArrayList<V>>
 fun <K, V> MapList<K, V>.getFirst(key: K): V? = this[key]?.firstOrNull()
 fun <K, V> MapList<K, V>.getLast(key: K): V? = this[key]?.lastOrNull()
 
+fun <K, V> MapList<K, V>.flatten(): List<Pair<K, V>> = flatMapIterable().toList()
+
+fun <K, V> MapList<K, V>.flatMapIterable(): Iterable<Pair<K, V>> = object : Iterable<Pair<K, V>> {
+    override fun iterator(): Iterator<Pair<K, V>> = flatMapIterator()
+}
+
 fun <K, V> MapList<K, V>.flatMapIterator(): Iterator<Pair<K, V>> =
     entries.flatMap { item -> item.value.map { item.key to it } }.iterator()
 

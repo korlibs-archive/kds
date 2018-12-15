@@ -2,8 +2,6 @@
 
 package com.soywiz.kds
 
-import com.soywiz.kds.internal.*
-
 actual class FastIntMap<T>(dummy: Boolean)
 
 actual fun <T> FastIntMap(): FastIntMap<T> = js("(new Map())")
@@ -14,12 +12,13 @@ actual inline operator fun <T> FastIntMap<T>.set(key: Int, value: T): Unit = run
 actual inline operator fun <T> FastIntMap<T>.contains(key: Int): Boolean = (this.asDynamic()).contains(key) != undefined
 actual inline fun <T> FastIntMap<T>.remove(key: Int): Unit = run { (this.asDynamic()).delete(key) }
 actual inline fun <T> FastIntMap<T>.removeRange(src: Int, dst: Int) {
-	//@Suppress("UNUSED_VARIABLE") val obj = this.asDynamic()
-	//js("for (var key in obj.keys()) if (key >= src && key <= dst) obj.delete(key);")
-	for (key in keys) if (key in src..dst) remove(key)
+    //@Suppress("UNUSED_VARIABLE") val obj = this.asDynamic()
+    //js("for (var key in obj.keys()) if (key >= src && key <= dst) obj.delete(key);")
+    for (key in keys) if (key in src..dst) remove(key)
 }
+
 actual inline fun <T> FastIntMap<T>.clear() {
-	(this.asDynamic()).clear()
+    (this.asDynamic()).clear()
 }
 
 actual class FastStringMap<T>(dummy: Boolean)
@@ -27,9 +26,37 @@ actual class FastStringMap<T>(dummy: Boolean)
 
 actual fun <T> FastStringMap(): FastStringMap<T> = js("(new Map())")
 actual val <T> FastStringMap<T>.size: Int get() = this.asDynamic().size
-actual fun <T> FastStringMap<T>.keys(): List<String> = Array_from((this.asDynamic()).keys()).unsafeCast<Array<String>>().toList()
+actual fun <T> FastStringMap<T>.keys(): List<String> =
+    Array_from((this.asDynamic()).keys()).unsafeCast<Array<String>>().toList()
+
 actual inline operator fun <T> FastStringMap<T>.get(key: String): T? = (this.asDynamic()).get(key)
-actual inline operator fun <T> FastStringMap<T>.set(key: String, value: T): Unit = run { (this.asDynamic()).set(key, value) }
+actual inline operator fun <T> FastStringMap<T>.set(key: String, value: T): Unit =
+    run { (this.asDynamic()).set(key, value) }
+
 actual inline operator fun <T> FastStringMap<T>.contains(key: String): Boolean = (this.asDynamic()).has(key)
 actual inline fun <T> FastStringMap<T>.remove(key: String): Unit = run { (this.asDynamic()).delete(key) }
 actual inline fun <T> FastStringMap<T>.clear() = run { (this.asDynamic()).clear() }
+
+@JsName("WeakMap")
+external class JsWeakMap {
+    fun has(k: dynamic): Boolean
+    fun set(k: dynamic, v: dynamic): Unit
+    fun get(k: dynamic): dynamic
+}
+
+actual class WeakMap<K : Any, V> {
+    val wm = JsWeakMap()
+
+    actual operator fun contains(key: K): Boolean = wm.has(key)
+    actual operator fun set(key: K, value: V) {
+        if (key is String) error("Can't use String as WeakMap keys")
+        wm.set(key, value)
+    }
+
+    actual operator fun get(key: K): V? = wm.get(key).unsafeCast<V?>()
+}
+
+internal fun Array_from(value: dynamic): Array<dynamic> = js("(Array.from(value))")
+
+//@JsName("delete")
+//external fun jsDelete(v: dynamic): Unit

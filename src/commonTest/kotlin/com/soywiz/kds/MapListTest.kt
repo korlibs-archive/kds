@@ -14,5 +14,7 @@ class MapListTest {
         assertEquals(30, map.getLast("b"))
 
         assertEquals(null, map.getLast("c"))
+
+        assertEquals(listOf("a" to 10, "a" to 20, "b" to 30), map.flatten())
     }
 }
