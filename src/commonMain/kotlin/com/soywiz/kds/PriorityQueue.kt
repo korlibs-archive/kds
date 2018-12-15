@@ -25,7 +25,10 @@ class PriorityQueue<TGen>
 
     private val capacity get() = data.size
     override var size = 0; private set
-    val head: TGen? get() = data.getOrNull(0)
+    val head: TGen get() {
+        if (size <= 0) throw IndexOutOfBoundsException()
+        return data[0]
+    }
 
     override fun add(element: TGen): Boolean {
         size++
@@ -39,8 +42,8 @@ class PriorityQueue<TGen>
         return true
     }
 
-    fun removeHead(): TGen? {
-        if (size <= 0) return null
+    fun removeHead(): TGen {
+        if (size <= 0) throw IndexOutOfBoundsException()
         if (size == 1) {
             size--
             return 0.value
@@ -151,7 +154,10 @@ class IntPriorityQueue
 
     private val capacity get() = data.size
     override var size = 0; private set
-    val head: Int? get() = data.getOrNull(0)
+    val head: Int get() {
+        if (size <= 0) throw IndexOutOfBoundsException()
+        return data[0]
+    }
 
     override fun add(element: Int): Boolean {
         size++
@@ -165,8 +171,8 @@ class IntPriorityQueue
         return true
     }
 
-    fun removeHead(): Int? {
-        if (size <= 0) return null
+    fun removeHead(): Int {
+        if (size <= 0) throw IndexOutOfBoundsException()
         if (size == 1) {
             size--
             return 0.value
@@ -277,7 +283,10 @@ class DoublePriorityQueue
 
     private val capacity get() = data.size
     override var size = 0; private set
-    val head: Double? get() = data.getOrNull(0)
+    val head: Double get() {
+        if (size <= 0) throw IndexOutOfBoundsException()
+        return data[0]
+    }
 
     override fun add(element: Double): Boolean {
         size++
@@ -291,8 +300,8 @@ class DoublePriorityQueue
         return true
     }
 
-    fun removeHead(): Double? {
-        if (size <= 0) return null
+    fun removeHead(): Double {
+        if (size <= 0) throw IndexOutOfBoundsException()
         if (size == 1) {
             size--
             return 0.value
@@ -403,7 +412,10 @@ class FloatPriorityQueue
 
     private val capacity get() = data.size
     override var size = 0; private set
-    val head: Float? get() = data.getOrNull(0)
+    val head: Float get() {
+        if (size <= 0) throw IndexOutOfBoundsException()
+        return data[0]
+    }
 
     override fun add(element: Float): Boolean {
         size++
@@ -417,8 +429,8 @@ class FloatPriorityQueue
         return true
     }
 
-    fun removeHead(): Float? {
-        if (size <= 0) return null
+    fun removeHead(): Float {
+        if (size <= 0) throw IndexOutOfBoundsException()
         if (size == 1) {
             size--
             return 0.value
