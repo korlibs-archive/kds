@@ -2,8 +2,8 @@ package com.soywiz.kds
 
 import kotlin.test.*
 
-class CircularListTest {
-	private val CircularList<String>.str get() = this.joinToString(",")
+class DequeTest {
+	private val Deque<String>.str get() = this.joinToString(",")
 
 	private fun <T> create() = CircularList<T>()
 
@@ -77,6 +77,30 @@ class CircularListTest {
 		l.removeAt(0)
 		assertFailsWith<IndexOutOfBoundsException> {
 			l.removeAt(0)
+		}
+	}
+
+	@Test
+	fun remove() {
+		for (n in 0 until 16) {
+			assertEquals(
+				(0 until 16).toMutableList().apply { remove(n) },
+				IntDeque().apply { addAll(0 until 16) }.apply { removeAt(n) }.toList()
+			)
+		}
+
+		for (n in 0 until 16) {
+			assertEquals(
+				(0 until 17).toMutableList().apply { removeAt(0) }.apply { removeAt(n) },
+				IntDeque().apply { addAll(0 until 17) }.apply { removeFirst() }.apply { removeAt(n) }.toList()
+			)
+		}
+
+		for (n in 0 until 16) {
+			assertEquals(
+				(0 until 17).toMutableList().apply { removeAt(size - 1) }.apply { removeAt(n) },
+				IntDeque().apply { addAll(0 until 17) }.apply { removeLast() }.apply { removeAt(n) }.toList()
+			)
 		}
 	}
 }

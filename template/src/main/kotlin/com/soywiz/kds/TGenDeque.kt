@@ -4,7 +4,13 @@ import com.soywiz.kds.internal.*
 
 // GENERIC
 
-class CircularList<TGen> : MutableCollection<TGen> {
+typealias CircularList<TGen> = Deque<TGen>
+
+/**
+ * Deque structure supporting constant time of appending/removing from the start or the end of the list
+ * when there is room in the underlying array.
+ */
+class Deque<TGen>() : MutableCollection<TGen> {
     private var _start: Int = 0
     private var _size: Int = 0
     private var data: Array<TGen> = arrayOfNulls<Any>(16) as Array<TGen>
@@ -12,7 +18,6 @@ class CircularList<TGen> : MutableCollection<TGen> {
 
     override val size: Int get() = _size
 
-    fun isNotEmpty(): Boolean = size != 0
     override fun isEmpty(): Boolean = size == 0
 
     private fun resizeIfRequiredFor(count: Int) {
@@ -61,7 +66,7 @@ class CircularList<TGen> : MutableCollection<TGen> {
         return last.apply { _size-- }
     }
 
-    // @TODO: This is slow. But we can improve it using two arraycopy. Also we can reduce from left or from right.
+    // @TODO: This requires potentially linear time. But we can improve it using two arraycopy. Also we can reduce from left or from right.
     fun removeAt(index: Int): TGen {
         if (index < 0 || index >= size) throw IndexOutOfBoundsException()
         if (index == 0) return removeFirst()
@@ -70,6 +75,7 @@ class CircularList<TGen> : MutableCollection<TGen> {
         // if (index < size / 2) // @TODO: reduce from left
         val old = this[index]
         for (n in index until size - 1) this[n] = this[n + 1]
+
         _size--
         return old
     }
@@ -135,5 +141,16 @@ class CircularList<TGen> : MutableCollection<TGen> {
             override fun hasNext(): Boolean = index < size
             override fun remove() = TODO()
         }
+    }
+
+    override fun toString(): String {
+        val sb = StringBuilder()
+        sb.append('[')
+        for (n in 0 until size) {
+            sb.append(this[n])
+            if (n != size - 1) sb.append(", ")
+        }
+        sb.append(']')
+        return sb.toString()
     }
 }

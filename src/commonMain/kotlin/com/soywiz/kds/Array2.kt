@@ -1,6 +1,6 @@
 package com.soywiz.kds
 
-inline fun <TGen, reified RGen> Array2<TGen>.map2(gen: (x: Int, y: Int, v: TGen) -> RGen): Array2<RGen> =
+inline fun <TGen : Any, RGen : Any> Array2<TGen>.map2(gen: (x: Int, y: Int, v: TGen) -> RGen): Array2<RGen> =
     Array2<RGen>(width, height) {
         val x = it % width
         val y = it / width
@@ -13,20 +13,20 @@ inline fun <TGen, reified RGen> Array2<TGen>.map2(gen: (x: Int, y: Int, v: TGen)
 @Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) : Iterable<TGen> {
     companion object {
-        inline operator fun <reified TGen> invoke(width: Int, height: Int, gen: (n: Int) -> TGen): Array2<TGen> =
-            Array2<TGen>(width, height, Array<TGen>(width * height) { gen(it) })
+        inline operator fun <TGen : Any> invoke(width: Int, height: Int, gen: (n: Int) -> TGen): Array2<TGen> =
+            Array2<TGen>(width, height, Array<Any>(width * height) { gen(it) } as Array<TGen>)
 
-        inline fun <reified TGen> withGen(width: Int, height: Int, gen: (x: Int, y: Int) -> TGen): Array2<TGen> =
-            Array2<TGen>(width, height, Array<TGen>(width * height) { gen(it % width, it / width) })
+        inline fun <TGen : Any> withGen(width: Int, height: Int, gen: (x: Int, y: Int) -> TGen): Array2<TGen> =
+            Array2<TGen>(width, height, Array<Any>(width * height) { gen(it % width, it / width) } as Array<TGen>)
 
-        inline operator fun <reified TGen> invoke(rows: List<List<TGen>>): Array2<TGen> {
+        inline operator fun <TGen : Any> invoke(rows: List<List<TGen>>): Array2<TGen> {
             val width = rows[0].size
             val height = rows.size
             val anyCell = rows[0][0]
-            return (Array2<TGen>(width, height) { anyCell }).apply { set(rows) }
+            return ((Array2<Any>(width, height) { anyCell }) as Array2<TGen>).apply { set(rows) }
         }
 
-        inline operator fun <reified TGen> invoke(
+        inline operator fun <TGen : Any> invoke(
             map: String,
             marginChar: Char = '\u0000',
             gen: (char: Char, x: Int, y: Int) -> TGen
@@ -51,7 +51,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
             }
         }
 
-        inline operator fun <reified TGen> invoke(
+        inline operator fun <TGen : Any> invoke(
             map: String,
             default: TGen,
             transform: Map<Char, TGen>
@@ -59,7 +59,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
             return invoke(map) { c, x, y -> transform[c] ?: default }
         }
 
-        inline fun <reified TGen> fromString(
+        inline fun <TGen : Any> fromString(
             maps: Map<Char, TGen>,
             default: TGen,
             code: String,
@@ -152,16 +152,16 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
 data class IntArray2(val width: Int, val height: Int, val data: IntArray) : Iterable<Int> {
     companion object {
         inline operator fun  invoke(width: Int, height: Int, gen: (n: Int) -> Int): IntArray2 =
-            IntArray2(width, height, IntArray(width * height) { gen(it) })
+            IntArray2(width, height, Array<Any>(width * height) { gen(it) } as IntArray)
 
         inline fun  withGen(width: Int, height: Int, gen: (x: Int, y: Int) -> Int): IntArray2 =
-            IntArray2(width, height, IntArray(width * height) { gen(it % width, it / width) })
+            IntArray2(width, height, Array<Any>(width * height) { gen(it % width, it / width) } as IntArray)
 
         inline operator fun  invoke(rows: List<List<Int>>): IntArray2 {
             val width = rows[0].size
             val height = rows.size
             val anyCell = rows[0][0]
-            return (IntArray2(width, height) { anyCell }).apply { set(rows) }
+            return ((Array2<Any>(width, height) { anyCell }) as IntArray2).apply { set(rows) }
         }
 
         inline operator fun  invoke(
@@ -290,16 +290,16 @@ data class IntArray2(val width: Int, val height: Int, val data: IntArray) : Iter
 data class DoubleArray2(val width: Int, val height: Int, val data: DoubleArray) : Iterable<Double> {
     companion object {
         inline operator fun  invoke(width: Int, height: Int, gen: (n: Int) -> Double): DoubleArray2 =
-            DoubleArray2(width, height, DoubleArray(width * height) { gen(it) })
+            DoubleArray2(width, height, Array<Any>(width * height) { gen(it) } as DoubleArray)
 
         inline fun  withGen(width: Int, height: Int, gen: (x: Int, y: Int) -> Double): DoubleArray2 =
-            DoubleArray2(width, height, DoubleArray(width * height) { gen(it % width, it / width) })
+            DoubleArray2(width, height, Array<Any>(width * height) { gen(it % width, it / width) } as DoubleArray)
 
         inline operator fun  invoke(rows: List<List<Double>>): DoubleArray2 {
             val width = rows[0].size
             val height = rows.size
             val anyCell = rows[0][0]
-            return (DoubleArray2(width, height) { anyCell }).apply { set(rows) }
+            return ((Array2<Any>(width, height) { anyCell }) as DoubleArray2).apply { set(rows) }
         }
 
         inline operator fun  invoke(
@@ -428,16 +428,16 @@ data class DoubleArray2(val width: Int, val height: Int, val data: DoubleArray) 
 data class FloatArray2(val width: Int, val height: Int, val data: FloatArray) : Iterable<Float> {
     companion object {
         inline operator fun  invoke(width: Int, height: Int, gen: (n: Int) -> Float): FloatArray2 =
-            FloatArray2(width, height, FloatArray(width * height) { gen(it) })
+            FloatArray2(width, height, Array<Any>(width * height) { gen(it) } as FloatArray)
 
         inline fun  withGen(width: Int, height: Int, gen: (x: Int, y: Int) -> Float): FloatArray2 =
-            FloatArray2(width, height, FloatArray(width * height) { gen(it % width, it / width) })
+            FloatArray2(width, height, Array<Any>(width * height) { gen(it % width, it / width) } as FloatArray)
 
         inline operator fun  invoke(rows: List<List<Float>>): FloatArray2 {
             val width = rows[0].size
             val height = rows.size
             val anyCell = rows[0][0]
-            return (FloatArray2(width, height) { anyCell }).apply { set(rows) }
+            return ((Array2<Any>(width, height) { anyCell }) as FloatArray2).apply { set(rows) }
         }
 
         inline operator fun  invoke(

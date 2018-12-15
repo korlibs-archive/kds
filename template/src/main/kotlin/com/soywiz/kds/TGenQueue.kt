@@ -6,7 +6,7 @@ package com.soywiz.kds
  * A FIFO (First In First Out) structure.
  */
 class Queue<TGen>() : Collection<TGen> {
-    private val items = CircularList<TGen>()
+    private val items = Deque<TGen>()
 
     override val size: Int get() = items.size
     override fun isEmpty() = size == 0

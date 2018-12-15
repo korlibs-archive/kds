@@ -1,6 +1,6 @@
 package com.soywiz.kds
 
-inline fun <TGen, reified RGen> Array2<TGen>.map2(gen: (x: Int, y: Int, v: TGen) -> RGen): Array2<RGen> =
+inline fun <TGen : Any, RGen : Any> Array2<TGen>.map2(gen: (x: Int, y: Int, v: TGen) -> RGen): Array2<RGen> =
     Array2<RGen>(width, height) {
         val x = it % width
         val y = it / width
@@ -12,20 +12,20 @@ inline fun <TGen, reified RGen> Array2<TGen>.map2(gen: (x: Int, y: Int, v: TGen)
 @Suppress("NOTHING_TO_INLINE", "RemoveExplicitTypeArguments")
 data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) : Iterable<TGen> {
     companion object {
-        inline operator fun <reified TGen> invoke(width: Int, height: Int, gen: (n: Int) -> TGen): Array2<TGen> =
-            Array2<TGen>(width, height, Array<TGen>(width * height) { gen(it) })
+        inline operator fun <TGen : Any> invoke(width: Int, height: Int, gen: (n: Int) -> TGen): Array2<TGen> =
+            Array2<TGen>(width, height, Array<Any>(width * height) { gen(it) } as Array<TGen>)
 
-        inline fun <reified TGen> withGen(width: Int, height: Int, gen: (x: Int, y: Int) -> TGen): Array2<TGen> =
-            Array2<TGen>(width, height, Array<TGen>(width * height) { gen(it % width, it / width) })
+        inline fun <TGen : Any> withGen(width: Int, height: Int, gen: (x: Int, y: Int) -> TGen): Array2<TGen> =
+            Array2<TGen>(width, height, Array<Any>(width * height) { gen(it % width, it / width) } as Array<TGen>)
 
-        inline operator fun <reified TGen> invoke(rows: List<List<TGen>>): Array2<TGen> {
+        inline operator fun <TGen : Any> invoke(rows: List<List<TGen>>): Array2<TGen> {
             val width = rows[0].size
             val height = rows.size
             val anyCell = rows[0][0]
-            return (Array2<TGen>(width, height) { anyCell }).apply { set(rows) }
+            return ((Array2<Any>(width, height) { anyCell }) as Array2<TGen>).apply { set(rows) }
         }
 
-        inline operator fun <reified TGen> invoke(
+        inline operator fun <TGen : Any> invoke(
             map: String,
             marginChar: Char = '\u0000',
             gen: (char: Char, x: Int, y: Int) -> TGen
@@ -50,7 +50,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
             }
         }
 
-        inline operator fun <reified TGen> invoke(
+        inline operator fun <TGen : Any> invoke(
             map: String,
             default: TGen,
             transform: Map<Char, TGen>
@@ -58,7 +58,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
             return invoke(map) { c, x, y -> transform[c] ?: default }
         }
 
-        inline fun <reified TGen> fromString(
+        inline fun <TGen : Any> fromString(
             maps: Map<Char, TGen>,
             default: TGen,
             code: String,

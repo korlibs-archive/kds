@@ -4,10 +4,10 @@ package com.soywiz.kds
 
 
 /**
- * Represents a [Queue], that is a FIFO (First In First Out) structure.
+ * A FIFO (First In First Out) structure.
  */
 class Queue<TGen>() : Collection<TGen> {
-    private val items = CircularList<TGen>()
+    private val items = Deque<TGen>()
 
     override val size: Int get() = items.size
     override fun isEmpty() = size == 0
@@ -30,10 +30,10 @@ class Queue<TGen>() : Collection<TGen> {
 // Int
 
 /**
- * Represents a [Queue], that is a FIFO (First In First Out) structure.
+ * A FIFO (First In First Out) structure.
  */
 class IntQueue() : Collection<Int> {
-    private val items = IntCircularList()
+    private val items = IntDeque()
 
     override val size: Int get() = items.size
     override fun isEmpty() = size == 0
@@ -56,10 +56,10 @@ class IntQueue() : Collection<Int> {
 // Double
 
 /**
- * Represents a [Queue], that is a FIFO (First In First Out) structure.
+ * A FIFO (First In First Out) structure.
  */
 class DoubleQueue() : Collection<Double> {
-    private val items = DoubleCircularList()
+    private val items = DoubleDeque()
 
     override val size: Int get() = items.size
     override fun isEmpty() = size == 0
@@ -82,10 +82,10 @@ class DoubleQueue() : Collection<Double> {
 // Float
 
 /**
- * Represents a [Queue], that is a FIFO (First In First Out) structure.
+ * A FIFO (First In First Out) structure.
  */
 class FloatQueue() : Collection<Float> {
-    private val items = FloatCircularList()
+    private val items = FloatDeque()
 
     override val size: Int get() = items.size
     override fun isEmpty() = size == 0

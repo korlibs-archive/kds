@@ -4,7 +4,7 @@ package com.soywiz.kds
 
 
 /**
- * Represents a [Stack], that is a LIFO (Last In First Out) structure.
+ * A LIFO (Last In First Out) structure.
  */
 class Stack<TGen>() : Collection<TGen> {
     private val items = arrayListOf<TGen>()
@@ -28,7 +28,7 @@ class Stack<TGen>() : Collection<TGen> {
 // Int
 
 /**
- * Represents a [Stack], that is a LIFO (Last In First Out) structure.
+ * A LIFO (Last In First Out) structure.
  */
 class IntStack() : Collection<Int> {
     private val items = intArrayListOf()
@@ -52,7 +52,7 @@ class IntStack() : Collection<Int> {
 // Double
 
 /**
- * Represents a [Stack], that is a LIFO (Last In First Out) structure.
+ * A LIFO (Last In First Out) structure.
  */
 class DoubleStack() : Collection<Double> {
     private val items = doubleArrayListOf()
@@ -76,7 +76,7 @@ class DoubleStack() : Collection<Double> {
 // Float
 
 /**
- * Represents a [Stack], that is a LIFO (Last In First Out) structure.
+ * A LIFO (Last In First Out) structure.
  */
 class FloatStack() : Collection<Float> {
     private val items = floatArrayListOf()

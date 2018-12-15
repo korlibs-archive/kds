@@ -10,20 +10,14 @@ object Generate {
             includeFloat = true
         )
         synchronize(
-            File("template/src/main/kotlin/com/soywiz/kds/TGenCircularList.kt"),
-            File("src/commonMain/kotlin/com/soywiz/kds/CircularList.kt"),
+            File("template/src/main/kotlin/com/soywiz/kds/TGenDeque.kt"),
+            File("src/commonMain/kotlin/com/soywiz/kds/Deque.kt"),
             includeFloat = true,
             includeGeneric = true
         )
         synchronize(
             File("template/src/main/kotlin/com/soywiz/kds/TGenArray2.kt"),
             File("src/commonMain/kotlin/com/soywiz/kds/Array2.kt"),
-            includeFloat = true,
-            includeGeneric = true
-        )
-        synchronize(
-            File("template/src/main/kotlin/com/soywiz/kds/TGenLinkedList.kt"),
-            File("src/commonMain/kotlin/com/soywiz/kds/LinkedList.kt"),
             includeFloat = true,
             includeGeneric = true
         )
@@ -45,6 +39,12 @@ object Generate {
             includeFloat = true,
             includeGeneric = true
         )
+        //synchronize(
+        //    File("template/src/main/kotlin/com/soywiz/kds/TGenLinkedList.kt"),
+        //    File("src/commonMain/kotlin/com/soywiz/kds/LinkedList.kt"),
+        //    includeFloat = true,
+        //    includeGeneric = true
+        //)
     }
 
     fun synchronize(src: File, dst: File, includeFloat: Boolean = true, includeGeneric: Boolean = false) {
@@ -86,6 +86,7 @@ object Generate {
             .replace("arrayOfNulls<Any>", "${kind}Array")
             .replace("arrayOfNulls<TGen>", "${kind}Array")
             .replace("<reified TGen>", "")
+            .replace("<TGen : Any>", "")
             .replace("<reified TGen : Comparable<TGen>>", "")
             .replace("Iterable<TGen>", "Iterable<$kind>")
             .replace("Collection<TGen>", "Collection<$kind>")
