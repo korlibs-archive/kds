@@ -3,7 +3,9 @@ matrix:
   - os: linux
     language: java
     jdk: oraclejdk8
-    env: KBUILD=linux
+    env:
+      KBUILD=linux
+      JAVA_OPTS=-Xmx2g
     script:
     - ./gradlew -s -i check build
   - os: windows
@@ -11,14 +13,14 @@ matrix:
     language: shell # java is not supported but jdk is installed
     script:
     - powershell -Command "cmd /c travis_win.bat"
-  - os: osx
-    env: KBUILD=macos
-    language: java
-    jdk: oraclejdk10
-    script:
-    - mkdir -p ~/.gradle
-    - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
-    - ./gradlew -s -i check build
+#  - os: osx
+#    env: KBUILD=macos
+#    language: java
+#    jdk: oraclejdk10
+#    script:
+#    - mkdir -p ~/.gradle
+#    - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
+#    - ./gradlew -s -i check build
 
 #before_cache:
 #  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
