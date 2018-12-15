@@ -103,4 +103,18 @@ class DequeTest {
 			)
 		}
 	}
+
+	@Test
+	fun removeIterator() {
+		val deque = IntDeque()
+		deque.addAll(0 until 10)
+		val iterator = deque.iterator()
+		while (iterator.hasNext()) {
+			val item = iterator.next()
+			if ((item % 2) == 0 || item < 5) {
+				iterator.remove()
+			}
+		}
+		assertEquals(listOf(5, 7, 9), deque.toList())
+	}
 }

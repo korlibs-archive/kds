@@ -144,7 +144,7 @@ class Deque<TGen> : MutableCollection<TGen> {
             var index = 0
             override fun next(): TGen = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove(): Unit = run { removeAt(index - 1) }
+            override fun remove(): Unit = run { removeAt(--index) }
         }
     }
 
@@ -302,7 +302,7 @@ class IntDeque : MutableCollection<Int> {
             var index = 0
             override fun next(): Int = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove(): Unit = run { removeAt(index - 1) }
+            override fun remove(): Unit = run { removeAt(--index) }
         }
     }
 
@@ -460,7 +460,7 @@ class DoubleDeque : MutableCollection<Double> {
             var index = 0
             override fun next(): Double = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove(): Unit = run { removeAt(index - 1) }
+            override fun remove(): Unit = run { removeAt(--index) }
         }
     }
 
@@ -618,7 +618,7 @@ class FloatDeque : MutableCollection<Float> {
             var index = 0
             override fun next(): Float = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove(): Unit = run { removeAt(index - 1) }
+            override fun remove(): Unit = run { removeAt(--index) }
         }
     }
 

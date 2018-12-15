@@ -143,7 +143,7 @@ class Deque<TGen> : MutableCollection<TGen> {
             var index = 0
             override fun next(): TGen = that[index++]
             override fun hasNext(): Boolean = index < size
-            override fun remove(): Unit = run { removeAt(index - 1) }
+            override fun remove(): Unit = run { removeAt(--index) }
         }
     }
 
