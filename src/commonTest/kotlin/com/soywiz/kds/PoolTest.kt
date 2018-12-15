@@ -10,7 +10,14 @@ class PoolTest {
 
 	@kotlin.test.Test
 	fun name() {
-		val pool = Pool { Demo() }
+		var totalResetCount = 0
+		var totalAllocCount = 0
+		val pool = Pool({
+			totalResetCount++
+		}) {
+			totalAllocCount++
+			Demo()
+		}
 		val a = pool.alloc()
 		val b = pool.alloc()
 		val c = pool.alloc()
@@ -23,5 +30,14 @@ class PoolTest {
 		assertEquals(3, pool.itemsInPool)
 		val d = pool.alloc()
 		assertEquals(2, pool.itemsInPool)
+		pool.free(d)
+
+		pool.alloc {
+			assertEquals(2, pool.itemsInPool)
+		}
+		assertEquals(3, pool.itemsInPool)
+
+		assertEquals(5, totalResetCount) // Number of resets
+		assertEquals(3, totalAllocCount) // Number of allocs
 	}
 }
