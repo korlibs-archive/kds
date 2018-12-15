@@ -1,34 +1,48 @@
 package com.soywiz.kds
 
-class CacheMap<K, V>(val maxSize: Int = 16, val free: (K, V) -> Unit = { k, v -> }) {
-    val entries = LinkedHashMap<K, V>()
+class CacheMap<K, V>(
+    val maxSize: Int = 16,
+    val free: (K, V) -> Unit = { k, v -> }
+) : MutableMap<K, V> {
+    private val map: LinkedHashMap<K, V> = LinkedHashMap()
 
-    val size: Int get() = entries.size
-    fun has(key: K) = entries.containsKey(key)
+    override val size: Int get() = map.size
 
-    fun remove(key: K) {
-        val value = entries.remove(key)
+    override fun remove(key: K): V? {
+        val value = map.remove(key)
         if (value != null) free(key, value)
+        return value
     }
 
-    operator fun get(key: K) = entries[key]
-    operator fun set(key: K, value: V) {
-        if (size >= maxSize && !entries.containsKey(key)) remove(entries.keys.first())
+    override operator fun get(key: K) = map[key]
+    override fun put(key: K, value: V): V? {
+        if (size >= maxSize && !map.containsKey(key)) remove(map.keys.first())
 
-        val oldValue = entries[key]
+        val oldValue = map[key]
         if (oldValue != value) {
             remove(key) // refresh if exists
-            entries[key] = value
+            map[key] = value
         }
+        return oldValue
     }
 
     inline fun getOrPut(key: K, callback: (K) -> V): V {
-        if (!has(key)) set(key, callback(key))
+        if (key !in this) set(key, callback(key))
         return get(key)!!
     }
 
-    fun clear() {
-        val keys = entries.keys.toList()
+    override fun clear() {
+        val keys = map.keys.toList()
         for (key in keys) remove(key)
     }
+
+    override fun toString(): String = map.toString()
+
+    override val entries: MutableSet<MutableMap.MutableEntry<K, V>> get() = map.entries
+    override val keys: MutableSet<K> get() = map.keys
+    override val values: MutableCollection<V> get() = map.values
+    override fun containsKey(key: K): Boolean = map.containsKey(key)
+    override fun containsValue(value: V): Boolean = map.containsValue(value)
+    override fun isEmpty(): Boolean = map.isEmpty()
+    override fun putAll(from: Map<out K, V>) = run { for ((k, v) in from) put(k, v) }
 }
