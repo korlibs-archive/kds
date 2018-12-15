@@ -13,19 +13,20 @@ matrix:
     language: shell # java is not supported but jdk is installed
     script:
     - powershell -Command "cmd /c travis_win.bat"
-  #- os: osx
-  #  env:
-  #    KBUILD=macos
-  #    JAVA_OPTS=-Xmx2g
-  #  language: java
-  #  #jdk: openjdk10
-  #  #before_install:
-  #  #- rm "${JAVA_HOME}/lib/security/cacerts"
-  #  #- ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
-  #  script:
-  #  - mkdir -p ~/.gradle
-  #  - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
-  #  - ./gradlew -s -i check build
+  - os: osx
+    env:
+      KBUILD=macos
+      JAVA_OPTS=-Xmx2g
+    language: java
+    jdk: openjdk10
+    before_install:
+    - /usr/libexec/java_home -V
+    - rm "${JAVA_HOME}/lib/security/cacerts"
+    - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
+    script:
+    - mkdir -p ~/.gradle
+    - echo "org.gradle.jvmargs=com.sun.net.ssl.checkRevocation=false" >> ~/.gradle/gradle.properties
+    - ./gradlew -s -i check build
 
 # https://www.deps.co/guides/travis-ci-latest-java/
 
