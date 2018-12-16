@@ -1,4 +1,4 @@
-<img src="docs/kds.svg" style="width:256px;height:256px;" />
+![](docs/kds-nomargin-256.png)
 
 # Data Structure library for Multiplatform Kotlin 1.3
 
