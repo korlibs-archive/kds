@@ -1,4 +1,6 @@
-# Korlibs Kotlin Data Structures for JVM, JS and Common
+<img src="docs/kds.svg" style="width:256px;height:256px;" />
+
+# Data Structure library for Multiplatform Kotlin 1.3
 
 This library includes a set of optimized data structures written in Kotlin Common so they are available in
 JVM, JS and future common targets. Those structures are designed to be allocation-efficient and fast, so kds

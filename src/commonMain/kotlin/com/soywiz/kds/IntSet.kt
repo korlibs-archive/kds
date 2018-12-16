@@ -3,7 +3,7 @@ package com.soywiz.kds
 /**
  * A [Set] structure representing a set of [Int] without boxing.
  *
- * Internally uses [IntMap] behind the scenes. Implements [MutableSet].
+ * Internally uses [IntMap]. Implements [MutableSet].
  */
 class IntSet : MutableSet<Int> {
     private var data = IntMap<Unit>()
