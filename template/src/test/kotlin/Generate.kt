@@ -87,6 +87,7 @@ object Generate {
             .replace("arrayOfNulls<TGen>", "${kind}Array")
             .replace("<reified TGen>", "")
             .replace("<TGen : Any>", "")
+            .replace("<*/*_TGen_*/>", "")
             .replace("<reified TGen : Comparable<TGen>>", "")
             .replace("<TGen : Comparable<TGen>>", "")
             .replace("Iterable<TGen>", "Iterable<$kind>")
@@ -100,19 +101,19 @@ object Generate {
             .replace(Regex("""(\w+)<TGen>""")) {
                 val base = it.groupValues[1]
                 val name = base.replace("TGen", "")
-                if (base == "Iterator") {
-                    "Iterator<$kind>"
-                } else {
-                    "$kind$name"
+                when (base) {
+                    "Iterator" -> "Iterator<$kind>"
+                    "ListIterator" -> "ListIterator<$kind>"
+                    else -> "$kind$name"
                 }
             }
             .replace(Regex("""(\w+)<\*/\*TGen\*/>""")) {
                 val base = it.groupValues[1]
                 val name = base.replace("TGen", "")
-                if (base == "Iterator") {
-                    "Iterator<$kind>"
-                } else {
-                    "$kind$name"
+                when (base) {
+                    "Iterator" -> "Iterator<$kind>"
+                    "ListIterator" -> "ListIterator<$kind>"
+                    else -> "$kind$name"
                 }
             }
             .replace(": TGen", ": $kind")

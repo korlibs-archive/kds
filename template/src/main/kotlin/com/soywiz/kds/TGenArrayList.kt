@@ -8,7 +8,7 @@ import com.soywiz.kds.internal.*
  * TGen growable ArrayList without boxing.
  */
 @Suppress("UNCHECKED_CAST")
-class TGenArrayList<TGen>(capacity: Int = 7) : Collection<TGen> {
+class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
     var data: Array<TGen> = arrayOfNulls<Any>(capacity) as Array<TGen>; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0
@@ -54,7 +54,7 @@ class TGenArrayList<TGen>(capacity: Int = 7) : Collection<TGen> {
     fun add(values: TGenArrayList<TGen>) = add(values.data, 0, values.size)
     fun add(values: Iterable<TGen>) = run { for (v in values) add(v) }
 
-    operator fun get(index: Int): TGen = data[index]
+    override operator fun get(index: Int): TGen = data[index]
 
     operator fun set(index: Int, value: TGen) = run {
         if (index >= length) {
@@ -64,7 +64,7 @@ class TGenArrayList<TGen>(capacity: Int = 7) : Collection<TGen> {
         data[index] = value
     }
 
-    override fun iterator(): Iterator<TGen> = data.take(length).iterator()
+    override fun iterator(): Iterator<TGen> = listIterator(0)
 
     override fun contains(element: TGen): Boolean {
         for (n in 0 until length) if (this.data[n] == element) return true
@@ -84,6 +84,11 @@ class TGenArrayList<TGen>(capacity: Int = 7) : Collection<TGen> {
         return -1
     }
 
+    fun lastIndexOf(value: TGen, start: Int = 0, end: Int = this.size): Int {
+        for (n in (end - 1) downTo start) if (data[n] == value) return n
+        return -1
+    }
+
     fun removeAt(index: Int): TGen {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
@@ -93,6 +98,32 @@ class TGenArrayList<TGen>(capacity: Int = 7) : Collection<TGen> {
     }
 
     fun toTGenArray() = this.data.copyOf(length)
+
+    // List interface
+
+    override fun indexOf(element: TGen): Int = indexOf(element, 0, size)
+    override fun lastIndexOf(element: TGen): Int = lastIndexOf(element, 0, size)
+
+    override fun listIterator(): ListIterator<TGen> = listIterator(0)
+    override fun listIterator(index: Int): ListIterator<TGen> = data.take(length).listIterator()
+    override fun subList(fromIndex: Int, toIndex: Int): List<TGen> = data.asList().subList(fromIndex, toIndex)
+
+    // Data
+    override fun hashCode(): Int = data.contentHashCode()
+    override fun equals(other: Any?): Boolean {
+        if (other is TGenArrayList<*/*_TGen_*/>) return data.contentEquals(other.data)
+        if (other is List<*>) return other == this
+        return false
+    }
+
+    override fun toString(): String = StringBuilder(2 + 5 * size).also { sb ->
+        sb.append('[')
+        for (n in 0 until size) {
+            if (n != 0) sb.append(", ")
+            sb.append(this[n])
+        }
+        sb.append(']')
+    }.toString()
 }
 
 fun <TGen> tgenArrayListOf(vararg values: TGen) = TGenArrayList<TGen>(*values)

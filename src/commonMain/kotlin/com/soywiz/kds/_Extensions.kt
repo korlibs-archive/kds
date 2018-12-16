@@ -32,15 +32,15 @@ fun <K> MutableMap<K, Int>.incr(key: K, delta: Int = +1): Int {
  * Returns the index of an item or a negative number in the case the item is not found.
  * The negative index represents the nearest position after negating + 1.
  */
-fun IntArray.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun IntArray.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 
-fun FloatArray.binarySearch(v: Float, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-fun DoubleArray.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-fun FloatArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(binarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun FloatArray.binarySearch(v: Float, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun DoubleArray.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun FloatArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 
-inline fun binarySearch(
+inline fun genericBinarySearch(
     fromIndex: Int,
     toIndex: Int,
     invalid: (from: Int, to: Int, low: Int, high: Int) -> Int = { from, to, low, high -> -low - 1 },

@@ -10,7 +10,7 @@ import com.soywiz.kds.internal.*
  * Int growable ArrayList without boxing.
  */
 @Suppress("UNCHECKED_CAST")
-class IntArrayList(capacity: Int = 7) : Collection<Int> {
+class IntArrayList(capacity: Int = 7) : List<Int> {
     var data: IntArray = IntArray(capacity) as IntArray; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0
@@ -56,7 +56,7 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
     fun add(values: IntArrayList) = add(values.data, 0, values.size)
     fun add(values: Iterable<Int>) = run { for (v in values) add(v) }
 
-    operator fun get(index: Int): Int = data[index]
+    override operator fun get(index: Int): Int = data[index]
 
     operator fun set(index: Int, value: Int) = run {
         if (index >= length) {
@@ -66,7 +66,7 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
         data[index] = value
     }
 
-    override fun iterator(): Iterator<Int> = data.take(length).iterator()
+    override fun iterator(): Iterator<Int> = listIterator(0)
 
     override fun contains(element: Int): Boolean {
         for (n in 0 until length) if (this.data[n] == element) return true
@@ -86,6 +86,11 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
         return -1
     }
 
+    fun lastIndexOf(value: Int, start: Int = 0, end: Int = this.size): Int {
+        for (n in (end - 1) downTo start) if (data[n] == value) return n
+        return -1
+    }
+
     fun removeAt(index: Int): Int {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
@@ -95,6 +100,32 @@ class IntArrayList(capacity: Int = 7) : Collection<Int> {
     }
 
     fun toIntArray() = this.data.copyOf(length)
+
+    // List interface
+
+    override fun indexOf(element: Int): Int = indexOf(element, 0, size)
+    override fun lastIndexOf(element: Int): Int = lastIndexOf(element, 0, size)
+
+    override fun listIterator(): ListIterator<Int> = listIterator(0)
+    override fun listIterator(index: Int): ListIterator<Int> = data.take(length).listIterator()
+    override fun subList(fromIndex: Int, toIndex: Int): List<Int> = data.asList().subList(fromIndex, toIndex)
+
+    // Data
+    override fun hashCode(): Int = data.contentHashCode()
+    override fun equals(other: Any?): Boolean {
+        if (other is IntArrayList) return data.contentEquals(other.data)
+        if (other is List<*>) return other == this
+        return false
+    }
+
+    override fun toString(): String = StringBuilder(2 + 5 * size).also { sb ->
+        sb.append('[')
+        for (n in 0 until size) {
+            if (n != 0) sb.append(", ")
+            sb.append(this[n])
+        }
+        sb.append(']')
+    }.toString()
 }
 
 fun intArrayListOf(vararg values: Int) = IntArrayList(*values)
@@ -106,7 +137,7 @@ fun intArrayListOf(vararg values: Int) = IntArrayList(*values)
  * Double growable ArrayList without boxing.
  */
 @Suppress("UNCHECKED_CAST")
-class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
+class DoubleArrayList(capacity: Int = 7) : List<Double> {
     var data: DoubleArray = DoubleArray(capacity) as DoubleArray; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0
@@ -152,7 +183,7 @@ class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
     fun add(values: DoubleArrayList) = add(values.data, 0, values.size)
     fun add(values: Iterable<Double>) = run { for (v in values) add(v) }
 
-    operator fun get(index: Int): Double = data[index]
+    override operator fun get(index: Int): Double = data[index]
 
     operator fun set(index: Int, value: Double) = run {
         if (index >= length) {
@@ -162,7 +193,7 @@ class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
         data[index] = value
     }
 
-    override fun iterator(): Iterator<Double> = data.take(length).iterator()
+    override fun iterator(): Iterator<Double> = listIterator(0)
 
     override fun contains(element: Double): Boolean {
         for (n in 0 until length) if (this.data[n] == element) return true
@@ -182,6 +213,11 @@ class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
         return -1
     }
 
+    fun lastIndexOf(value: Double, start: Int = 0, end: Int = this.size): Int {
+        for (n in (end - 1) downTo start) if (data[n] == value) return n
+        return -1
+    }
+
     fun removeAt(index: Int): Double {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
@@ -191,6 +227,32 @@ class DoubleArrayList(capacity: Int = 7) : Collection<Double> {
     }
 
     fun toDoubleArray() = this.data.copyOf(length)
+
+    // List interface
+
+    override fun indexOf(element: Double): Int = indexOf(element, 0, size)
+    override fun lastIndexOf(element: Double): Int = lastIndexOf(element, 0, size)
+
+    override fun listIterator(): ListIterator<Double> = listIterator(0)
+    override fun listIterator(index: Int): ListIterator<Double> = data.take(length).listIterator()
+    override fun subList(fromIndex: Int, toIndex: Int): List<Double> = data.asList().subList(fromIndex, toIndex)
+
+    // Data
+    override fun hashCode(): Int = data.contentHashCode()
+    override fun equals(other: Any?): Boolean {
+        if (other is DoubleArrayList) return data.contentEquals(other.data)
+        if (other is List<*>) return other == this
+        return false
+    }
+
+    override fun toString(): String = StringBuilder(2 + 5 * size).also { sb ->
+        sb.append('[')
+        for (n in 0 until size) {
+            if (n != 0) sb.append(", ")
+            sb.append(this[n])
+        }
+        sb.append(']')
+    }.toString()
 }
 
 fun doubleArrayListOf(vararg values: Double) = DoubleArrayList(*values)
@@ -202,7 +264,7 @@ fun doubleArrayListOf(vararg values: Double) = DoubleArrayList(*values)
  * Float growable ArrayList without boxing.
  */
 @Suppress("UNCHECKED_CAST")
-class FloatArrayList(capacity: Int = 7) : Collection<Float> {
+class FloatArrayList(capacity: Int = 7) : List<Float> {
     var data: FloatArray = FloatArray(capacity) as FloatArray; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0
@@ -248,7 +310,7 @@ class FloatArrayList(capacity: Int = 7) : Collection<Float> {
     fun add(values: FloatArrayList) = add(values.data, 0, values.size)
     fun add(values: Iterable<Float>) = run { for (v in values) add(v) }
 
-    operator fun get(index: Int): Float = data[index]
+    override operator fun get(index: Int): Float = data[index]
 
     operator fun set(index: Int, value: Float) = run {
         if (index >= length) {
@@ -258,7 +320,7 @@ class FloatArrayList(capacity: Int = 7) : Collection<Float> {
         data[index] = value
     }
 
-    override fun iterator(): Iterator<Float> = data.take(length).iterator()
+    override fun iterator(): Iterator<Float> = listIterator(0)
 
     override fun contains(element: Float): Boolean {
         for (n in 0 until length) if (this.data[n] == element) return true
@@ -278,6 +340,11 @@ class FloatArrayList(capacity: Int = 7) : Collection<Float> {
         return -1
     }
 
+    fun lastIndexOf(value: Float, start: Int = 0, end: Int = this.size): Int {
+        for (n in (end - 1) downTo start) if (data[n] == value) return n
+        return -1
+    }
+
     fun removeAt(index: Int): Float {
         if (index < 0 || index >= length) throw IndexOutOfBoundsException()
         val out = data[index]
@@ -287,6 +354,32 @@ class FloatArrayList(capacity: Int = 7) : Collection<Float> {
     }
 
     fun toFloatArray() = this.data.copyOf(length)
+
+    // List interface
+
+    override fun indexOf(element: Float): Int = indexOf(element, 0, size)
+    override fun lastIndexOf(element: Float): Int = lastIndexOf(element, 0, size)
+
+    override fun listIterator(): ListIterator<Float> = listIterator(0)
+    override fun listIterator(index: Int): ListIterator<Float> = data.take(length).listIterator()
+    override fun subList(fromIndex: Int, toIndex: Int): List<Float> = data.asList().subList(fromIndex, toIndex)
+
+    // Data
+    override fun hashCode(): Int = data.contentHashCode()
+    override fun equals(other: Any?): Boolean {
+        if (other is FloatArrayList) return data.contentEquals(other.data)
+        if (other is List<*>) return other == this
+        return false
+    }
+
+    override fun toString(): String = StringBuilder(2 + 5 * size).also { sb ->
+        sb.append('[')
+        for (n in 0 until size) {
+            if (n != 0) sb.append(", ")
+            sb.append(this[n])
+        }
+        sb.append(']')
+    }.toString()
 }
 
 fun floatArrayListOf(vararg values: Float) = FloatArrayList(*values)

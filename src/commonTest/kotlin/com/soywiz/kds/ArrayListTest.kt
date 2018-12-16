@@ -104,4 +104,15 @@ class ArrayListTest {
 			assertEquals(listOf(), v.toList())
 		}
 	}
+
+	@Test
+	fun map() {
+		assertEquals(intArrayListOf(0, 6, 12, 18, 24), (0 until 10).mapInt { it * 3 }.filter { it % 2 == 0 })
+	}
+
+	@Test
+	fun list() {
+		assertEquals(intArrayListOf(1, 2, 3), listOf(1, 2, 3))
+		assertEquals(listOf(1, 2, 3), intArrayListOf(1, 2, 3))
+	}
 }
