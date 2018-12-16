@@ -3,86 +3,96 @@
 Klock is a Date Structure library for Multiplatform Kotlin 1.3.
 It includes a set of optimized data structures written in Kotlin Common so they are available in
 JVM, JS and future multiplatform targets. Those structures are designed to be allocation-efficient and fast, so Kds
-include specialized versions for primitives like Int or Double.
+include specialized versions for primitives like `Int` or `Double`.
 
 [![Build Status](https://travis-ci.org/korlibs/kds.svg?branch=master)](https://travis-ci.org/korlibs/kds)
 [![Maven Version](https://img.shields.io/github/tag/korlibs/kds.svg?style=flat&label=maven)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22kds%22)
-[![Gitter](https://img.shields.io/gitter/room/korlibs/korlibs.svg)](https://gitter.im/korlibs/Lobby)
 
-## ArrayList: IntArrayList, FloatArrayList DoubleArrayList
+### Full Documentation: https://korlibs.soywiz.com/kds/
 
-Kds provides specialized equivalents of ArrayList so it doesn't involve object allocation through boxing.
-It uses typed arrays internally to store the ArrayList so it just requires one additional object allocation
-per list. It will just allocate a new object when the capacity of the list is exhausted.
+### Some samples:
 
-## LinkedList
+```kotlin
+// Case Insensitive Map
+val map = mapOf("hELLo" to 1, "World" to 2).toCaseInsensitiveMap()
+println(map["hello"])
 
-Kds provides a linked list efficient implementation. It doesn't allocate node objects at all,
-but has three arrays per list. One with the values, and two linking indices.
-When adding/inserting it provides a slot index that you can use to later insert before, after
-or delete that "node".
-It features constant time (except when growing) insertions, deletions and updates.
-Accessing/updating by index has a linear cost. While using the slot requires constant time.
+// BitSet
+val array = BitSet(100) // Stores 100 bits
+array[99] = true
 
-## CircularList
+// TypedArrayList
+val v20 = intArrayListOf(10, 20).getCyclic(-1)
 
-Kds provides a CircularList implementation. It internally requires just one array per list.
-Features constant time for insertions and removals at the beginning and the end of the list.
-Constant time for updating or reading by index. It just produces allocations when capacity is exhausted.
-Maximum cost for adding or removing elements is N/2 when inserting/removing elements in the exact middle of the list.
-Because of its properties is very suitable to implement queues.
+// Deque
+val deque = IntDeque().apply {
+    addFirst(n)
+    removeFirst()
+    addLast(n)
+}
 
-## Stack and Queue
+// CacheMap
+val cache = CacheMap<String, Int>(maxSize = 2).apply {
+    this["a"] = 1
+    this["b"] = 2
+    this["c"] = 3
+    assertEquals("{b=2, c=3}", this.toString())
+}
 
-Kds provides a stack and a queue implementation and variants for Int and Double.
+// IntIntMap
+val m = IntIntMap().apply {
+    this[0] = 98
+}
 
-* Stack<T>, IntStack, DoubleStack
-* Queue<T>, IntQueue, DoubleQueue
+// Pool
+val pool = Pool { Demo() }
+pool.alloc { demo ->
+    println("Temporarilly allocated $demo")
+}
 
-Stack uses a simple ArrayList or Int/Double variants.
-While Queue uses an efficient CircularList.
+// Priority Queue
+val pq = IntPriorityQueue()
+pq.add(10)
+pq.add(5)
+pq.add(15)
+assertEquals(5, pq.removeHead())
 
-## IntMap, IntIntMap and IntFloatMap
+// Extra Properties
+class Demo : Extra by Extra.Mixin() { val default = 9 }
+var Demo.demo by Extra.Property { 0 }
+var Demo.demo2 by Extra.PropertyThis<Demo, Int> { default }
+val demo = Demo()
+assertEquals(0, demo.demo)
+assertEquals(9, demo.demo2)
+demo.demo = 7
+assertEquals(7, demo.demo)
+assertEquals("{demo=7, demo2=9}", demo.extra.toString())
 
-Variants of a hashmap implementation using int as keys without boxing (and Object, int or float for values).
-The implementation requires just a couple of arrays for working (no nodes at all). It uses a multihash
-approach for filling as much as possible with a logarithmic stash. Just allocates when growing.
+// mapWhile
+val iterator = listOf(1, 2, 3).iterator()
+assertEquals(listOf(1, 2, 3), mapWhile({ iterator.hasNext() }) { iterator.next()})
 
-## BitSet
+// And much more!
+```
 
-Kds provides a BitSet structure that works like a BoolArray but packs bits in an IntArray internally so it requires
-up to 8x times less space than a BoolArray that potentially uses internally a ByteArray.
+### Usage with gradle:
+```kotlin
+def kdsVersion = "1.0.0"
 
-## IntSet
+repositories {
+    maven { url "https://dl.bintray.com/soywiz/soywiz" }
+}
 
-A set working with integers without boxing.
+dependencies {
+    // For multiplatform projects
+    implementation "com.soywiz:kds:$kdsVersion"
+    
+    // For JVM/Android only
+    implementation "com.soywiz:kds-jvm:$kdsVersion"
+    // For JS only
+    implementation "com.soywiz:kds-js:$kdsVersion"
+}
 
-## Array2
-
-A bi-dimensional array structure with bi-dimensional indexers.
-
-## PriorityQueue
-
-Provides a PriorityQueue that allows to insert items in a Queue by priority.
-
-## WeakMap + WeakProperty
-
-Provides a WeakMap data structure that internally uses JS's WeakMap and/or JVM's WeakHashMap.
-WeakProperty allow to define external/extrinsic properties to objects that are collected once the object is not
-referenced anymore.
-
-## Extra + extraProperty
-
-Provides a Extra funtionality to define extrinsic properties to an object that has been decorated with Extra
-interface implemented by Extra.Mixin. It just adds a extra hashmap to the object, so it can be used to externally
-define properties. The idea is similar to WeakProperty but doesn't require weak references at all. But just works
-with objects that implements Extra interface.
-
-## Pool
-
-A simple pool implementation allowing to preallocate, to reset objects and to temporally allocate
-(freeing automatically) using an inline function.
-
-## ListReader
-
-A reader for lists.
+// settigs.gradle
+enableFeaturePreview('GRADLE_METADATA')
+```
