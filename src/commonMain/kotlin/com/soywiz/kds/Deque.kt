@@ -633,3 +633,161 @@ class FloatDeque : MutableCollection<Float> {
         return sb.toString()
     }
 }
+
+
+// Byte
+
+typealias ByteCircularList = ByteDeque
+
+/**
+ * Deque structure supporting constant time of appending/removing from the start or the end of the list
+ * when there is room in the underlying array.
+ */
+class ByteDeque : MutableCollection<Byte> {
+    private var _start: Int = 0
+    private var _size: Int = 0
+    private var data: ByteArray = ByteArray(16) as ByteArray
+    private val capacity: Int get() = data.size
+
+    override val size: Int get() = _size
+
+    override fun isEmpty(): Boolean = size == 0
+
+    private fun resizeIfRequiredFor(count: Int) {
+        if (size + count > capacity) {
+            val i = this.data
+            val istart = this._start
+            val o = ByteArray(this.data.size * 2) as ByteArray
+            copyCyclic(i, istart, o, this._size)
+            this.data = o
+            this._start = 0
+        }
+    }
+
+    private fun copyCyclic(i: ByteArray, istart: Int, o: ByteArray, count: Int) {
+        val size1 = kotlin.math.min(i.size - istart, count)
+        val size2 = count - size1
+        arraycopy(i, istart, o, 0, size1)
+        if (size2 > 0) arraycopy(i, 0, o, size1, size2)
+    }
+
+    fun addAll(items: Iterable<Byte>) = run {
+        resizeIfRequiredFor(items.count())
+        for (i in items) addLast(i)
+    }
+
+    fun addFirst(item: Byte) {
+        resizeIfRequiredFor(1)
+        _start = (_start - 1) umod capacity
+        _size++
+        data[_start] = item
+    }
+
+    fun addLast(item: Byte) {
+        resizeIfRequiredFor(1)
+        data[(_start + size) umod capacity] = item
+        _size++
+    }
+
+    fun removeFirst(): Byte {
+        if (_size <= 0) throw IndexOutOfBoundsException()
+        return first.apply { _start = (_start + 1) umod capacity; _size-- }
+    }
+
+    fun removeLast(): Byte {
+        if (_size <= 0) throw IndexOutOfBoundsException()
+        return last.apply { _size-- }
+    }
+
+    fun removeAt(index: Int): Byte {
+        if (index < 0 || index >= size) throw IndexOutOfBoundsException()
+        if (index == 0) return removeFirst()
+        if (index == size - 1) return removeLast()
+
+        // @TODO: We could use two arraycopy per branch to prevent umodding twice per element.
+        val old = this[index]
+        if (index < size / 2) {
+            for (n in index downTo 1) this[n] = this[n - 1]
+            _start = (_start + 1) umod capacity
+        } else {
+            for (n in index until size - 1) this[n] = this[n + 1]
+        }
+
+        _size--
+        return old
+    }
+
+    override fun add(element: Byte): Boolean = true.apply { addLast(element) }
+    override fun addAll(elements: Collection<Byte>): Boolean = true.apply { addAll(elements as Iterable<Byte>) }
+    override fun clear() = run { _size = 0 }
+    override fun remove(element: Byte): Boolean {
+        val index = indexOf(element)
+        if (index >= 0) removeAt(index)
+        return (index >= 0)
+    }
+
+    override fun removeAll(elements: Collection<Byte>): Boolean = _removeRetainAll(elements, retain = false)
+    override fun retainAll(elements: Collection<Byte>): Boolean = _removeRetainAll(elements, retain = true)
+
+    private fun _removeRetainAll(elements: Collection<Byte>, retain: Boolean): Boolean {
+        val eset = elements.toSet()
+        val temp = this.data.copyOf()
+        var tsize = 0
+        val osize = size
+        for (n in 0 until size) {
+            val c = this[n]
+            if ((c in eset) == retain) {
+                temp[tsize++] = c
+            }
+        }
+        this.data = temp
+        this._start = 0
+        this._size = tsize
+        return tsize != osize
+    }
+
+    val first: Byte get() = data[_start]
+    val last: Byte get() = data[internalIndex(size - 1)]
+
+    private fun internalIndex(index: Int) = (_start + index) umod capacity
+
+    operator fun set(index: Int, value: Byte): Unit = run { data[internalIndex(index)] = value }
+    operator fun get(index: Int): Byte = data[internalIndex(index)]
+
+    override fun contains(element: Byte): Boolean = (0 until size).any { this[it] == element }
+
+    fun indexOf(element: Byte): Int {
+        for (n in 0 until size) if (this[n] == element) return n
+        return -1
+    }
+
+    override fun containsAll(elements: Collection<Byte>): Boolean {
+        val emap = elements.map { it to 0 }.toLinkedMap()
+        for (it in 0 until size) {
+            val e = this[it]
+            if (e in emap) emap[e] = 1
+        }
+        return emap.values.all { it == 1 }
+    }
+
+    override fun iterator(): MutableIterator<Byte> {
+        val that = this
+        return object : MutableIterator<Byte> {
+            var index = 0
+            override fun next(): Byte = that[index++]
+            override fun hasNext(): Boolean = index < size
+            override fun remove(): Unit = run { removeAt(--index) }
+        }
+    }
+
+    override fun toString(): String {
+        val sb = StringBuilder()
+        sb.append('[')
+        for (n in 0 until size) {
+            sb.append(this[n])
+            if (n != size - 1) sb.append(", ")
+        }
+        sb.append(']')
+        return sb.toString()
+    }
+}

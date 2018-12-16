@@ -6,9 +6,9 @@ class CacheMapTest {
     @Test
     fun test() {
         val freeLog = arrayListOf<String>()
-        val cache = CacheMap<String, Int>(maxSize = 2, free = { k, v ->
+        val cache = CacheMap<String, Int>(maxSize = 2) { k, v ->
             freeLog += "$k:$v"
-        })
+        }
         cache["a"] = 1
         cache["b"] = 2
         cache["c"] = 3

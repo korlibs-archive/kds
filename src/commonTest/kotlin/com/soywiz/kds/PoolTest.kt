@@ -14,6 +14,8 @@ class PoolTest {
 		var totalAllocCount = 0
 		val pool = Pool({
 			totalResetCount++
+			it.x = 0
+			it.y = 0
 		}) {
 			totalAllocCount++
 			Demo()

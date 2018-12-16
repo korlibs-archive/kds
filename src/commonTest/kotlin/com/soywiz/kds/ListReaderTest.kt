@@ -12,7 +12,7 @@ class ListReaderTest {
         assertEquals(1, reader.peek())
         assertEquals(1, reader.read())
         assertEquals(2, reader.read())
-        assertEquals(3, reader.read())
+        assertEquals(3, reader.expect(3))
         assertEquals(false, reader.hasMore)
         assertEquals(true, reader.eof)
     }
