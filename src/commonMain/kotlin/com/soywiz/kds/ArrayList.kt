@@ -48,9 +48,9 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
     operator fun plusAssign(value: Iterable<Int>) = add(value)
 
     fun add(values: IntArray, offset: Int = 0, length: Int = values.size) {
-        ensure(values.size)
+        ensure(length)
         arraycopy(values as IntArray, offset, data, this.size, length)
-        this.size += values.size
+        this.size += length
     }
 
     fun add(values: IntArrayList) = add(values.data, 0, values.size)
@@ -175,9 +175,9 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
     operator fun plusAssign(value: Iterable<Double>) = add(value)
 
     fun add(values: DoubleArray, offset: Int = 0, length: Int = values.size) {
-        ensure(values.size)
+        ensure(length)
         arraycopy(values as DoubleArray, offset, data, this.size, length)
-        this.size += values.size
+        this.size += length
     }
 
     fun add(values: DoubleArrayList) = add(values.data, 0, values.size)
@@ -302,9 +302,9 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
     operator fun plusAssign(value: Iterable<Float>) = add(value)
 
     fun add(values: FloatArray, offset: Int = 0, length: Int = values.size) {
-        ensure(values.size)
+        ensure(length)
         arraycopy(values as FloatArray, offset, data, this.size, length)
-        this.size += values.size
+        this.size += length
     }
 
     fun add(values: FloatArrayList) = add(values.data, 0, values.size)

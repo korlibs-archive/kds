@@ -46,9 +46,9 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
     operator fun plusAssign(value: Iterable<TGen>) = add(value)
 
     fun add(values: Array<out TGen>, offset: Int = 0, length: Int = values.size) {
-        ensure(values.size)
+        ensure(length)
         arraycopy(values as Array<TGen>, offset, data, this.size, length)
-        this.size += values.size
+        this.size += length
     }
 
     fun add(values: TGenArrayList<TGen>) = add(values.data, 0, values.size)

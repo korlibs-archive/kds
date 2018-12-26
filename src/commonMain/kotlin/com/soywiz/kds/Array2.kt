@@ -90,7 +90,10 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
 
     override fun hashCode(): Int = width + height + data.hashCode()
 
-    private inline fun index(x: Int, y: Int) = y * width + x
+    private fun index(x: Int, y: Int): Int {
+        if ((x !in 0 until width) || (y !in 0 until height)) throw ArrayIndexOutOfBoundsException()
+        return y * width + x
+    }
 
     operator fun get(x: Int, y: Int): TGen = data[index(x, y)]
     operator fun set(x: Int, y: Int, value: TGen): Unit = run { data[index(x, y)] = value }
@@ -235,7 +238,10 @@ data class IntArray2(val width: Int, val height: Int, val data: IntArray) : Iter
 
     override fun hashCode(): Int = width + height + data.hashCode()
 
-    private inline fun index(x: Int, y: Int) = y * width + x
+    private fun index(x: Int, y: Int): Int {
+        if ((x !in 0 until width) || (y !in 0 until height)) throw ArrayIndexOutOfBoundsException()
+        return y * width + x
+    }
 
     operator fun get(x: Int, y: Int): Int = data[index(x, y)]
     operator fun set(x: Int, y: Int, value: Int): Unit = run { data[index(x, y)] = value }
@@ -380,7 +386,10 @@ data class DoubleArray2(val width: Int, val height: Int, val data: DoubleArray) 
 
     override fun hashCode(): Int = width + height + data.hashCode()
 
-    private inline fun index(x: Int, y: Int) = y * width + x
+    private fun index(x: Int, y: Int): Int {
+        if ((x !in 0 until width) || (y !in 0 until height)) throw ArrayIndexOutOfBoundsException()
+        return y * width + x
+    }
 
     operator fun get(x: Int, y: Int): Double = data[index(x, y)]
     operator fun set(x: Int, y: Int, value: Double): Unit = run { data[index(x, y)] = value }
@@ -525,7 +534,10 @@ data class FloatArray2(val width: Int, val height: Int, val data: FloatArray) : 
 
     override fun hashCode(): Int = width + height + data.hashCode()
 
-    private inline fun index(x: Int, y: Int) = y * width + x
+    private fun index(x: Int, y: Int): Int {
+        if ((x !in 0 until width) || (y !in 0 until height)) throw ArrayIndexOutOfBoundsException()
+        return y * width + x
+    }
 
     operator fun get(x: Int, y: Int): Float = data[index(x, y)]
     operator fun set(x: Int, y: Int, value: Float): Unit = run { data[index(x, y)] = value }
