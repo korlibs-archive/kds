@@ -90,7 +90,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
     override fun hashCode(): Int = width + height + data.hashCode()
 
     private fun index(x: Int, y: Int): Int {
-        if ((x !in 0 until width) || (y !in 0 until height)) throw ArrayIndexOutOfBoundsException()
+        if ((x !in 0 until width) || (y !in 0 until height)) throw IndexOutOfBoundsException()
         return y * width + x
     }
 
