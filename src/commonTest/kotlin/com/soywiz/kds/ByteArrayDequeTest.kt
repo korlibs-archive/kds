@@ -28,7 +28,14 @@ class ByteArrayDequeTest {
         assertEquals(listOf(0x7F, 0x99, 0x88, 0x33, 0x44, 0x55, 0x66, 0xAA), data.readBytesUpTo(8).map { it.toInt() and 0xFF })
         assertEquals(-1, data.readByte())
         assertEquals(0, data.readBytesUpTo(10).size)
+    }
 
+    @Test
+    fun demo() {
+        val data = ByteArrayDeque(4)
+        data.write(byteArrayOf(4, 5, 6))
+        data.writeHead(byteArrayOf(1, 2, 3))
+        assertEquals(byteArrayOf(1, 2, 3, 4, 5, 6).toList(), data.readBytesUpTo(6).toList())
     }
 
     private fun ByteArrayDeque.readBytesUpTo(count: Int): ByteArray = ByteArray(count).let {

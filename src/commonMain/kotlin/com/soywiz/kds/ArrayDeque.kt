@@ -13,6 +13,13 @@ class ByteArrayDeque(val initialBits: Int = 10) {
     val availableRead get() = ring.availableRead
 
     @JvmOverloads
+    fun writeHead(buffer: ByteArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
+        val out = ensureWrite(size).ring.writeHead(buffer, offset, size)
+        if (out > 0) written += out
+        return out
+    }
+
+    @JvmOverloads
     fun write(buffer: ByteArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
         val out = ensureWrite(size).ring.write(buffer, offset, size)
         if (out > 0) written += out
@@ -58,6 +65,13 @@ class ShortArrayDeque(val initialBits: Int = 10) {
     val availableRead get() = ring.availableRead
 
     @JvmOverloads
+    fun writeHead(buffer: ShortArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
+        val out = ensureWrite(size).ring.writeHead(buffer, offset, size)
+        if (out > 0) written += out
+        return out
+    }
+
+    @JvmOverloads
     fun write(buffer: ShortArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
         val out = ensureWrite(size).ring.write(buffer, offset, size)
         if (out > 0) written += out
@@ -99,6 +113,13 @@ class IntArrayDeque(val initialBits: Int = 10) {
     var read: Long = 0; private set
     val availableWriteWithoutAllocating get() = ring.availableWrite
     val availableRead get() = ring.availableRead
+
+    @JvmOverloads
+    fun writeHead(buffer: IntArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
+        val out = ensureWrite(size).ring.writeHead(buffer, offset, size)
+        if (out > 0) written += out
+        return out
+    }
 
     @JvmOverloads
     fun write(buffer: IntArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
@@ -144,6 +165,13 @@ class FloatArrayDeque(val initialBits: Int = 10) {
     val availableRead get() = ring.availableRead
 
     @JvmOverloads
+    fun writeHead(buffer: FloatArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
+        val out = ensureWrite(size).ring.writeHead(buffer, offset, size)
+        if (out > 0) written += out
+        return out
+    }
+
+    @JvmOverloads
     fun write(buffer: FloatArray, offset: Int = 0, size: Int = buffer.size - offset): Int {
         val out = ensureWrite(size).ring.write(buffer, offset, size)
         if (out > 0) written += out
@@ -175,4 +203,3 @@ class FloatArrayDeque(val initialBits: Int = 10) {
         ring.clear()
     }
 }
-

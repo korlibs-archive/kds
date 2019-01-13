@@ -3,7 +3,9 @@ package com.soywiz.kds
 import kotlin.jvm.*
 import kotlin.math.*
 
-class RingBuffer(val bits: Int) {
+class RingBuffer(bits: Int) : ByteRingBuffer(bits)
+
+open class ByteRingBuffer(val bits: Int) {
     val totalSize = 1 shl bits
     private val mask = totalSize - 1
     private val buffer = ByteArray(totalSize)
@@ -13,10 +15,22 @@ class RingBuffer(val bits: Int) {
     var availableRead = 0; private set
 
     @JvmOverloads
-    fun write(bytes: ByteArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun writeHead(data: ByteArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toWrite = min(availableWrite, size)
         for (n in 0 until toWrite) {
-            buffer[writePos] = bytes[offset + n]
+            readPos = (readPos - 1) and mask
+            buffer[readPos] = data[offset + size - n - 1]
+        }
+        availableRead += toWrite
+        availableWrite -= toWrite
+        return toWrite
+    }
+
+    @JvmOverloads
+    fun write(data: ByteArray, offset: Int = 0, size: Int = data.size - offset): Int {
+        val toWrite = min(availableWrite, size)
+        for (n in 0 until toWrite) {
+            buffer[writePos] = data[offset + n]
             writePos = (writePos + 1) and mask
         }
         availableRead += toWrite
@@ -25,10 +39,10 @@ class RingBuffer(val bits: Int) {
     }
 
     @JvmOverloads
-    fun read(bytes: ByteArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun read(data: ByteArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toRead = min(availableRead, size)
         for (n in 0 until toRead) {
-            bytes[offset + n] = buffer[readPos]
+            data[offset + n] = buffer[readPos]
             readPos = (readPos + 1) and mask
         }
         availableWrite += toRead
@@ -72,10 +86,22 @@ class ShortRingBuffer(val bits: Int) {
     var availableRead = 0; private set
 
     @JvmOverloads
-    fun write(bytes: ShortArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun writeHead(data: ShortArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toWrite = min(availableWrite, size)
         for (n in 0 until toWrite) {
-            buffer[writePos] = bytes[offset + n]
+            readPos = (readPos - 1) and mask
+            buffer[readPos] = data[offset + size - n - 1]
+        }
+        availableRead += toWrite
+        availableWrite -= toWrite
+        return toWrite
+    }
+
+    @JvmOverloads
+    fun write(data: ShortArray, offset: Int = 0, size: Int = data.size - offset): Int {
+        val toWrite = min(availableWrite, size)
+        for (n in 0 until toWrite) {
+            buffer[writePos] = data[offset + n]
             writePos = (writePos + 1) and mask
         }
         availableRead += toWrite
@@ -84,10 +110,10 @@ class ShortRingBuffer(val bits: Int) {
     }
 
     @JvmOverloads
-    fun read(bytes: ShortArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun read(data: ShortArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toRead = min(availableRead, size)
         for (n in 0 until toRead) {
-            bytes[offset + n] = buffer[readPos]
+            data[offset + n] = buffer[readPos]
             readPos = (readPos + 1) and mask
         }
         availableWrite += toRead
@@ -113,10 +139,22 @@ class IntRingBuffer(val bits: Int) {
     var availableRead = 0; private set
 
     @JvmOverloads
-    fun write(bytes: IntArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun writeHead(data: IntArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toWrite = min(availableWrite, size)
         for (n in 0 until toWrite) {
-            buffer[writePos] = bytes[offset + n]
+            readPos = (readPos - 1) and mask
+            buffer[readPos] = data[offset + size - n - 1]
+        }
+        availableRead += toWrite
+        availableWrite -= toWrite
+        return toWrite
+    }
+
+    @JvmOverloads
+    fun write(data: IntArray, offset: Int = 0, size: Int = data.size - offset): Int {
+        val toWrite = min(availableWrite, size)
+        for (n in 0 until toWrite) {
+            buffer[writePos] = data[offset + n]
             writePos = (writePos + 1) and mask
         }
         availableRead += toWrite
@@ -125,10 +163,10 @@ class IntRingBuffer(val bits: Int) {
     }
 
     @JvmOverloads
-    fun read(bytes: IntArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun read(data: IntArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toRead = min(availableRead, size)
         for (n in 0 until toRead) {
-            bytes[offset + n] = buffer[readPos]
+            data[offset + n] = buffer[readPos]
             readPos = (readPos + 1) and mask
         }
         availableWrite += toRead
@@ -154,10 +192,22 @@ class FloatRingBuffer(val bits: Int) {
     var availableRead = 0; private set
 
     @JvmOverloads
-    fun write(bytes: FloatArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun writeHead(data: FloatArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toWrite = min(availableWrite, size)
         for (n in 0 until toWrite) {
-            buffer[writePos] = bytes[offset + n]
+            readPos = (readPos - 1) and mask
+            buffer[readPos] = data[offset + size - n - 1]
+        }
+        availableRead += toWrite
+        availableWrite -= toWrite
+        return toWrite
+    }
+
+    @JvmOverloads
+    fun write(data: FloatArray, offset: Int = 0, size: Int = data.size - offset): Int {
+        val toWrite = min(availableWrite, size)
+        for (n in 0 until toWrite) {
+            buffer[writePos] = data[offset + n]
             writePos = (writePos + 1) and mask
         }
         availableRead += toWrite
@@ -166,10 +216,10 @@ class FloatRingBuffer(val bits: Int) {
     }
 
     @JvmOverloads
-    fun read(bytes: FloatArray, offset: Int = 0, size: Int = bytes.size - offset): Int {
+    fun read(data: FloatArray, offset: Int = 0, size: Int = data.size - offset): Int {
         val toRead = min(availableRead, size)
         for (n in 0 until toRead) {
-            bytes[offset + n] = buffer[readPos]
+            data[offset + n] = buffer[readPos]
             readPos = (readPos + 1) and mask
         }
         availableWrite += toRead
