@@ -107,7 +107,7 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
     override fun lastIndexOf(element: Int): Int = lastIndexOf(element, 0, size)
 
     override fun listIterator(): ListIterator<Int> = listIterator(0)
-    override fun listIterator(index: Int): ListIterator<Int> = data.take(length).listIterator()
+    override fun listIterator(index: Int): ListIterator<Int> = data.take(length).listIterator(index)
     override fun subList(fromIndex: Int, toIndex: Int): List<Int> = data.asList().subList(fromIndex, toIndex)
 
     // Data
@@ -234,7 +234,7 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
     override fun lastIndexOf(element: Double): Int = lastIndexOf(element, 0, size)
 
     override fun listIterator(): ListIterator<Double> = listIterator(0)
-    override fun listIterator(index: Int): ListIterator<Double> = data.take(length).listIterator()
+    override fun listIterator(index: Int): ListIterator<Double> = data.take(length).listIterator(index)
     override fun subList(fromIndex: Int, toIndex: Int): List<Double> = data.asList().subList(fromIndex, toIndex)
 
     // Data
@@ -361,7 +361,7 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
     override fun lastIndexOf(element: Float): Int = lastIndexOf(element, 0, size)
 
     override fun listIterator(): ListIterator<Float> = listIterator(0)
-    override fun listIterator(index: Int): ListIterator<Float> = data.take(length).listIterator()
+    override fun listIterator(index: Int): ListIterator<Float> = data.take(length).listIterator(index)
     override fun subList(fromIndex: Int, toIndex: Int): List<Float> = data.asList().subList(fromIndex, toIndex)
 
     // Data

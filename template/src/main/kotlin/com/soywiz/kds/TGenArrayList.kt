@@ -105,7 +105,7 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
     override fun lastIndexOf(element: TGen): Int = lastIndexOf(element, 0, size)
 
     override fun listIterator(): ListIterator<TGen> = listIterator(0)
-    override fun listIterator(index: Int): ListIterator<TGen> = data.take(length).listIterator()
+    override fun listIterator(index: Int): ListIterator<TGen> = data.take(length).listIterator(index)
     override fun subList(fromIndex: Int, toIndex: Int): List<TGen> = data.asList().subList(fromIndex, toIndex)
 
     // Data

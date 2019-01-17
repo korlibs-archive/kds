@@ -123,4 +123,9 @@ class ArrayListTest {
         assertEquals(listOf(1, 2, 3, 4), a1.toList())
         assertEquals(listOf(1, 2, 3, 4), a2.toList())
     }
+
+    @Test
+    fun listIterator() {
+        assertEquals(listOf(2, 3, 4), intArrayListOf(1, 2, 3, 4).listIterator(1).asSequence().toList())
+    }
 }
