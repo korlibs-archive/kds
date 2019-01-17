@@ -117,4 +117,12 @@ class DequeTest {
 		}
 		assertEquals(listOf(5, 7, 9), deque.toList())
 	}
+
+	@Test
+	fun hashCodeEqualsTest() {
+		val a = IntDeque().apply { addAll(listOf(1, 2, 3, 4)) }
+		val b = IntDeque().apply { addAll(listOf(1, 2, 3, 4)) }
+		assertEquals(a.hashCode(), b.hashCode())
+		assertEquals(a, b)
+	}
 }

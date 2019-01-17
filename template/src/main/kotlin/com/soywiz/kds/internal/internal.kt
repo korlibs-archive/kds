@@ -11,3 +11,4 @@ internal external fun arraycopy(src: DoubleArray, srcPos: Int, dst: DoubleArray,
 internal external fun <T> Array<T>.fill(value: T)
 internal external fun IntArray.fill(value: Int)
 
+internal external fun <T> contentHashCode(size: Int, gen: (index: Int) -> T): Int

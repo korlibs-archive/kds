@@ -2,15 +2,17 @@ package com.soywiz.kds
 
 import com.soywiz.kds.internal.*
 
+typealias Deque<TGen> = TGenDeque<TGen>
+
 // GENERIC
 
-typealias CircularList<TGen> = Deque<TGen>
+typealias CircularList<TGen> = TGenDeque<TGen>
 
 /**
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-class Deque<TGen> : MutableCollection<TGen> {
+open class TGenDeque<TGen> : MutableCollection<TGen> {
     private var _start: Int = 0
     private var _size: Int = 0
     private var data: Array<TGen> = arrayOfNulls<Any>(16) as Array<TGen>
@@ -145,6 +147,15 @@ class Deque<TGen> : MutableCollection<TGen> {
             override fun hasNext(): Boolean = index < size
             override fun remove(): Unit = run { removeAt(--index) }
         }
+    }
+
+    override fun hashCode(): Int = contentHashCode(size) { this[it] }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is TGenDeque<*/*_TGen_*/>) return false
+        if (other.size != this.size) return false
+        for (n in 0 until size) if (this[n] != other[n]) return false
+        return true
     }
 
     override fun toString(): String {

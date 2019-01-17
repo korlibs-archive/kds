@@ -47,3 +47,9 @@ internal fun arraycopy(src: DoubleArray, srcPos: Int, dst: DoubleArray, dstPos: 
 
 internal fun <T> Array<T>.fill(value: T) = run { for (n in 0 until this.size) this[n] = value }
 internal fun IntArray.fill(value: Int) = run { for (n in 0 until this.size) this[n] = value }
+
+internal inline fun <T> contentHashCode(size: Int, gen: (index: Int) -> T): Int {
+    var result = 1
+    for (n in 0 until size) result = 31 * result + gen(n).hashCode()
+    return result
+}
