@@ -30,7 +30,7 @@ if (!hasAndroid) {
 }
 
 plugins {
-    id("kotlin-multiplatform").version("1.3.21")
+    id("kotlin-multiplatform")
     id("com.moowork.node").version("1.2.0")
     id("maven-publish")
 }
