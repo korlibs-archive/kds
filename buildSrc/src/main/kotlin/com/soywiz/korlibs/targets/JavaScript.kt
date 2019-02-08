@@ -73,15 +73,14 @@ fun Project.configureTargetJavaScript() {
 
             from(jsCompilations.main.output.allOutputs)
             from(jsCompilations.test.output.allOutputs)
-            //for (f in jsCompilations.test.runtimeDependencyFiles) {
-            //    if (f.exists() && !f.isDirectory) {
-            //        //from(zipTree(f.absolutePath).matching { include("*.js") })
-            //    }
-            //}
+            for (f in jsCompilations.test.runtimeDependencyFiles) {
+                if (f.exists() && !f.isDirectory) {
+                    from(zipTree(f.absolutePath).matching { it.include("*.js") })
+                }
+            }
             for (sourceSet in gkotlin.sourceSets) {
                 from(sourceSet.resources)
             }
-
 
             //println(node.nodeModulesDir)
             //println("$buildDir/node_modules")
