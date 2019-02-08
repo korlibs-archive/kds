@@ -20,13 +20,18 @@ val kotlin_version = extra["kotlin_version"]
 apply(plugin = "kotlin")
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    google()
+    maven { url = uri("https://plugins.gradle.org/m2/") }
 }
 
 dependencies {
     testImplementation("junit:junit:4.12")
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+    implementation("com.android.tools.build:gradle:3.3.1")
+    implementation("com.moowork.gradle:gradle-node-plugin:1.2.0")
 }
 
 val compileKotlin: KotlinCompile by tasks
