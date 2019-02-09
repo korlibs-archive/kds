@@ -1,8 +1,61 @@
 import com.soywiz.korlibs.*
 import java.io.File
 
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
 val srcDir = rootProject.rootDir["template"]
 val dstDir = rootProject.rootDir["kds"]
+
+tasks.create("generate") {
+    doLast {
+        synchronize(
+            srcDir["src/main/kotlin/com/soywiz/kds/TGenArrayList.kt"],
+            dstDir["src/commonMain/kotlin/com/soywiz/kds/ArrayList.kt"],
+            includeFloat = true
+        )
+        synchronize(
+            srcDir["src/main/kotlin/com/soywiz/kds/TGenDeque.kt"],
+            dstDir["src/commonMain/kotlin/com/soywiz/kds/Deque.kt"],
+            includeFloat = true,
+            includeGeneric = true,
+            includeByte = true
+        )
+        synchronize(
+            srcDir["src/main/kotlin/com/soywiz/kds/TGenArray2.kt"],
+            dstDir["src/commonMain/kotlin/com/soywiz/kds/Array2.kt"],
+            includeFloat = true,
+            includeGeneric = true
+        )
+        synchronize(
+            srcDir["src/main/kotlin/com/soywiz/kds/TGenPriorityQueue.kt"],
+            dstDir["src/commonMain/kotlin/com/soywiz/kds/PriorityQueue.kt"],
+            includeFloat = true,
+            includeGeneric = true
+        )
+        synchronize(
+            srcDir["src/main/kotlin/com/soywiz/kds/TGenStack.kt"],
+            dstDir["src/commonMain/kotlin/com/soywiz/kds/Stack.kt"],
+            includeFloat = true,
+            includeGeneric = true
+        )
+        synchronize(
+            srcDir["src/main/kotlin/com/soywiz/kds/TGenQueue.kt"],
+            dstDir["src/commonMain/kotlin/com/soywiz/kds/Queue.kt"],
+            includeFloat = true,
+            includeGeneric = true
+        )
+        //synchronize(
+        //    File("template/src/main/kotlin/com/soywiz/kds/TGenLinkedList.kt"),
+        //    File("src/commonMain/kotlin/com/soywiz/kds/LinkedList.kt"),
+        //    includeFloat = true,
+        //    includeGeneric = true
+        //)
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 
 fun synchronize(src: File, dst: File, includeFloat: Boolean = true, includeGeneric: Boolean = false, includeByte: Boolean = false) {
     val content = src.readText()
@@ -84,49 +137,5 @@ fun String.replaceTemplate(kind: String): String {
 
 }
 
-tasks.create("generate") {
-    doLast {
-        synchronize(
-            srcDir["src/main/kotlin/com/soywiz/kds/TGenArrayList.kt"],
-            dstDir["src/commonMain/kotlin/com/soywiz/kds/ArrayList.kt"],
-            includeFloat = true
-        )
-        synchronize(
-            srcDir["src/main/kotlin/com/soywiz/kds/TGenDeque.kt"],
-            dstDir["src/commonMain/kotlin/com/soywiz/kds/Deque.kt"],
-            includeFloat = true,
-            includeGeneric = true,
-            includeByte = true
-        )
-        synchronize(
-            srcDir["src/main/kotlin/com/soywiz/kds/TGenArray2.kt"],
-            dstDir["src/commonMain/kotlin/com/soywiz/kds/Array2.kt"],
-            includeFloat = true,
-            includeGeneric = true
-        )
-        synchronize(
-            srcDir["src/main/kotlin/com/soywiz/kds/TGenPriorityQueue.kt"],
-            dstDir["src/commonMain/kotlin/com/soywiz/kds/PriorityQueue.kt"],
-            includeFloat = true,
-            includeGeneric = true
-        )
-        synchronize(
-            srcDir["src/main/kotlin/com/soywiz/kds/TGenStack.kt"],
-            dstDir["src/commonMain/kotlin/com/soywiz/kds/Stack.kt"],
-            includeFloat = true,
-            includeGeneric = true
-        )
-        synchronize(
-            srcDir["src/main/kotlin/com/soywiz/kds/TGenQueue.kt"],
-            dstDir["src/commonMain/kotlin/com/soywiz/kds/Queue.kt"],
-            includeFloat = true,
-            includeGeneric = true
-        )
-        //synchronize(
-        //    File("template/src/main/kotlin/com/soywiz/kds/TGenLinkedList.kt"),
-        //    File("src/commonMain/kotlin/com/soywiz/kds/LinkedList.kt"),
-        //    includeFloat = true,
-        //    includeGeneric = true
-        //)
-    }
-}
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
