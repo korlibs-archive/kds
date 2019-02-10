@@ -47,4 +47,27 @@ class GetCyclicTest {
         assertEquals(10.0, doubleArrayListOf(10.0, 20.0).getCyclic(2))
         assertEquals(20.0, doubleArrayListOf(10.0, 20.0).getCyclic(-1))
     }
+
+    @Test
+    fun cyclicArray2() {
+        val array = IntArray2(2, 2) { it }
+        assertEquals(0, array.getCyclic(0, 0))
+        assertEquals(1, array.getCyclic(1, 0))
+        assertEquals(0, array.getCyclic(2, 0))
+        assertEquals(1, array.getCyclic(3, 0))
+
+        assertEquals(2, array.getCyclic(0, 1))
+        assertEquals(3, array.getCyclic(1, 1))
+        assertEquals(2, array.getCyclic(2, 1))
+        assertEquals(3, array.getCyclic(3, 1))
+
+        assertEquals(0, array.getCyclic(0, 2))
+        assertEquals(1, array.getCyclic(1, 2))
+        assertEquals(0, array.getCyclic(2, 2))
+        assertEquals(1, array.getCyclic(3, 2))
+
+        assertEquals(3, array.getCyclic(-1, -1))
+        assertEquals(0, array.getCyclic(-2, -2))
+        assertEquals(3, array.getCyclic(-3, -3))
+    }
 }

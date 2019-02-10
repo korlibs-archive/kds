@@ -14,6 +14,11 @@ fun IntArrayList.getCyclic(index: Int) = this[index umod this.size]
 fun FloatArrayList.getCyclic(index: Int) = this[index umod this.size]
 fun DoubleArrayList.getCyclic(index: Int) = this[index umod this.size]
 
+fun <T> Array2<T>.getCyclic(x: Int, y: Int) = this[x umod this.width, y umod this.height]
+fun IntArray2.getCyclic(x: Int, y: Int) = this[x umod this.width, y umod this.height]
+fun FloatArray2.getCyclic(x: Int, y: Int) = this[x umod this.width, y umod this.height]
+fun DoubleArray2.getCyclic(x: Int, y: Int) = this[x umod this.width, y umod this.height]
+
 fun <T : Comparable<T>> comparator(): Comparator<T> = kotlin.Comparator { a, b -> a.compareTo(b) }
 
 fun <K, V> linkedHashMapOf(vararg pairs: Pair<K, V>): LinkedHashMap<K, V> = LinkedHashMap<K, V>().also { for ((key, value) in pairs) it[key] = value }
