@@ -21,6 +21,19 @@ actual inline fun <T> FastIntMap<T>.clear() {
     (this.asDynamic()).clear()
 }
 
+@Suppress("UnsafeCastFromDynamic")
+actual inline fun <T> FastIntMap<T>.fastKeyForEach(callback: (key: Int) -> Unit): Unit {
+    //println("FastStringMap<T>.fastKeyForEach")
+    val mapIterator = this.asDynamic().keys()
+    //console.log(mapIterator)
+    while (true) {
+        val v = mapIterator.next()
+        //console.log(v)
+        if (v.done) break
+        callback(v.value)
+    }
+}
+
 actual class FastStringMap<T>(dummy: Boolean)
 //actual typealias FastStringMap<T> = Any<T>
 

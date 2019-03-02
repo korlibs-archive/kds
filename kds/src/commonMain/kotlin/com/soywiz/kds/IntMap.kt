@@ -8,17 +8,22 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
     constructor(loadFactor: Double = 0.75) : this(4, loadFactor)
 
     companion object {
-        private const val EOF = Int.MAX_VALUE - 1
-        private const val ZERO_INDEX = Int.MAX_VALUE
-        private const val EMPTY = 0
+        @PublishedApi
+        internal const val EOF = Int.MAX_VALUE - 1
+        @PublishedApi
+        internal const val ZERO_INDEX = Int.MAX_VALUE
+        @PublishedApi
+        internal const val EMPTY = 0
     }
 
     private var capacity = 1 shl nbits
-    private var hasZero = false
+    @PublishedApi
+    internal var hasZero = false
     private var zeroValue: T? = null
     private var mask = capacity - 1
     private var stashSize = 1 + ilog2(capacity)
-    private var _keys = IntArray(capacity + stashSize)
+    @PublishedApi
+    internal var _keys = IntArray(capacity + stashSize)
     private var _values = arrayOfNulls<Any>(capacity + stashSize) as Array<T?>
     private val stashStart get() = _keys.size - stashSize
     private var growSize: Int = (capacity * loadFactor).toInt()
@@ -216,7 +221,40 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
             if (index != EOF) index = nextNonEmptyIndex(_keys, if (index == ZERO_INDEX) 0 else (index + 1))
         }
     }
+
+    @PublishedApi
+    internal fun nextNonEmptyIndex(keys: IntArray, offset: Int): Int {
+        for (n in offset until keys.size) if (keys[n] != EMPTY) return n
+        return EOF
+    }
+
+    inline fun fastKeyForEach(callback: (key: Int) -> Unit) {
+        var index: Int = if (hasZero) ZERO_INDEX else nextNonEmptyIndex(_keys, 0)
+        while (index != EOF) {
+            callback(
+                when (index) {
+                    ZERO_INDEX, EOF -> 0
+                    else -> _keys[index]
+                }
+            )
+            index = nextNonEmptyIndex(_keys, if (index == ZERO_INDEX) 0 else (index + 1))
+        }
+    }
+    inline fun fastValueForEachNullable(callback: (value: T?) -> Unit): Unit {
+        fastKeyForEach { callback(this[it]) }
+    }
+    inline fun fastForEachNullable(callback: (key: Int, value: T?) -> Unit): Unit {
+        fastKeyForEach { callback(it, this[it]) }
+    }
+
+    inline fun fastValueForEach(callback: (value: T) -> Unit): Unit {
+        fastKeyForEach { callback(this[it]!!) }
+    }
+    inline fun fastForEach(callback: (key: Int, value: T) -> Unit): Unit {
+        fastKeyForEach { callback(it, this[it]!!) }
+    }
 }
+
 
 fun <T> Map<Int, T>.toIntMap(): IntMap<T> {
     val out = IntMap<T>()
@@ -225,7 +263,8 @@ fun <T> Map<Int, T>.toIntMap(): IntMap<T> {
 }
 
 class IntFloatMap {
-    private val i = IntIntMap()
+    @PublishedApi
+    internal val i = IntIntMap()
 
     val size: Int get() = i.size
     fun clear() = i.clear()
@@ -254,23 +293,38 @@ class IntFloatMap {
     operator fun contains(key: Int): Boolean = key in i
     operator fun get(key: Int): Float = Float.fromBits(i[key])
     operator fun set(key: Int, value: Float): Float = Float.fromBits(i.set(key, value.toRawBits()))
+
+    inline fun fastKeyForEach(callback: (key: Int) -> Unit) {
+        i.fastKeyForEach(callback)
+    }
+
+    inline fun fastValueForEach(callback: (value: Float) -> Unit): Unit {
+        fastKeyForEach { callback(this[it]) }
+    }
+    inline fun fastForEach(callback: (key: Int, value: Float) -> Unit): Unit {
+        fastKeyForEach { callback(it, this[it]) }
+    }
 }
 
 class IntIntMap private constructor(private var nbits: Int, private val loadFactor: Double) {
     constructor(loadFactor: Double = 0.75) : this(4, loadFactor)
 
     companion object {
-        private const val EOF = Int.MAX_VALUE - 1
-        private const val ZERO_INDEX = Int.MAX_VALUE
-        private const val EMPTY = 0
+        @PublishedApi
+        internal const val EOF = Int.MAX_VALUE - 1
+        @PublishedApi
+        internal const val ZERO_INDEX = Int.MAX_VALUE
+        @PublishedApi
+        internal const val EMPTY = 0
     }
 
     private var capacity = 1 shl nbits
-    private var hasZero = false
+    @PublishedApi
+    internal var hasZero = false
     private var zeroValue: Int = 0
     private var mask = capacity - 1
     private var stashSize = 1 + ilog2(capacity)
-    private var _keys = IntArray(capacity + stashSize)
+    @PublishedApi internal var _keys = IntArray(capacity + stashSize)
     private var _values = IntArray(capacity + stashSize)
     private val stashStart get() = _keys.size - stashSize
     private var growSize: Int = (capacity * loadFactor).toInt()
@@ -447,5 +501,31 @@ class IntIntMap private constructor(private var nbits: Int, private val loadFact
         private fun next() {
             if (index != EOF) index = nextNonEmptyIndex(_keys, if (index == ZERO_INDEX) 0 else (index + 1))
         }
+    }
+
+    @PublishedApi
+    internal fun nextNonEmptyIndex(keys: IntArray, offset: Int): Int {
+        for (n in offset until keys.size) if (keys[n] != EMPTY) return n
+        return EOF
+    }
+
+    inline fun fastKeyForEach(callback: (key: Int) -> Unit) {
+        var index: Int = if (hasZero) IntMap.ZERO_INDEX else nextNonEmptyIndex(_keys, 0)
+        while (index != IntMap.EOF) {
+            callback(
+                when (index) {
+                    IntMap.ZERO_INDEX, IntMap.EOF -> 0
+                    else -> _keys[index]
+                }
+            )
+            index = nextNonEmptyIndex(_keys, if (index == IntMap.ZERO_INDEX) 0 else (index + 1))
+        }
+    }
+
+    inline fun fastValueForEach(callback: (value: Int) -> Unit): Unit {
+        fastKeyForEach { callback(this[it]) }
+    }
+    inline fun fastForEach(callback: (key: Int, value: Int) -> Unit): Unit {
+        fastKeyForEach { callback(it, this[it]) }
     }
 }

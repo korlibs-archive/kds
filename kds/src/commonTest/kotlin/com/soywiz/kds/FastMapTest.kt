@@ -90,4 +90,20 @@ class FastMapTest {
         val other2 = other.entries.sortedBy { it.key }.toList().associate { it.key to it.value }
         assertEquals(mapOf("a" to 1, "b" to 2), other2)
     }
+
+    @Test
+    fun testIntForeach() {
+        val map = FastIntMap<String>().apply {
+            this[1] = "a"
+            this[2] = "b"
+        }
+        val other = HashMap<Int, String>()
+        //println("testStringForeach:")
+        map.fastForEach { key, value ->
+            //println("testStringForeach: key=$key, value=$value")
+            other[key] = value!!
+        }
+        val other2 = other.entries.sortedBy { it.key }.toList().associate { it.key to it.value }
+        assertEquals(mapOf(1 to "a", 2 to "b"), other2)
+    }
 }

@@ -16,6 +16,22 @@ fun <T> FastIntMap<T>.values(): List<T> = this.keys().map { this[it] } as List<T
 val <T> FastIntMap<T>.keys: List<Int> get() = keys()
 val <T> FastIntMap<T>.values: List<T> get() = values()
 
+expect inline fun <T> FastIntMap<T>.fastKeyForEach(callback: (key: Int) -> Unit): Unit
+
+inline fun <T : Any?> FastIntMap<T>.fastValueForEachNullable(callback: (value: T?) -> Unit): Unit {
+    fastKeyForEach { callback(this[it]) }
+}
+inline fun <T : Any?> FastIntMap<T>.fastForEachNullable(callback: (key: Int, value: T?) -> Unit): Unit {
+    fastKeyForEach { callback(it, this[it]) }
+}
+
+inline fun <T : Any> FastIntMap<T>.fastValueForEach(callback: (value: T) -> Unit): Unit {
+    fastKeyForEach { callback(this[it]!!) }
+}
+inline fun <T : Any> FastIntMap<T>.fastForEach(callback: (key: Int, value: T) -> Unit): Unit {
+    fastKeyForEach { callback(it, this[it]!!) }
+}
+
 inline fun <T> FastIntMap<T>.getNull(key: Int?): T? = if (key == null) null else get(key)
 
 inline fun <T> FastIntMap<T>.getOrPut(key: Int, callback: () -> T): T {
@@ -46,11 +62,18 @@ val <T> FastStringMap<T>.values: List<T> get() = values()
 
 expect inline fun <T> FastStringMap<T>.fastKeyForEach(callback: (key: String) -> Unit): Unit
 
-inline fun <T> FastStringMap<T>.fastValueForEach(callback: (value: T?) -> Unit): Unit {
+inline fun <T : Any?> FastStringMap<T>.fastValueForEachNullable(callback: (value: T?) -> Unit): Unit {
     fastKeyForEach { callback(this[it]) }
 }
-inline fun <T> FastStringMap<T>.fastForEach(callback: (key: String, value: T?) -> Unit): Unit {
+inline fun <T : Any?> FastStringMap<T>.fastForEachNullable(callback: (key: String, value: T?) -> Unit): Unit {
     fastKeyForEach { callback(it, this[it]) }
+}
+
+inline fun <T : Any> FastStringMap<T>.fastValueForEach(callback: (value: T) -> Unit): Unit {
+    fastKeyForEach { callback(this[it]!!) }
+}
+inline fun <T : Any> FastStringMap<T>.fastForEach(callback: (key: String, value: T) -> Unit): Unit {
+    fastKeyForEach { callback(it, this[it]!!) }
 }
 
 inline fun <T> FastStringMap<T>.getNull(key: String?): T? = if (key == null) null else get(key)

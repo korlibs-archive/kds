@@ -16,6 +16,10 @@ actual inline fun <T> FastIntMap<T>.remove(key: Int): Unit = run { (this as IntM
 actual inline fun <T> FastIntMap<T>.removeRange(src: Int, dst: Int) = (this as IntMap<T>).removeRange(src, dst)
 actual inline fun <T> FastIntMap<T>.clear() = (this as IntMap<T>).clear()
 
+actual inline fun <T> FastIntMap<T>.fastKeyForEach(callback: (key: Int) -> Unit): Unit {
+    (this as IntMap<T>).fastKeyForEach(callback)
+}
+
 actual class FastStringMap<T>(val dummy: Boolean) {
     val map = LinkedHashMap<String, T>()
 }
