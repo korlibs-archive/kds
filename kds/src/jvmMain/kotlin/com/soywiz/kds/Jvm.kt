@@ -29,6 +29,12 @@ actual inline fun <T> FastStringMap<T>.remove(key: String): Unit = run { (this.m
 actual inline fun <T> FastStringMap<T>.clear() = (this.map).clear()
 actual fun <T> FastStringMap<T>.keys(): List<String> = map.keys.toList()
 
+actual inline fun <T> FastStringMap<T>.fastKeyForEach(callback: (key: String) -> Unit): Unit {
+    for (key in this.keys()) {
+        callback(key)
+    }
+}
+
 actual class WeakMap<K : Any, V> {
     val wm = WeakHashMap<K, V>()
     actual operator fun contains(key: K): Boolean = wm.containsKey(key)

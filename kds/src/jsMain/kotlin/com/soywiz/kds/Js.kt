@@ -37,6 +37,19 @@ actual inline operator fun <T> FastStringMap<T>.contains(key: String): Boolean =
 actual inline fun <T> FastStringMap<T>.remove(key: String): Unit = run { (this.asDynamic()).delete(key) }
 actual inline fun <T> FastStringMap<T>.clear() = run { (this.asDynamic()).clear() }
 
+@Suppress("UnsafeCastFromDynamic")
+actual inline fun <T> FastStringMap<T>.fastKeyForEach(callback: (key: String) -> Unit): Unit {
+    //println("FastStringMap<T>.fastKeyForEach")
+    val mapIterator = this.asDynamic().keys()
+    //console.log(mapIterator)
+    while (true) {
+        val v = mapIterator.next()
+        //console.log(v)
+        if (v.done) break
+        callback(v.value)
+    }
+}
+
 @JsName("WeakMap")
 external class JsWeakMap {
     fun has(k: dynamic): Boolean
