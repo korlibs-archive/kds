@@ -63,6 +63,32 @@ actual inline fun <T> FastStringMap<T>.fastKeyForEach(callback: (key: String) ->
     }
 }
 
+///////////////
+
+actual class FastIdentityMap<K, V>(dummy: Boolean)
+
+actual fun <K, V> FastIdentityMap(): FastIdentityMap<K, V> = js("(new Map())")
+actual val <K, V> FastIdentityMap<K, V>.size: Int get() = this.asDynamic().size
+actual fun <K, V> FastIdentityMap<K, V>.keys(): List<K> = Array_from((this.asDynamic()).keys()).unsafeCast<Array<K>>().toList()
+actual operator fun <K, V> FastIdentityMap<K, V>.get(key: K): V? = (this.asDynamic()).get(key)
+actual operator fun <K, V> FastIdentityMap<K, V>.set(key: K, value: V): Unit = run { (this.asDynamic()).set(key, value) }
+actual operator fun <K, V> FastIdentityMap<K, V>.contains(key: K): Boolean = (this.asDynamic()).has(key)
+actual fun <K, V> FastIdentityMap<K, V>.remove(key: K): Unit = run { (this.asDynamic()).delete(key) }
+actual fun <K, V> FastIdentityMap<K, V>.clear() = run { (this.asDynamic()).clear() }
+actual inline fun <K, V> FastIdentityMap<K, V>.fastKeyForEach(callback: (key: K) -> Unit): Unit {
+    //println("FastStringMap<T>.fastKeyForEach")
+    val mapIterator = this.asDynamic().keys()
+    //console.log(mapIterator)
+    while (true) {
+        val v = mapIterator.next()
+        //console.log(v)
+        if (v.done) break
+        callback(v.value)
+    }
+}
+
+//////////////
+
 @JsName("WeakMap")
 external class JsWeakMap {
     fun has(k: dynamic): Boolean
