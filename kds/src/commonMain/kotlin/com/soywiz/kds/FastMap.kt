@@ -126,7 +126,7 @@ inline fun <K, V> FastIdentityMap<K, V>.getOrPut(key: K, callback: () -> V): V {
     return out
 }
 
-internal fun <T : Any> Map<String, T>.toFast() = FastStringMap<T>().apply {
+fun <T : Any> Map<String, T>.toFast() = FastStringMap<T>().apply {
     @Suppress("MapGetWithNotNullAssertionOperator")
     for (k in this@toFast.keys) {
         this[k] = this@toFast[k]!!
