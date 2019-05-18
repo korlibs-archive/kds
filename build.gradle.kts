@@ -1,6 +1,25 @@
 import com.soywiz.korlibs.*
 import java.io.File
 
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        maven { url = uri("https://dl.bintray.com/korlibs/korlibs/") }
+        maven { url = uri("https://plugins.gradle.org/m2/") }
+    }
+
+    dependencies {
+        classpath("com.soywiz.korlibs:easy-kotlin-mpp-gradle-plugin:0.0.3")
+    }
+}
+
+//// Also published on plugins.gradle.org
+//plugins {
+//    id "com.soywiz.korlibs.easy-kotlin-mpp-gradle-plugin" version "0.0.3" apply false
+//}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 
