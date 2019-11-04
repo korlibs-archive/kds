@@ -4,7 +4,7 @@
 Kds is a Data Structure library for Multiplatform Kotlin 1.3.
 It includes a set of optimized data structures written in Kotlin Common so they are available in
 JVM, JS and future multiplatform targets. Those structures are designed to be allocation-efficient and fast, so Kds
-include specialized versions for primitives like `Int` or `Double`.
+include specialized versions for primitives like <code>Int</code> or <code>Double</code>.
 </p>
 
 <!-- BADGES -->
