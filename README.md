@@ -9,7 +9,7 @@ include specialized versions for primitives like <code>Int</code> or <code>Doubl
 
 <!-- BADGES -->
 <p align="center">
-	<a href="https://travis-ci.org/korlibs/kds"><img alt="Build Status" src="https://travis-ci.org/korlibs/kds.svg?branch=master" /></a>
+	<a href="https://github.com/korlibs/kds/actions"><img alt="Build Status" src="https://github.com/korlibs/kds/workflows/CI/badge.svg" /></a>
 	<a href="https://bintray.com/korlibs/korlibs/kds"><img alt="Maven Version" src="https://img.shields.io/bintray/v/korlibs/korlibs/kds.svg?style=flat&label=maven" /></a>
 	<a href="https://slack.soywiz.com/"><img alt="Slack" src="https://img.shields.io/badge/chat-on%20slack-green?style=flat&logo=slack" /></a>
 </p>
