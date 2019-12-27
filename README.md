@@ -100,12 +100,12 @@ repositories {
 
 dependencies {
     // For multiplatform projects
-    implementation "com.soywiz:kds:$kdsVersion"
+    implementation "com.soywiz.korlibs.kds:kds:$kdsVersion"
     
     // For JVM/Android only
-    implementation "com.soywiz:kds-jvm:$kdsVersion"
+    implementation "com.soywiz.korlibs.kds:kds-jvm:$kdsVersion"
     // For JS only
-    implementation "com.soywiz:kds-js:$kdsVersion"
+    implementation "com.soywiz.korlibs.kds:kds-js:$kdsVersion"
 }
 
 // settigs.gradle
