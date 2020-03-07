@@ -1,19 +1,21 @@
 package com.soywiz.kds
 
+typealias PriorityQueue<TGen> = TGenPriorityQueue<TGen>
+
 // GENERIC
 
 @Suppress("UNCHECKED_CAST", "RemoveExplicitTypeArguments")
-class PriorityQueue<TGen>
+class TGenPriorityQueue<TGen>
 @PublishedApi internal constructor(private var data: Array<TGen>, val comparator: Comparator<TGen>) : MutableCollection<TGen> {
     companion object {
-        operator fun <TGen> invoke(comparator: Comparator<TGen>, reversed: Boolean = false): PriorityQueue<TGen> =
-            PriorityQueue<TGen>(arrayOfNulls<Any>(16) as Array<TGen>, if (reversed) comparator.reversed() else comparator)
+        operator fun <TGen> invoke(comparator: Comparator<TGen>, reversed: Boolean = false): TGenPriorityQueue<TGen> =
+            TGenPriorityQueue<TGen>(arrayOfNulls<Any>(16) as Array<TGen>, if (reversed) comparator.reversed() else comparator)
 
-        operator fun <TGen> invoke(reversed: Boolean = false, comparator: (left: TGen, right: TGen) -> Int): PriorityQueue<TGen> =
-            PriorityQueue<TGen>(Comparator(comparator), reversed)
+        operator fun <TGen> invoke(reversed: Boolean = false, comparator: (left: TGen, right: TGen) -> Int): TGenPriorityQueue<TGen> =
+            TGenPriorityQueue<TGen>(Comparator(comparator), reversed)
 
-        operator fun <TGen : Comparable<TGen>> invoke(reversed: Boolean = false): PriorityQueue<TGen> =
-            PriorityQueue<TGen>(comparator(), reversed)
+        operator fun <TGen : Comparable<TGen>> invoke(reversed: Boolean = false): TGenPriorityQueue<TGen> =
+            TGenPriorityQueue<TGen>(comparator(), reversed)
     }
 
     private var Int.value
@@ -165,4 +167,7 @@ class PriorityQueue<TGen>
     }
 
     override fun toString(): String = toList().toString()
+
+    override fun equals(other: Any?): Boolean = other is TGenPriorityQueue<*/*_TGen_*/> && this.data.contentEquals(other.data) && this.comparator == other.comparator
+    override fun hashCode(): Int = data.contentHashCode()
 }

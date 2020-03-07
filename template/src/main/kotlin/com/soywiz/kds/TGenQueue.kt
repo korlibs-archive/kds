@@ -1,11 +1,13 @@
 package com.soywiz.kds
 
+typealias Queue<TGen> = TGenQueue<TGen>
+
 // GENERIC
 
 /**
  * A FIFO (First In First Out) structure.
  */
-class Queue<TGen>() : Collection<TGen> {
+class TGenQueue<TGen>() : Collection<TGen> {
     private val items = TGenDeque<TGen>()
 
     override val size: Int get() = items.size
@@ -26,5 +28,5 @@ class Queue<TGen>() : Collection<TGen> {
     override fun iterator(): Iterator<TGen> = items.iterator()
 
     override fun hashCode(): Int = items.hashCode()
-    override fun equals(other: Any?): Boolean = (other is Queue<*/*TGen*/>) && items == other.items
+    override fun equals(other: Any?): Boolean = (other is TGenQueue<*/*TGen*/>) && items == other.items
 }
