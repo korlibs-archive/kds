@@ -54,6 +54,8 @@ fun Extra.setExtra(name: String, value: Any?): Unit {
     extra?.set(name, value)
 }
 
+inline fun <T> extraProperty(name: String? = null, noinline default: () -> T) = Extra.Property(name, default)
+/*
 @Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")
 class extraProperty<T : Any?>(val name: String? = null, val default: () -> T) {
     inline operator fun getValue(thisRef: Extra, property: KProperty<*>): T {
@@ -66,6 +68,7 @@ class extraProperty<T : Any?>(val name: String? = null, val default: () -> T) {
         thisRef.extra!![name ?: property.name] = value as Any?
     }
 }
+ */
 
 class Computed<K : Computed.WithParent<K>, T>(val prop: KProperty1<K, T?>, val default: () -> T) {
     interface WithParent<T> {
