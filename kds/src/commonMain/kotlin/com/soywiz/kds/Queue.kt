@@ -25,6 +25,9 @@ class Queue<TGen>() : Collection<TGen> {
     override fun contains(element: TGen): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<TGen>): Boolean = items.containsAll(elements)
     override fun iterator(): Iterator<TGen> = items.iterator()
+
+    override fun hashCode(): Int = items.hashCode()
+    override fun equals(other: Any?): Boolean = (other is Queue<*/*TGen*/>) && items == other.items
 }
 
 
@@ -52,6 +55,9 @@ class IntQueue() : Collection<Int> {
     override fun contains(element: Int): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<Int>): Boolean = items.containsAll(elements)
     override fun iterator(): Iterator<Int> = items.iterator()
+
+    override fun hashCode(): Int = items.hashCode()
+    override fun equals(other: Any?): Boolean = (other is IntQueue) && items == other.items
 }
 
 
@@ -79,6 +85,9 @@ class DoubleQueue() : Collection<Double> {
     override fun contains(element: Double): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<Double>): Boolean = items.containsAll(elements)
     override fun iterator(): Iterator<Double> = items.iterator()
+
+    override fun hashCode(): Int = items.hashCode()
+    override fun equals(other: Any?): Boolean = (other is DoubleQueue) && items == other.items
 }
 
 
@@ -106,4 +115,7 @@ class FloatQueue() : Collection<Float> {
     override fun contains(element: Float): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<Float>): Boolean = items.containsAll(elements)
     override fun iterator(): Iterator<Float> = items.iterator()
+
+    override fun hashCode(): Int = items.hashCode()
+    override fun equals(other: Any?): Boolean = (other is FloatQueue) && items == other.items
 }

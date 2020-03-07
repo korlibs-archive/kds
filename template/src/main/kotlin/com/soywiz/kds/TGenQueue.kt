@@ -24,4 +24,7 @@ class Queue<TGen>() : Collection<TGen> {
     override fun contains(element: TGen): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<TGen>): Boolean = items.containsAll(elements)
     override fun iterator(): Iterator<TGen> = items.iterator()
+
+    override fun hashCode(): Int = items.hashCode()
+    override fun equals(other: Any?): Boolean = (other is Queue<*/*TGen*/>) && items == other.items
 }
