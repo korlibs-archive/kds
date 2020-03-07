@@ -42,6 +42,9 @@ class IntSet : MutableSet<Int> {
     operator fun minusAssign(value: Int) = run { remove(value); Unit }
 
     override fun toString(): String = "[${data.keys.joinToString(", ")}]"
+
+    override fun equals(other: Any?): Boolean = (other is IntSet) && this.data == other.data
+    override fun hashCode(): Int = this.data.hashCode()
 }
 
 fun intSetOf(vararg values: Int) = IntSet().apply { for (value in values) add(value) }

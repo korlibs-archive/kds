@@ -41,6 +41,9 @@ class CaseInsensitiveStringMap<T> private constructor(
         lcToOrig.remove(lkey)
         return res
     }
+
+    override fun equals(other: Any?): Boolean = (other is CaseInsensitiveStringMap<*>) && this.mapLC == other.mapLC
+    override fun hashCode(): Int = mapLC.hashCode()
 }
 
 fun <T> Map<String, T>.toCaseInsensitiveMap(): Map<String, T> =

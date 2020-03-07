@@ -1,5 +1,8 @@
 package com.soywiz.kds
 
+import com.soywiz.kds.internal.equaler
+import com.soywiz.kds.internal.hashCoder
+
 // @TODO: Optimize
 class GenericSubList<T>(val base: List<T>, val start: Int, val end: Int) : List<T> {
     init {
@@ -41,6 +44,9 @@ class GenericSubList<T>(val base: List<T>, val start: Int, val end: Int) : List<
     override fun subList(fromIndex: Int, toIndex: Int): List<T> = GenericSubList(this, fromIndex, toIndex)
 
     override fun toString(): String = (0 until size).map { this[it] }.toString()
+
+    override fun equals(other: Any?): Boolean = (other is GenericSubList<*>) && equaler(size) { this[it] == other[it] }
+    override fun hashCode(): Int = hashCoder(size) { this[it].hashCode() }
 }
 
 class GenericListIterator<T>(val list: List<T>, val iindex: Int = 0) : ListIterator<T> {
@@ -67,4 +73,7 @@ class GenericListIterator<T>(val list: List<T>, val iindex: Int = 0) : ListItera
     }
 
     override fun previousIndex(): Int = index - 1
+
+    override fun equals(other: Any?): Boolean = (other is GenericListIterator<*>) && this.list == other.list && this.index == other.index
+    override fun hashCode(): Int = list.hashCode() + index.hashCode()
 }
