@@ -17,6 +17,7 @@ class Queue<TGen>() : Collection<TGen> {
     }
 
     fun enqueue(v: TGen) = run { items.addLast(v) }
+    fun peek(): TGen? = items.firstOrNull()
     fun dequeue(): TGen = items.removeFirst()
     fun remove(v: TGen) = run { items.remove(v) }
     fun toList() = items.toList()
@@ -43,6 +44,7 @@ class IntQueue() : Collection<Int> {
     }
 
     fun enqueue(v: Int) = run { items.addLast(v) }
+    fun peek(): Int? = items.firstOrNull()
     fun dequeue(): Int = items.removeFirst()
     fun remove(v: Int) = run { items.remove(v) }
     fun toList() = items.toList()
@@ -69,6 +71,7 @@ class DoubleQueue() : Collection<Double> {
     }
 
     fun enqueue(v: Double) = run { items.addLast(v) }
+    fun peek(): Double? = items.firstOrNull()
     fun dequeue(): Double = items.removeFirst()
     fun remove(v: Double) = run { items.remove(v) }
     fun toList() = items.toList()
@@ -95,6 +98,7 @@ class FloatQueue() : Collection<Float> {
     }
 
     fun enqueue(v: Float) = run { items.addLast(v) }
+    fun peek(): Float? = items.firstOrNull()
     fun dequeue(): Float = items.removeFirst()
     fun remove(v: Float) = run { items.remove(v) }
     fun toList() = items.toList()

@@ -16,6 +16,7 @@ class Queue<TGen>() : Collection<TGen> {
     }
 
     fun enqueue(v: TGen) = run { items.addLast(v) }
+    fun peek(): TGen? = items.firstOrNull()
     fun dequeue(): TGen = items.removeFirst()
     fun remove(v: TGen) = run { items.remove(v) }
     fun toList() = items.toList()
