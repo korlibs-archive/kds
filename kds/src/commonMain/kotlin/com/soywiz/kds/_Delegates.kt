@@ -54,18 +54,7 @@ fun Extra.setExtra(name: String, value: Any?): Unit {
     extra?.set(name, value)
 }
 
-@Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")
-class extraProperty<T : Any?>(val name: String? = null, val default: () -> T) {
-    inline operator fun getValue(thisRef: Extra, property: KProperty<*>): T {
-        if (thisRef.extra == null) thisRef.extra = LinkedHashMap()
-        return (thisRef.extra!!.getOrPut(name ?: property.name) { default() } as T)
-    }
-
-    inline operator fun setValue(thisRef: Extra, property: KProperty<*>, value: T): Unit = run {
-        if (thisRef.extra == null) thisRef.extra = LinkedHashMap()
-        thisRef.extra!![name ?: property.name] = value as Any?
-    }
-}
+inline fun <T> extraProperty(name: String? = null, noinline default: () -> T) = Extra.Property(name, default)
 
 class Computed<K : Computed.WithParent<K>, T>(val prop: KProperty1<K, T?>, val default: () -> T) {
     interface WithParent<T> {

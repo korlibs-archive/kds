@@ -53,6 +53,20 @@ class ByteArrayDeque(val initialBits: Int = 10) {
     fun clear() {
         ring.clear()
     }
+
+    val hasMoreToWrite get() = ring.availableWrite > 0
+    val hasMoreToRead get() = ring.availableRead > 0
+    fun readOne() = run {
+        read(tempBuffer, 0, 1)
+        tempBuffer[0]
+    }
+    fun writeOne(value: Byte) {
+        tempBuffer[0] = value
+        write(tempBuffer, 0, 1)
+    }
+
+    override fun hashCode(): Int = ring.hashCode()
+    override fun equals(other: Any?): Boolean = (other is ByteArrayDeque) && this.ring == other.ring
 }
 
 class ShortArrayDeque(val initialBits: Int = 10) {
@@ -102,6 +116,20 @@ class ShortArrayDeque(val initialBits: Int = 10) {
     fun clear() {
         ring.clear()
     }
+
+    val hasMoreToWrite get() = ring.availableWrite > 0
+    val hasMoreToRead get() = ring.availableRead > 0
+    fun readOne() = run {
+        read(tempBuffer, 0, 1)
+        tempBuffer[0]
+    }
+    fun writeOne(value: Short) {
+        tempBuffer[0] = value
+        write(tempBuffer, 0, 1)
+    }
+
+    override fun hashCode(): Int = ring.hashCode()
+    override fun equals(other: Any?): Boolean = (other is ShortArrayDeque) && this.ring == other.ring
 }
 
 
@@ -152,6 +180,20 @@ class IntArrayDeque(val initialBits: Int = 10) {
     fun clear() {
         ring.clear()
     }
+
+    val hasMoreToWrite get() = ring.availableWrite > 0
+    val hasMoreToRead get() = ring.availableRead > 0
+    fun readOne() = run {
+        read(tempBuffer, 0, 1)
+        tempBuffer[0]
+    }
+    fun writeOne(value: Int) {
+        tempBuffer[0] = value
+        write(tempBuffer, 0, 1)
+    }
+
+    override fun hashCode(): Int = ring.hashCode()
+    override fun equals(other: Any?): Boolean = (other is IntArrayDeque) && this.ring == other.ring
 }
 
 
@@ -202,4 +244,18 @@ class FloatArrayDeque(val initialBits: Int = 10) {
     fun clear() {
         ring.clear()
     }
+
+    val hasMoreToWrite get() = ring.availableWrite > 0
+    val hasMoreToRead get() = ring.availableRead > 0
+    fun readOne() = run {
+        read(tempBuffer, 0, 1)
+        tempBuffer[0]
+    }
+    fun writeOne(value: Float) {
+        tempBuffer[0] = value
+        write(tempBuffer, 0, 1)
+    }
+
+    override fun hashCode(): Int = ring.hashCode()
+    override fun equals(other: Any?): Boolean = (other is FloatArrayDeque) && this.ring == other.ring
 }

@@ -253,6 +253,18 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
     inline fun fastForEach(callback: (key: Int, value: T) -> Unit): Unit {
         fastKeyForEach { callback(it, this[it]!!) }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is IntMap<*>) return false
+        fastForEachNullable { key, value -> if (other[key] != value) return false }
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var out = 0
+        fastForEachNullable { key, value -> out += key.hashCode() + value.hashCode() }
+        return out
+    }
 }
 
 
@@ -303,6 +315,18 @@ class IntFloatMap {
     }
     inline fun fastForEach(callback: (key: Int, value: Float) -> Unit): Unit {
         fastKeyForEach { callback(it, this[it]) }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is IntMap<*>) return false
+        fastForEach { key, value -> if (other[key] != value) return false }
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var out = 0
+        fastForEach { key, value -> out += key.hashCode() + value.hashCode() }
+        return out
     }
 }
 
@@ -527,5 +551,17 @@ class IntIntMap private constructor(private var nbits: Int, private val loadFact
     }
     inline fun fastForEach(callback: (key: Int, value: Int) -> Unit): Unit {
         fastKeyForEach { callback(it, this[it]) }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is IntMap<*>) return false
+        fastForEach { key, value -> if (other[key] != value) return false }
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var out = 0
+        fastForEach { key, value -> out += key.hashCode() + value.hashCode() }
+        return out
     }
 }
