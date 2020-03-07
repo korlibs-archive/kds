@@ -1,5 +1,6 @@
 package com.soywiz.kds
 
+import com.soywiz.kds.internal.*
 import kotlin.jvm.*
 import kotlin.math.*
 
@@ -74,6 +75,10 @@ open class ByteRingBuffer(val bits: Int) {
         availableRead = 0
         availableWrite = totalSize
     }
+
+    fun peek(offset: Int = 0) = buffer[(readPos + offset) and mask]
+    override fun equals(other: Any?): Boolean = (other is ByteRingBuffer) && this.availableRead == other.availableRead && equaler(availableRead) { this.peek(it) == other.peek(it) }
+    override fun hashCode(): Int = hashCoder(availableRead) { peek(it).toInt() }
 }
 
 class ShortRingBuffer(val bits: Int) {
@@ -127,6 +132,11 @@ class ShortRingBuffer(val bits: Int) {
         availableRead = 0
         availableWrite = totalSize
     }
+
+    fun peek(offset: Int = 0) = buffer[(readPos + offset) and mask]
+    override fun equals(other: Any?): Boolean = (other is ShortRingBuffer) && this.availableRead == other.availableRead && equaler(availableRead) { this.peek(it) == other.peek(it) }
+    override fun hashCode(): Int = hashCoder(availableRead) { peek(it).toInt() }
+
 }
 
 class IntRingBuffer(val bits: Int) {
@@ -180,6 +190,10 @@ class IntRingBuffer(val bits: Int) {
         availableRead = 0
         availableWrite = totalSize
     }
+
+    fun peek(offset: Int = 0) = buffer[(readPos + offset) and mask]
+    override fun equals(other: Any?): Boolean = (other is IntRingBuffer) && this.availableRead == other.availableRead && equaler(availableRead) { this.peek(it) == other.peek(it) }
+    override fun hashCode(): Int = hashCoder(availableRead) { peek(it).toInt() }
 }
 
 class FloatRingBuffer(val bits: Int) {
@@ -233,4 +247,9 @@ class FloatRingBuffer(val bits: Int) {
         availableRead = 0
         availableWrite = totalSize
     }
+
+    fun peek(offset: Int = 0) = buffer[(readPos + offset) and mask]
+    override fun equals(other: Any?): Boolean = (other is FloatRingBuffer) && this.availableRead == other.availableRead && equaler(availableRead) { this.peek(it) == other.peek(it) }
+    override fun hashCode(): Int = hashCoder(availableRead) { peek(it).toInt() }
+
 }
