@@ -18,7 +18,7 @@ jobs:
         shell: cmd
 
   build-mac:
-    runs-on: macOS-latest
+    runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
       - uses: actions/checkout@v1
