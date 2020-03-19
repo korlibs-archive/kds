@@ -12,22 +12,28 @@ env:
   BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
 
 jobs:
-  build-windows:
+  publish-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
       - run: CALL gradlew.bat --no-daemon assemble check publish -x jsBrowserTest -x jsNodeTest
         shell: cmd
 
-  build-mac:
+  publish-mac:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - run: ./gradlew --no-daemon assemble check publish -x jsBrowserTest -x jsNodeTest
 
-  build-linux:
-    needs: [build-windows, build-mac]
+  publish-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: ./gradlew --no-daemon assemble check lint testDebugUnitTest publish actuallyPublishBintray -x jsBrowserTest -x jsNodeTest
+      - run: ./gradlew --no-daemon assemble check lint testDebugUnitTest publish -x jsBrowserTest -x jsNodeTest
+
+  publish-finalize:
+    needs: [publish-windows, publish-mac, publish-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: ./gradlew actuallyPublishBintray

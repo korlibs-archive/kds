@@ -9,6 +9,12 @@ on:
       - '*.*'
     paths-ignore:
       - 'README.md'
+      - '.github/workflows/DEPLOY.yml'
+      - '.github/FUNDING.yml'
+      - '.gitignore'
+      - '.editorconfig'
+      - 'docs/**'
+      - 'old/**'
 
 jobs:
   build-windows:
