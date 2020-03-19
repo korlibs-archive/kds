@@ -27,6 +27,8 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: ${{ runner.os }}-gradle-
+      - run: CALL gradlew.bat --no-daemon
+        shell: cmd
       - run: CALL gradlew.bat --no-daemon jvmTest
         shell: cmd
       - run: CALL gradlew.bat --no-daemon assemble check -x jsBrowserTest -x jsNodeTest
@@ -42,6 +44,7 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: ${{ runner.os }}-gradle-
+      - run: ./gradlew
       - run: ./gradlew jvmTest
       - run: ./gradlew check -x jsBrowserTest -x jsNodeTest
 
@@ -55,5 +58,6 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: ${{ runner.os }}-gradle-
+      - run: ./gradlew
       - run: ./gradlew jvmTest
       - run: ./gradlew check lint testDebugUnitTest -x jsBrowserTest -x jsNodeTest
