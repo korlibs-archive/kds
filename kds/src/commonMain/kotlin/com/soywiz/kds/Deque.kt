@@ -48,13 +48,12 @@ open class TGenDeque<TGen>(initialCapacity: Int) : MutableCollection<TGen> {
         for (i in items) addLast(i)
     }
 
-    fun addAllFirst(items: List<TGen>) {
+    fun addAllFirst(items: Collection<TGen>) {
         resizeIfRequiredFor(items.size)
         _start = (_start - items.size) umod capacity
         _size += items.size
-        for (n in items.indices) {
-            data[(_start + n) umod capacity] = items[n]
-        }
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: TGen) {
@@ -226,13 +225,12 @@ open class IntDeque(initialCapacity: Int) : MutableCollection<Int> {
         for (i in items) addLast(i)
     }
 
-    fun addAllFirst(items: List<Int>) {
+    fun addAllFirst(items: Collection<Int>) {
         resizeIfRequiredFor(items.size)
         _start = (_start - items.size) umod capacity
         _size += items.size
-        for (n in items.indices) {
-            data[(_start + n) umod capacity] = items[n]
-        }
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Int) {
@@ -404,13 +402,12 @@ open class DoubleDeque(initialCapacity: Int) : MutableCollection<Double> {
         for (i in items) addLast(i)
     }
 
-    fun addAllFirst(items: List<Double>) {
+    fun addAllFirst(items: Collection<Double>) {
         resizeIfRequiredFor(items.size)
         _start = (_start - items.size) umod capacity
         _size += items.size
-        for (n in items.indices) {
-            data[(_start + n) umod capacity] = items[n]
-        }
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Double) {
@@ -582,13 +579,12 @@ open class FloatDeque(initialCapacity: Int) : MutableCollection<Float> {
         for (i in items) addLast(i)
     }
 
-    fun addAllFirst(items: List<Float>) {
+    fun addAllFirst(items: Collection<Float>) {
         resizeIfRequiredFor(items.size)
         _start = (_start - items.size) umod capacity
         _size += items.size
-        for (n in items.indices) {
-            data[(_start + n) umod capacity] = items[n]
-        }
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Float) {
@@ -760,13 +756,12 @@ open class ByteDeque(initialCapacity: Int) : MutableCollection<Byte> {
         for (i in items) addLast(i)
     }
 
-    fun addAllFirst(items: List<Byte>) {
+    fun addAllFirst(items: Collection<Byte>) {
         resizeIfRequiredFor(items.size)
         _start = (_start - items.size) umod capacity
         _size += items.size
-        for (n in items.indices) {
-            data[(_start + n) umod capacity] = items[n]
-        }
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Byte) {

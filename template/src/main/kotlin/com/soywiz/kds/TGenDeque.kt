@@ -47,13 +47,12 @@ open class TGenDeque<TGen>(initialCapacity: Int) : MutableCollection<TGen> {
         for (i in items) addLast(i)
     }
 
-    fun addAllFirst(items: List<TGen>) {
+    fun addAllFirst(items: Collection<TGen>) {
         resizeIfRequiredFor(items.size)
         _start = (_start - items.size) umod capacity
         _size += items.size
-        for (n in items.indices) {
-            data[(_start + n) umod capacity] = items[n]
-        }
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: TGen) {
