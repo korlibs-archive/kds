@@ -22,11 +22,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-
+      - { uses: actions/cache@v1, with: { path: '~/.gradle/caches', key: "${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}", restore-keys: ${{ runner.os }}-gradle- } }
+      - { uses: actions/cache@v1, with: { path: '~/.konan', key: "${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*') }}", restore-keys: ${{ runner.os }}-konan- } }
       - run: CALL gradlew.bat --no-daemon
         shell: cmd
       - run: CALL gradlew.bat --no-daemon jvmTest
@@ -39,11 +36,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-
+      - { uses: actions/cache@v1, with: { path: '~/.gradle/caches', key: "${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}", restore-keys: ${{ runner.os }}-gradle- } }
+      - { uses: actions/cache@v1, with: { path: '~/.konan', key: "${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*') }}", restore-keys: ${{ runner.os }}-konan- } }
       - run: ./gradlew
       - run: ./gradlew jvmTest
       - run: ./gradlew check -x jsBrowserTest -x jsNodeTest
@@ -53,11 +47,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-
+      - { uses: actions/cache@v1, with: { path: '~/.gradle/caches', key: "${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}", restore-keys: ${{ runner.os }}-gradle- } }
+      - { uses: actions/cache@v1, with: { path: '~/.konan', key: "${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*') }}", restore-keys: ${{ runner.os }}-konan- } }
       - run: ./gradlew
       - run: ./gradlew jvmTest
       - run: ./gradlew check lint testDebugUnitTest -x jsBrowserTest -x jsNodeTest
