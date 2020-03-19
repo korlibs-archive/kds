@@ -13,11 +13,13 @@ typealias CircularList<TGen> = TGenDeque<TGen>
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-open class TGenDeque<TGen> : MutableCollection<TGen> {
+open class TGenDeque<TGen>(initialCapacity: Int) : MutableCollection<TGen> {
     private var _start: Int = 0
     private var _size: Int = 0
-    private var data: Array<TGen> = arrayOfNulls<Any>(16) as Array<TGen>
+    private var data: Array<TGen> = arrayOfNulls<Any>(initialCapacity) as Array<TGen>
     private val capacity: Int get() = data.size
+
+    constructor() : this(initialCapacity = 16)
 
     override val size: Int get() = _size
 
@@ -44,6 +46,14 @@ open class TGenDeque<TGen> : MutableCollection<TGen> {
     fun addAll(items: Iterable<TGen>) = run {
         resizeIfRequiredFor(items.count())
         for (i in items) addLast(i)
+    }
+
+    fun addAllFirst(items: Collection<TGen>) {
+        resizeIfRequiredFor(items.size)
+        _start = (_start - items.size) umod capacity
+        _size += items.size
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: TGen) {
@@ -180,11 +190,13 @@ typealias IntCircularList = IntDeque
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-open class IntDeque : MutableCollection<Int> {
+open class IntDeque(initialCapacity: Int) : MutableCollection<Int> {
     private var _start: Int = 0
     private var _size: Int = 0
-    private var data: IntArray = IntArray(16) as IntArray
+    private var data: IntArray = IntArray(initialCapacity) as IntArray
     private val capacity: Int get() = data.size
+
+    constructor() : this(initialCapacity = 16)
 
     override val size: Int get() = _size
 
@@ -211,6 +223,14 @@ open class IntDeque : MutableCollection<Int> {
     fun addAll(items: Iterable<Int>) = run {
         resizeIfRequiredFor(items.count())
         for (i in items) addLast(i)
+    }
+
+    fun addAllFirst(items: Collection<Int>) {
+        resizeIfRequiredFor(items.size)
+        _start = (_start - items.size) umod capacity
+        _size += items.size
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Int) {
@@ -347,11 +367,13 @@ typealias DoubleCircularList = DoubleDeque
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-open class DoubleDeque : MutableCollection<Double> {
+open class DoubleDeque(initialCapacity: Int) : MutableCollection<Double> {
     private var _start: Int = 0
     private var _size: Int = 0
-    private var data: DoubleArray = DoubleArray(16) as DoubleArray
+    private var data: DoubleArray = DoubleArray(initialCapacity) as DoubleArray
     private val capacity: Int get() = data.size
+
+    constructor() : this(initialCapacity = 16)
 
     override val size: Int get() = _size
 
@@ -378,6 +400,14 @@ open class DoubleDeque : MutableCollection<Double> {
     fun addAll(items: Iterable<Double>) = run {
         resizeIfRequiredFor(items.count())
         for (i in items) addLast(i)
+    }
+
+    fun addAllFirst(items: Collection<Double>) {
+        resizeIfRequiredFor(items.size)
+        _start = (_start - items.size) umod capacity
+        _size += items.size
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Double) {
@@ -514,11 +544,13 @@ typealias FloatCircularList = FloatDeque
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-open class FloatDeque : MutableCollection<Float> {
+open class FloatDeque(initialCapacity: Int) : MutableCollection<Float> {
     private var _start: Int = 0
     private var _size: Int = 0
-    private var data: FloatArray = FloatArray(16) as FloatArray
+    private var data: FloatArray = FloatArray(initialCapacity) as FloatArray
     private val capacity: Int get() = data.size
+
+    constructor() : this(initialCapacity = 16)
 
     override val size: Int get() = _size
 
@@ -545,6 +577,14 @@ open class FloatDeque : MutableCollection<Float> {
     fun addAll(items: Iterable<Float>) = run {
         resizeIfRequiredFor(items.count())
         for (i in items) addLast(i)
+    }
+
+    fun addAllFirst(items: Collection<Float>) {
+        resizeIfRequiredFor(items.size)
+        _start = (_start - items.size) umod capacity
+        _size += items.size
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Float) {
@@ -681,11 +721,13 @@ typealias ByteCircularList = ByteDeque
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-open class ByteDeque : MutableCollection<Byte> {
+open class ByteDeque(initialCapacity: Int) : MutableCollection<Byte> {
     private var _start: Int = 0
     private var _size: Int = 0
-    private var data: ByteArray = ByteArray(16) as ByteArray
+    private var data: ByteArray = ByteArray(initialCapacity) as ByteArray
     private val capacity: Int get() = data.size
+
+    constructor() : this(initialCapacity = 16)
 
     override val size: Int get() = _size
 
@@ -712,6 +754,14 @@ open class ByteDeque : MutableCollection<Byte> {
     fun addAll(items: Iterable<Byte>) = run {
         resizeIfRequiredFor(items.count())
         for (i in items) addLast(i)
+    }
+
+    fun addAllFirst(items: Collection<Byte>) {
+        resizeIfRequiredFor(items.size)
+        _start = (_start - items.size) umod capacity
+        _size += items.size
+        var pos = _start
+        for (it in items) data[pos++ umod capacity] = it
     }
 
     fun addFirst(item: Byte) {

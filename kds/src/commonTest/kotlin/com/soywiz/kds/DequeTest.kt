@@ -125,4 +125,12 @@ class DequeTest {
 		assertEquals(a.hashCode(), b.hashCode())
 		assertEquals(a, b)
 	}
+
+    @Test
+    fun testAddFirstAll() {
+        val deque = IntDeque(4)
+        deque.addAll(listOf(5, 6, 7, 8))
+        deque.addAllFirst(listOf(1, 2, 3, 4))
+        assertEquals(listOf(1, 2, 3, 4, 5, 6, 7, 8), deque.toList())
+    }
 }
