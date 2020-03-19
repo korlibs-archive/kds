@@ -16,6 +16,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
+      - run: CALL gradlew.bat --no-daemon
       - run: CALL gradlew.bat --no-daemon assemble check publish -x jsBrowserTest -x jsNodeTest
         shell: cmd
 
@@ -23,13 +24,15 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
-      - run: ./gradlew --no-daemon assemble check publish -x jsBrowserTest -x jsNodeTest
+      - run: ./gradlew
+      - run: ./gradlew assemble check publish -x jsBrowserTest -x jsNodeTest
 
   publish-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: ./gradlew --no-daemon assemble check lint testDebugUnitTest publish -x jsBrowserTest -x jsNodeTest
+      - run: ./gradlew
+      - run: ./gradlew assemble check lint testDebugUnitTest publish -x jsBrowserTest -x jsNodeTest
 
   publish-finalize:
     needs: [publish-windows, publish-mac, publish-linux]
