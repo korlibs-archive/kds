@@ -5,7 +5,7 @@ on:
     branches:
       - 'releases/**'
     tags-ignore:
-      - *
+      - '*'
 
 env:
   BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
