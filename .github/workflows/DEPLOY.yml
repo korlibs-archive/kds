@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: CALL gradlew.bat --no-daemon
+        shell: cmd
       - run: CALL gradlew.bat --no-daemon assemble check publish -x jsBrowserTest -x jsNodeTest
         shell: cmd
 
