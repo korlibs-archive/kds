@@ -23,6 +23,7 @@ class TGenQueue<TGen>() : Collection<TGen> {
     fun dequeue(): TGen = items.removeFirst()
     fun remove(v: TGen) = run { items.remove(v) }
     fun toList() = items.toList()
+    fun clear() = items.clear()
 
     override fun contains(element: TGen): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<TGen>): Boolean = items.containsAll(elements)
@@ -53,6 +54,7 @@ class IntQueue() : Collection<Int> {
     fun dequeue(): Int = items.removeFirst()
     fun remove(v: Int) = run { items.remove(v) }
     fun toList() = items.toList()
+    fun clear() = items.clear()
 
     override fun contains(element: Int): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<Int>): Boolean = items.containsAll(elements)
@@ -83,6 +85,7 @@ class DoubleQueue() : Collection<Double> {
     fun dequeue(): Double = items.removeFirst()
     fun remove(v: Double) = run { items.remove(v) }
     fun toList() = items.toList()
+    fun clear() = items.clear()
 
     override fun contains(element: Double): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<Double>): Boolean = items.containsAll(elements)
@@ -113,6 +116,7 @@ class FloatQueue() : Collection<Float> {
     fun dequeue(): Float = items.removeFirst()
     fun remove(v: Float) = run { items.remove(v) }
     fun toList() = items.toList()
+    fun clear() = items.clear()
 
     override fun contains(element: Float): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<Float>): Boolean = items.containsAll(elements)

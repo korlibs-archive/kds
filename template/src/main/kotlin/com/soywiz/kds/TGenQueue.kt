@@ -22,6 +22,7 @@ class TGenQueue<TGen>() : Collection<TGen> {
     fun dequeue(): TGen = items.removeFirst()
     fun remove(v: TGen) = run { items.remove(v) }
     fun toList() = items.toList()
+    fun clear() = items.clear()
 
     override fun contains(element: TGen): Boolean = items.contains(element)
     override fun containsAll(elements: Collection<TGen>): Boolean = items.containsAll(elements)
