@@ -9,6 +9,7 @@ on:
 jobs:
   build-windows:
     runs-on: windows-latest
+    if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
       - uses: actions/checkout@v1
       - run: CALL gradlew.bat --no-daemon jvmTest
@@ -18,6 +19,7 @@ jobs:
 
   build-mac:
     runs-on: macOS-latest
+    if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
       - uses: actions/checkout@v1
       - run: ./gradlew jvmTest
@@ -25,6 +27,7 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
       - uses: actions/checkout@v1
       - run: ./gradlew jvmTest
