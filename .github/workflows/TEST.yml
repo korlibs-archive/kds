@@ -17,7 +17,7 @@ on:
       - 'old/**'
 
 jobs:
-  build-windows:
+  test-windows:
     runs-on: windows-latest
     if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
@@ -34,7 +34,7 @@ jobs:
       - run: CALL gradlew.bat --no-daemon assemble check -x jsBrowserTest -x jsNodeTest
         shell: cmd
 
-  build-mac:
+  test-mac:
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
@@ -48,7 +48,7 @@ jobs:
       - run: ./gradlew jvmTest
       - run: ./gradlew check -x jsBrowserTest -x jsNodeTest
 
-  build-linux:
+  test-linux:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '-SNAPSHOT')"
     steps:
