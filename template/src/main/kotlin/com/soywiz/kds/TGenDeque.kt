@@ -12,11 +12,13 @@ typealias CircularList<TGen> = TGenDeque<TGen>
  * Deque structure supporting constant time of appending/removing from the start or the end of the list
  * when there is room in the underlying array.
  */
-open class TGenDeque<TGen> : MutableCollection<TGen> {
+open class TGenDeque<TGen>(initialCapacity: Int) : MutableCollection<TGen> {
     private var _start: Int = 0
     private var _size: Int = 0
-    private var data: Array<TGen> = arrayOfNulls<Any>(16) as Array<TGen>
+    private var data: Array<TGen> = arrayOfNulls<Any>(initialCapacity) as Array<TGen>
     private val capacity: Int get() = data.size
+
+    constructor() : this(initialCapacity = 16)
 
     override val size: Int get() = _size
 
@@ -43,6 +45,15 @@ open class TGenDeque<TGen> : MutableCollection<TGen> {
     fun addAll(items: Iterable<TGen>) = run {
         resizeIfRequiredFor(items.count())
         for (i in items) addLast(i)
+    }
+
+    fun addAllFirst(items: List<TGen>) {
+        resizeIfRequiredFor(items.size)
+        _start = (_start - items.size) umod capacity
+        _size += items.size
+        for (n in items.indices) {
+            data[(_start + n) umod capacity] = items[n]
+        }
     }
 
     fun addFirst(item: TGen) {
