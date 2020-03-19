@@ -3,8 +3,8 @@ name: TEST
 on:
   pull_request:
   push:
-    branches:
-      - '**'
+    branches-ignore:
+      - 'releases/**'
     tags-ignore:
       - '*.*'
     paths-ignore:
