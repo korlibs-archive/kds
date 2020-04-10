@@ -162,12 +162,12 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
         override operator fun iterator() = KeyIterator()
     }
 
-    inner class ValueIterable() {
-        operator fun iterator() = ValueIterator()
+    inner class ValueIterable() : Iterable<T> {
+        override operator fun iterator() = ValueIterator()
     }
 
-    inner class EntryIterable() {
-        operator fun iterator() = EntryIterator()
+    inner class EntryIterable() : Iterable<Entry<T>> {
+        override operator fun iterator() = EntryIterator()
     }
 
     inner class KeyIterator(private val it: Iterator = Iterator()) : kotlin.collections.Iterator<Int> {
@@ -175,14 +175,14 @@ class IntMap<T> private constructor(private var nbits: Int, private val loadFact
         override operator fun next() = it.nextKey()
     }
 
-    inner class ValueIterator(private val it: Iterator = Iterator()) {
-        operator fun hasNext() = it.hasNext()
-        operator fun next() = it.nextValue()
+    inner class ValueIterator(private val it: Iterator = Iterator()) : kotlin.collections.Iterator<T> {
+        override operator fun hasNext() = it.hasNext()
+        override operator fun next() = it.nextValue()!!
     }
 
-    inner class EntryIterator(private val it: Iterator = Iterator()) {
-        operator fun hasNext() = it.hasNext()
-        operator fun next() = it.nextEntry().copy()
+    inner class EntryIterator(private val it: Iterator = Iterator()) : kotlin.collections.Iterator<Entry<T>> {
+        override operator fun hasNext() = it.hasNext()
+        override operator fun next() = it.nextEntry().copy() as Entry<T>
     }
 
     inner class Iterator {
