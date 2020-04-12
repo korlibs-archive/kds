@@ -15,3 +15,51 @@ inline fun <T> Iterable<T>.mapDouble(callback: (T) -> Double): DoubleArrayList =
 inline fun IntArrayList.filter(callback: (Int) -> Boolean): IntArrayList = IntArrayList().also { for (v in this) if (callback(v)) it.add(v) }
 inline fun FloatArrayList.filter(callback: (Float) -> Boolean): FloatArrayList = FloatArrayList().also { for (v in this) if (callback(v)) it.add(v) }
 inline fun DoubleArrayList.filter(callback: (Double) -> Boolean): DoubleArrayList = DoubleArrayList().also { for (v in this) if (callback(v)) it.add(v) }
+
+private object IntArrayListSortOps : SortOps<IntArrayList>() {
+    override fun compare(subject: IntArrayList, l: Int, r: Int): Int = subject[l].compareTo(subject[r])
+    override fun swap(subject: IntArrayList, indexL: Int, indexR: Int) {
+        val l = subject[indexL]
+        val r = subject[indexR]
+        subject[indexR] = l
+        subject[indexL] = r
+    }
+}
+
+private object DoubleArrayListSortOps : SortOps<DoubleArrayList>() {
+    override fun compare(subject: DoubleArrayList, l: Int, r: Int): Int = subject[l].compareTo(subject[r])
+    override fun swap(subject: DoubleArrayList, indexL: Int, indexR: Int) {
+        val l = subject[indexL]
+        val r = subject[indexR]
+        subject[indexR] = l
+        subject[indexL] = r
+    }
+}
+
+private object FloatArrayListSortOps : SortOps<FloatArrayList>() {
+    override fun compare(subject: FloatArrayList, l: Int, r: Int): Int = subject[l].compareTo(subject[r])
+    override fun swap(subject: FloatArrayList, indexL: Int, indexR: Int) {
+        val l = subject[indexL]
+        val r = subject[indexR]
+        subject[indexR] = l
+        subject[indexL] = r
+    }
+}
+
+fun IntArrayList.sort(start: Int = 0, end: Int = size, reversed: Boolean = false)
+    = genericSort(this, start, end - 1, IntArrayListSortOps, reversed)
+
+fun DoubleArrayList.sort(start: Int = 0, end: Int = size, reversed: Boolean = false)
+    = genericSort(this, start, end - 1, DoubleArrayListSortOps, reversed)
+
+fun FloatArrayList.sort(start: Int = 0, end: Int = size, reversed: Boolean = false)
+    = genericSort(this, start, end - 1, FloatArrayListSortOps, reversed)
+
+fun IntArrayList.reverse(start: Int = 0, end: Int = size)
+    = IntArrayListSortOps.reverse(this, start, end - 1)
+
+fun DoubleArrayList.reverse(start: Int = 0, end: Int = size)
+    = DoubleArrayListSortOps.reverse(this, start, end - 1)
+
+fun FloatArrayList.reverse(start: Int = 0, end: Int = size)
+    = FloatArrayListSortOps.reverse(this, start, end - 1)

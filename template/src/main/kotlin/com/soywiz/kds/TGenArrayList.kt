@@ -9,6 +9,7 @@ import com.soywiz.kds.internal.*
  */
 @Suppress("UNCHECKED_CAST")
 class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
+    companion object
     var data: Array<TGen> = arrayOfNulls<Any>(capacity) as Array<TGen>; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0

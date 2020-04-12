@@ -11,6 +11,7 @@ import com.soywiz.kds.internal.*
  */
 @Suppress("UNCHECKED_CAST")
 class IntArrayList(capacity: Int = 7) : List<Int> {
+    companion object
     var data: IntArray = IntArray(capacity) as IntArray; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0
@@ -138,6 +139,7 @@ fun intArrayListOf(vararg values: Int) = IntArrayList(*values)
  */
 @Suppress("UNCHECKED_CAST")
 class DoubleArrayList(capacity: Int = 7) : List<Double> {
+    companion object
     var data: DoubleArray = DoubleArray(capacity) as DoubleArray; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0
@@ -265,6 +267,7 @@ fun doubleArrayListOf(vararg values: Double) = DoubleArrayList(*values)
  */
 @Suppress("UNCHECKED_CAST")
 class FloatArrayList(capacity: Int = 7) : List<Float> {
+    companion object
     var data: FloatArray = FloatArray(capacity) as FloatArray; private set
     internal val capacity: Int get() = data.size
     private var length: Int = 0
