@@ -57,7 +57,11 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
     fun add(values: IntArrayList) = add(values.data, 0, values.size)
     fun add(values: Iterable<Int>) = run { for (v in values) add(v) }
 
-    override operator fun get(index: Int): Int = data[index]
+    @Deprecated("Try to use getAt instead to prevent boxing", ReplaceWith("getAt(index)"))
+    override operator fun get(index: Int): Int = getAt(index)
+
+    /** Gets an item of the list without boxing */
+    fun getAt(index: Int): Int = data[index]
 
     operator fun set(index: Int, value: Int) = run {
         if (index >= length) {
@@ -123,7 +127,7 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
         sb.append('[')
         for (n in 0 until size) {
             if (n != 0) sb.append(", ")
-            sb.append(this[n])
+            sb.append(this.getAt(n))
         }
         sb.append(']')
     }.toString()
@@ -185,7 +189,11 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
     fun add(values: DoubleArrayList) = add(values.data, 0, values.size)
     fun add(values: Iterable<Double>) = run { for (v in values) add(v) }
 
-    override operator fun get(index: Int): Double = data[index]
+    @Deprecated("Try to use getAt instead to prevent boxing", ReplaceWith("getAt(index)"))
+    override operator fun get(index: Int): Double = getAt(index)
+
+    /** Gets an item of the list without boxing */
+    fun getAt(index: Int): Double = data[index]
 
     operator fun set(index: Int, value: Double) = run {
         if (index >= length) {
@@ -251,7 +259,7 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
         sb.append('[')
         for (n in 0 until size) {
             if (n != 0) sb.append(", ")
-            sb.append(this[n])
+            sb.append(this.getAt(n))
         }
         sb.append(']')
     }.toString()
@@ -313,7 +321,11 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
     fun add(values: FloatArrayList) = add(values.data, 0, values.size)
     fun add(values: Iterable<Float>) = run { for (v in values) add(v) }
 
-    override operator fun get(index: Int): Float = data[index]
+    @Deprecated("Try to use getAt instead to prevent boxing", ReplaceWith("getAt(index)"))
+    override operator fun get(index: Int): Float = getAt(index)
+
+    /** Gets an item of the list without boxing */
+    fun getAt(index: Int): Float = data[index]
 
     operator fun set(index: Int, value: Float) = run {
         if (index >= length) {
@@ -379,7 +391,7 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
         sb.append('[')
         for (n in 0 until size) {
             if (n != 0) sb.append(", ")
-            sb.append(this[n])
+            sb.append(this.getAt(n))
         }
         sb.append(']')
     }.toString()

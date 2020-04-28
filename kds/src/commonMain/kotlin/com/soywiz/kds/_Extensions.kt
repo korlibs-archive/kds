@@ -10,9 +10,9 @@ inline fun mapWhileDouble(cond: (index: Int) -> Boolean, gen: (Int) -> Double): 
 
 fun <T> List<T>.getCyclic(index: Int) = this[index umod this.size]
 fun <T> Array<T>.getCyclic(index: Int) = this[index umod this.size]
-fun IntArrayList.getCyclic(index: Int) = this[index umod this.size]
-fun FloatArrayList.getCyclic(index: Int) = this[index umod this.size]
-fun DoubleArrayList.getCyclic(index: Int) = this[index umod this.size]
+fun IntArrayList.getCyclic(index: Int) = this.getAt(index umod this.size)
+fun FloatArrayList.getCyclic(index: Int) = this.getAt(index umod this.size)
+fun DoubleArrayList.getCyclic(index: Int) = this.getAt(index umod this.size)
 
 fun <T> Array2<T>.getCyclic(x: Int, y: Int) = this[x umod this.width, y umod this.height]
 fun IntArray2.getCyclic(x: Int, y: Int) = this[x umod this.width, y umod this.height]
@@ -41,9 +41,9 @@ fun IntArray.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSea
 
 fun FloatArray.binarySearch(v: Float, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
 fun DoubleArray.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-fun FloatArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
-fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this[it].compareTo(v) })
+fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+fun FloatArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
 
 inline fun genericBinarySearch(
     fromIndex: Int,
