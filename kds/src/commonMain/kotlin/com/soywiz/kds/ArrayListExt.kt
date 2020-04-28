@@ -17,10 +17,10 @@ inline fun FloatArrayList.filter(callback: (Float) -> Boolean): FloatArrayList =
 inline fun DoubleArrayList.filter(callback: (Double) -> Boolean): DoubleArrayList = DoubleArrayList().also { for (v in this) if (callback(v)) it.add(v) }
 
 private object IntArrayListSortOps : SortOps<IntArrayList>() {
-    override fun compare(subject: IntArrayList, l: Int, r: Int): Int = subject[l].compareTo(subject[r])
+    override fun compare(subject: IntArrayList, l: Int, r: Int): Int = subject.getAt(l).compareTo(subject.getAt(r))
     override fun swap(subject: IntArrayList, indexL: Int, indexR: Int) {
-        val l = subject[indexL]
-        val r = subject[indexR]
+        val l = subject.getAt(indexL)
+        val r = subject.getAt(indexR)
         subject[indexR] = l
         subject[indexL] = r
     }
@@ -37,10 +37,10 @@ private object DoubleArrayListSortOps : SortOps<DoubleArrayList>() {
 }
 
 private object FloatArrayListSortOps : SortOps<FloatArrayList>() {
-    override fun compare(subject: FloatArrayList, l: Int, r: Int): Int = subject[l].compareTo(subject[r])
+    override fun compare(subject: FloatArrayList, l: Int, r: Int): Int = subject.getAt(l).compareTo(subject.getAt(r))
     override fun swap(subject: FloatArrayList, indexL: Int, indexR: Int) {
-        val l = subject[indexL]
-        val r = subject[indexR]
+        val l = subject.getAt(indexL)
+        val r = subject.getAt(indexR)
         subject[indexR] = l
         subject[indexL] = r
     }
