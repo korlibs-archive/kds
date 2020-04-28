@@ -27,10 +27,10 @@ private object IntArrayListSortOps : SortOps<IntArrayList>() {
 }
 
 private object DoubleArrayListSortOps : SortOps<DoubleArrayList>() {
-    override fun compare(subject: DoubleArrayList, l: Int, r: Int): Int = subject[l].compareTo(subject[r])
+    override fun compare(subject: DoubleArrayList, l: Int, r: Int): Int = subject.getAt(l).compareTo(subject.getAt(r))
     override fun swap(subject: DoubleArrayList, indexL: Int, indexR: Int) {
-        val l = subject[indexL]
-        val r = subject[indexR]
+        val l = subject.getAt(indexL)
+        val r = subject.getAt(indexR)
         subject[indexR] = l
         subject[indexL] = r
     }

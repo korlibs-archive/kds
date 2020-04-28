@@ -127,7 +127,7 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
         sb.append('[')
         for (n in 0 until size) {
             if (n != 0) sb.append(", ")
-            sb.append(this[n])
+            sb.append(this.getAt(n))
         }
         sb.append(']')
     }.toString()
@@ -259,7 +259,7 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
         sb.append('[')
         for (n in 0 until size) {
             if (n != 0) sb.append(", ")
-            sb.append(this[n])
+            sb.append(this.getAt(n))
         }
         sb.append(']')
     }.toString()
@@ -391,7 +391,7 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
         sb.append('[')
         for (n in 0 until size) {
             if (n != 0) sb.append(", ")
-            sb.append(this[n])
+            sb.append(this.getAt(n))
         }
         sb.append(']')
     }.toString()

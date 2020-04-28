@@ -125,7 +125,7 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
         sb.append('[')
         for (n in 0 until size) {
             if (n != 0) sb.append(", ")
-            sb.append(this[n])
+            sb.append(this.getAt(n))
         }
         sb.append(']')
     }.toString()
