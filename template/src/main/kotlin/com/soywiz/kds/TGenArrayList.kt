@@ -55,7 +55,11 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
     fun add(values: TGenArrayList<TGen>) = add(values.data, 0, values.size)
     fun add(values: Iterable<TGen>) = run { for (v in values) add(v) }
 
-    override operator fun get(index: Int): TGen = data[index]
+    @Deprecated("Try to use getAt instead to prevent boxing", ReplaceWith("getAt(index)"))
+    override operator fun get(index: Int): TGen = getAt(index)
+
+    /** Gets an item of the list without boxing */
+    fun getAt(index: Int): TGen = data[index]
 
     operator fun set(index: Int, value: TGen) = run {
         if (index >= length) {
