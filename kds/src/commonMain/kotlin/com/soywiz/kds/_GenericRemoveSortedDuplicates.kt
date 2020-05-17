@@ -12,7 +12,7 @@ inline fun genericRemoveSortedDuplicates(size: Int, equals: (x: Int, y: Int) -> 
     resize(pivot + 1)
 }
 
-internal fun <T> ArrayList<T>.removeSortedDuplicates() = this.apply {
+fun <T> ArrayList<T>.removeSortedDuplicates() = this.apply {
     genericRemoveSortedDuplicates(
         size = size,
         equals = { x, y -> this[x] == this[y] },
