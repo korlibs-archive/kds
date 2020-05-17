@@ -113,6 +113,13 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
         length += count
     }
 
+    fun swapIndices(indexA: Int, indexB: Int) {
+        val l = this.getAt(indexA)
+        val r = this.getAt(indexB)
+        this[indexA] = r
+        this[indexB] = l
+    }
+
     fun removeAt(index: Int): Int = removeAt(index, 1)
 
     fun removeAt(index: Int, count: Int): Int {
@@ -266,6 +273,13 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
         length += count
     }
 
+    fun swapIndices(indexA: Int, indexB: Int) {
+        val l = this.getAt(indexA)
+        val r = this.getAt(indexB)
+        this[indexA] = r
+        this[indexB] = l
+    }
+
     fun removeAt(index: Int): Double = removeAt(index, 1)
 
     fun removeAt(index: Int, count: Int): Double {
@@ -417,6 +431,13 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
         if (isNotEmpty()) arraycopy(data, index, data, index + count, length - index)
         for (n in 0 until count) data[index + n] = value[start + n]
         length += count
+    }
+
+    fun swapIndices(indexA: Int, indexB: Int) {
+        val l = this.getAt(indexA)
+        val r = this.getAt(indexB)
+        this[indexA] = r
+        this[indexB] = l
     }
 
     fun removeAt(index: Int): Float = removeAt(index, 1)

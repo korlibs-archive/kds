@@ -111,6 +111,13 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
         length += count
     }
 
+    fun swapIndices(indexA: Int, indexB: Int) {
+        val l = this.getAt(indexA)
+        val r = this.getAt(indexB)
+        this[indexA] = r
+        this[indexB] = l
+    }
+
     fun removeAt(index: Int): TGen = removeAt(index, 1)
 
     fun removeAt(index: Int, count: Int): TGen {
