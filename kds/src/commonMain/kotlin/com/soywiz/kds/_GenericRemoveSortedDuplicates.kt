@@ -20,3 +20,10 @@ fun <T> ArrayList<T>.removeSortedDuplicates() = this.apply {
         resize = { size -> while (this.size > size && size >= 0) this.removeAt(this.size - 1) }
     )
 }
+
+fun <T> List<T>.withoutSortedDuplicates(out: ArrayList<T> = arrayListOf()): List<T> {
+    out.clear()
+    out.addAll(this)
+    out.removeSortedDuplicates()
+    return out
+}
