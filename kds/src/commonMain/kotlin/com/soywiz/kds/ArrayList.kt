@@ -63,6 +63,8 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
     /** Gets an item of the list without boxing */
     fun getAt(index: Int): Int = data[index]
 
+    fun setAt(index: Int, value: Int): Int = value.also { set(index, value) }
+
     operator fun set(index: Int, value: Int) = run {
         if (index >= length) {
             ensure(index + 1)
@@ -96,11 +98,30 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
         return -1
     }
 
-    fun removeAt(index: Int): Int {
-        if (index < 0 || index >= length) throw IndexOutOfBoundsException()
+    fun insertAt(index: Int, value: Int) = this.apply {
+        ensure(1)
+        if (isNotEmpty()) arraycopy(data, index, data, index + 1, length - index)
+        data[index] = value
+        length++
+    }
+
+    fun insertAt(index: Int, value: IntArray, start: Int = 0, end: Int = value.size) = this.apply {
+        val count = end - start
+        ensure(count)
+        if (isNotEmpty()) arraycopy(data, index, data, index + count, length - index)
+        for (n in 0 until count) data[index + n] = value[start + n]
+        length += count
+    }
+
+    fun removeAt(index: Int): Int = removeAt(index, 1)
+
+    fun removeAt(index: Int, count: Int): Int {
+        if (index < 0 || index >= length || index + count > length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
-        length--
+        if (count > 0) {
+            if (index < length - count) arraycopy(data, index + count, data, index, length - index - count)
+            length-= count
+        }
         return out
     }
 
@@ -195,6 +216,8 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
     /** Gets an item of the list without boxing */
     fun getAt(index: Int): Double = data[index]
 
+    fun setAt(index: Int, value: Double): Double = value.also { set(index, value) }
+
     operator fun set(index: Int, value: Double) = run {
         if (index >= length) {
             ensure(index + 1)
@@ -228,11 +251,30 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
         return -1
     }
 
-    fun removeAt(index: Int): Double {
-        if (index < 0 || index >= length) throw IndexOutOfBoundsException()
+    fun insertAt(index: Int, value: Double) = this.apply {
+        ensure(1)
+        if (isNotEmpty()) arraycopy(data, index, data, index + 1, length - index)
+        data[index] = value
+        length++
+    }
+
+    fun insertAt(index: Int, value: DoubleArray, start: Int = 0, end: Int = value.size) = this.apply {
+        val count = end - start
+        ensure(count)
+        if (isNotEmpty()) arraycopy(data, index, data, index + count, length - index)
+        for (n in 0 until count) data[index + n] = value[start + n]
+        length += count
+    }
+
+    fun removeAt(index: Int): Double = removeAt(index, 1)
+
+    fun removeAt(index: Int, count: Int): Double {
+        if (index < 0 || index >= length || index + count > length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
-        length--
+        if (count > 0) {
+            if (index < length - count) arraycopy(data, index + count, data, index, length - index - count)
+            length-= count
+        }
         return out
     }
 
@@ -327,6 +369,8 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
     /** Gets an item of the list without boxing */
     fun getAt(index: Int): Float = data[index]
 
+    fun setAt(index: Int, value: Float): Float = value.also { set(index, value) }
+
     operator fun set(index: Int, value: Float) = run {
         if (index >= length) {
             ensure(index + 1)
@@ -360,11 +404,30 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
         return -1
     }
 
-    fun removeAt(index: Int): Float {
-        if (index < 0 || index >= length) throw IndexOutOfBoundsException()
+    fun insertAt(index: Int, value: Float) = this.apply {
+        ensure(1)
+        if (isNotEmpty()) arraycopy(data, index, data, index + 1, length - index)
+        data[index] = value
+        length++
+    }
+
+    fun insertAt(index: Int, value: FloatArray, start: Int = 0, end: Int = value.size) = this.apply {
+        val count = end - start
+        ensure(count)
+        if (isNotEmpty()) arraycopy(data, index, data, index + count, length - index)
+        for (n in 0 until count) data[index + n] = value[start + n]
+        length += count
+    }
+
+    fun removeAt(index: Int): Float = removeAt(index, 1)
+
+    fun removeAt(index: Int, count: Int): Float {
+        if (index < 0 || index >= length || index + count > length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
-        length--
+        if (count > 0) {
+            if (index < length - count) arraycopy(data, index + count, data, index, length - index - count)
+            length-= count
+        }
         return out
     }
 

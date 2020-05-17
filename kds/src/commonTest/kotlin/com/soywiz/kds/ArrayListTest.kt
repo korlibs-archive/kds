@@ -128,4 +128,18 @@ class ArrayListTest {
     fun listIterator() {
         assertEquals(listOf(2, 3, 4), intArrayListOf(1, 2, 3, 4).listIterator(1).asSequence().toList())
     }
+
+    @Test
+    fun testInsertAt() {
+        assertEquals(listOf(4, 3, 2, 1), intArrayListOf().insertAt(0, 1).insertAt(0, 2).insertAt(0, 3).insertAt(0, 4).toList())
+        assertEquals(listOf(21, 22, 23, 11, 12, 13, 1, 2, 3), intArrayListOf().insertAt(0, intArrayOf(1, 2, 3)).insertAt(0, intArrayOf(11, 12, 13)).insertAt(0, intArrayOf(21, 22, 23)).toList())
+    }
+
+    @Test
+    fun testRemoveAt() {
+        assertEquals(listOf(1, 5), intArrayListOf(1, 2, 3, 4, 5).apply { removeAt(1, 3) }.toList())
+        assertEquals(listOf(1), intArrayListOf(1, 2, 3, 4, 5).apply { removeAt(1, 4) }.toList())
+        assertEquals(listOf(5), intArrayListOf(1, 2, 3, 4, 5).apply { removeAt(0, 4) }.toList())
+        assertEquals(listOf(), intArrayListOf(1, 2, 3, 4, 5).apply { removeAt(0, 5) }.toList())
+    }
 }
