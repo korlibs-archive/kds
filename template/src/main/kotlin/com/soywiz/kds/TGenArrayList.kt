@@ -111,7 +111,10 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
         length += count
     }
 
-    fun swapIndices(indexA: Int, indexB: Int) {
+    @Deprecated("", ReplaceWith("swap(indexA, indexB)"))
+    fun swapIndices(indexA: Int, indexB: Int) = swap(indexA, indexB)
+
+    fun swap(indexA: Int, indexB: Int) {
         val l = this.getAt(indexA)
         val r = this.getAt(indexB)
         this[indexA] = r
