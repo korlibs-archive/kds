@@ -61,6 +61,8 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
     /** Gets an item of the list without boxing */
     fun getAt(index: Int): TGen = data[index]
 
+    fun setAt(index: Int, value: TGen): TGen = value.also { set(index, value) }
+
     operator fun set(index: Int, value: TGen) = run {
         if (index >= length) {
             ensure(index + 1)
@@ -94,11 +96,30 @@ class TGenArrayList<TGen>(capacity: Int = 7) : List<TGen> {
         return -1
     }
 
-    fun removeAt(index: Int): TGen {
-        if (index < 0 || index >= length) throw IndexOutOfBoundsException()
+    fun insertAt(index: Int, value: TGen) = this.apply {
+        ensure(1)
+        if (isNotEmpty()) arraycopy(data, index, data, index + 1, length - index)
+        data[index] = value
+        length++
+    }
+
+    fun insertAt(index: Int, value: Array<TGen>, start: Int = 0, end: Int = value.size) = this.apply {
+        val count = end - start
+        ensure(count)
+        if (isNotEmpty()) arraycopy(data, index, data, index + count, length - index)
+        for (n in 0 until count) data[index + n] = value[start + n]
+        length += count
+    }
+
+    fun removeAt(index: Int): TGen = removeAt(index, 1)
+
+    fun removeAt(index: Int, count: Int): TGen {
+        if (index < 0 || index >= length || index + count > length) throw IndexOutOfBoundsException()
         val out = data[index]
-        if (index < length - 1) arraycopy(data, index + 1, data, index, length - index - 1)
-        length--
+        if (count > 0) {
+            if (index < length - count) arraycopy(data, index + count, data, index, length - index - count)
+            length-= count
+        }
         return out
     }
 
