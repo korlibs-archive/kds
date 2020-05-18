@@ -38,14 +38,32 @@ fun <K> MutableMap<K, Int>.incr(key: K, delta: Int = +1): Int {
  * The negative index represents the nearest position after negating + 1.
  */
 fun IntArray.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = (genericBinarySearchResult(fromIndex, toIndex) { this[it].compareTo(v) })
-
 fun FloatArray.binarySearch(v: Float, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = (genericBinarySearchResult(fromIndex, toIndex) { this[it].compareTo(v) })
 fun DoubleArray.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = (genericBinarySearchResult(fromIndex, toIndex) { this[it].compareTo(v) })
 fun IntArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = (genericBinarySearchResult(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
 fun FloatArrayList.binarySearch(v: Int, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = (genericBinarySearchResult(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
 fun DoubleArrayList.binarySearch(v: Double, fromIndex: Int = 0, toIndex: Int = size): BSearchResult = (genericBinarySearchResult(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
 
-inline fun genericBinarySearchResult(fromIndex: Int, toIndex: Int, check: (value: Int) -> Int): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex, { from, to, low, high -> -low - 1 }, check))
+fun IntArray.binarySearchLeft(v: Int, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchLeft(fromIndex, toIndex) { this[it].compareTo(v) })
+fun FloatArray.binarySearchLeft(v: Float, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchLeft(fromIndex, toIndex) { this[it].compareTo(v) })
+fun DoubleArray.binarySearchLeft(v: Double, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchLeft(fromIndex, toIndex) { this[it].compareTo(v) })
+fun IntArrayList.binarySearchLeft(v: Int, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchLeft(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+fun FloatArrayList.binarySearchLeft(v: Float, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchLeft(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+fun DoubleArrayList.binarySearchLeft(v: Double, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchLeft(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+
+fun IntArray.binarySearchRight(v: Int, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchRight(fromIndex, toIndex) { this[it].compareTo(v) })
+fun FloatArray.binarySearchRight(v: Float, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchRight(fromIndex, toIndex) { this[it].compareTo(v) })
+fun DoubleArray.binarySearchRight(v: Double, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchRight(fromIndex, toIndex) { this[it].compareTo(v) })
+fun IntArrayList.binarySearchRight(v: Int, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchRight(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+fun FloatArrayList.binarySearchRight(v: Float, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchRight(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+fun DoubleArrayList.binarySearchRight(v: Double, fromIndex: Int = 0, toIndex: Int = size) = (genericBinarySearchRight(fromIndex, toIndex) { this.getAt(it).compareTo(v) })
+
+inline fun genericBinarySearchResult(fromIndex: Int, toIndex: Int, check: (value: Int) -> Int): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex, { _, _, low, _ -> -low - 1 }, check))
+
+inline fun genericBinarySearchLeft(fromIndex: Int, toIndex: Int, check: (value: Int) -> Int): Int =
+    genericBinarySearch(fromIndex, toIndex, invalid = { from, to, low, high -> kotlin.math.min(low, high).coerceIn(from, to - 1) }, check = check)
+inline fun genericBinarySearchRight(fromIndex: Int, toIndex: Int, check: (value: Int) -> Int): Int =
+    genericBinarySearch(fromIndex, toIndex, invalid = { from, to, low, high -> kotlin.math.max(low, high).coerceIn(from, to - 1) }, check = check)
 
 inline fun genericBinarySearch(
     fromIndex: Int,
