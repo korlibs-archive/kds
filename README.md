@@ -92,7 +92,7 @@ assertEquals(listOf(1, 2, 3), mapWhile({ iterator.hasNext() }) { iterator.next()
 
 ### Usage with gradle:
 ```kotlin
-def kdsVersion = "1.9.2"
+def kdsVersion = "..." //the latest version here (you can find it at the top of the README)
 
 repositories {
     maven { url "https://dl.bintray.com/korlibs/korlibs" }
