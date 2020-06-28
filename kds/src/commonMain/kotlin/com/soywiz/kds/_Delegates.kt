@@ -86,3 +86,17 @@ class WeakPropertyThis<T : Any, V>(val gen: T.() -> V) {
     operator fun getValue(obj: T, property: KProperty<*>): V = map.getOrPut(obj) { gen(obj) }
     operator fun setValue(obj: T, property: KProperty<*>, value: V) = run { map[obj] = value }
 }
+
+class Observable<T>(val initial: T, val before: (T) -> Unit = {}, val after: (T) -> Unit = {}) {
+    var currentValue = initial
+
+    operator fun getValue(obj: Any, prop: KProperty<*>): T {
+        return currentValue
+    }
+
+    operator fun setValue(obj: Any, prop: KProperty<*>, value: T) {
+        before(value)
+        currentValue = value
+        after(value)
+    }
+}
