@@ -149,7 +149,7 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
     // Data
     override fun hashCode(): Int = data.contentHashCode(0, size)
     override fun equals(other: Any?): Boolean {
-        if (other is IntArrayList) return data.contentEquals(other.data)
+        if (other is IntArrayList) return this.size == other.size && data.contentEquals(other.data, 0, size)
         if (other is List<*>) return other == this
         return false
     }
@@ -312,7 +312,7 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
     // Data
     override fun hashCode(): Int = data.contentHashCode(0, size)
     override fun equals(other: Any?): Boolean {
-        if (other is DoubleArrayList) return data.contentEquals(other.data)
+        if (other is DoubleArrayList) return this.size == other.size && data.contentEquals(other.data, 0, size)
         if (other is List<*>) return other == this
         return false
     }
@@ -475,7 +475,7 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
     // Data
     override fun hashCode(): Int = data.contentHashCode(0, size)
     override fun equals(other: Any?): Boolean {
-        if (other is FloatArrayList) return data.contentEquals(other.data)
+        if (other is FloatArrayList) return this.size == other.size && data.contentEquals(other.data, 0, size)
         if (other is List<*>) return other == this
         return false
     }
