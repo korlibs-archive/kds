@@ -112,8 +112,9 @@ class ArrayListTest {
 
     @Test
     fun list() {
-        assertEquals(intArrayListOf(1, 2, 3), listOf(1, 2, 3))
-        assertEquals(listOf(1, 2, 3), intArrayListOf(1, 2, 3))
+        // No List<T> anymore to prevent get/set performance issues
+        assertEquals(intArrayListOf(1, 2, 3).toList(), listOf(1, 2, 3))
+        assertEquals(listOf(1, 2, 3), intArrayListOf(1, 2, 3).toList())
     }
 
     @Test
@@ -144,70 +145,15 @@ class ArrayListTest {
     }
 
     @Test
-    fun testHashCodeIntArrayList() {
+    fun testHashCode() {
         val a = IntArrayList(10)
-        val hc0 = a.hashCode()
         a.add(10)
         val hc1 = a.hashCode()
         a.add(20)
         val hc2 = a.hashCode()
         a.removeAt(a.size - 1)
         val hc3 = a.hashCode()
-        val b = IntArrayList(10).also { it.add(a) }
-        assertNotEquals(hc1, hc0)
         assertNotEquals(hc1, hc2)
         assertEquals(hc1, hc3)
-        assertEquals(a, b)
-    }
-
-    @Test
-    fun testHashCodeFloatArrayList() {
-        val a = FloatArrayList(10)
-        val hc0 = a.hashCode()
-        a.add(10f)
-        val hc1 = a.hashCode()
-        a.add(20f)
-        val hc2 = a.hashCode()
-        a.removeAt(a.size - 1)
-        val hc3 = a.hashCode()
-        val b = FloatArrayList(10).also { it.add(a) }
-        assertNotEquals(hc1, hc0)
-        assertNotEquals(hc1, hc2)
-        assertEquals(hc1, hc3)
-        assertEquals(a, b)
-    }
-
-    @Test
-    fun testHashCodeDoubleArrayList() {
-        val a = DoubleArrayList(10)
-        val hc0 = a.hashCode()
-        a.add(10.0)
-        val hc1 = a.hashCode()
-        a.add(20.0)
-        val hc2 = a.hashCode()
-        a.removeAt(a.size - 1)
-        val hc3 = a.hashCode()
-        val b = DoubleArrayList(10).also { it.add(a) }
-        assertNotEquals(hc1, hc0)
-        assertNotEquals(hc1, hc2)
-        assertEquals(hc1, hc3)
-        assertEquals(a, b)
-    }
-
-    @Test
-    fun testHashCodeLongArrayList() {
-        val a = ArrayList<Any>(10)
-        val hc0 = a.hashCode()
-        a.add(Unit)
-        val hc1 = a.hashCode()
-        a.add(Unit)
-        val hc2 = a.hashCode()
-        a.removeAt(a.size - 1)
-        val hc3 = a.hashCode()
-        val b = ArrayList<Any>(10).also { it.addAll(a) }
-        assertNotEquals(hc1, hc0)
-        assertNotEquals(hc1, hc2)
-        assertEquals(hc1, hc3)
-        assertEquals(a, b)
     }
 }
