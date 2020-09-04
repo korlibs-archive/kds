@@ -20,7 +20,9 @@ class FastIdentityMapTest {
 		assertEquals("i1", map[i1])
 		assertEquals("i2", map[i2])
 		assertEquals(null, map[i3])
-		assertEquals(2, map.size)
+		assertEquals(2, map.size, "map.size==2")
+        assertEquals(2, map.keys.size, "map.keys.size==2")
+        assertEquals(2, map.values.size, "map.values.size==2")
 		assertEquals(listOf("i1", "i2"), map.values.sorted())
 
 		map[i1] = "i1b"
