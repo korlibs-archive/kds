@@ -30,7 +30,7 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
         add(other)
     }
 
-    private fun ensure(count: Int) {
+    @PublishedApi internal fun ensure(count: Int) {
         if (length + count > data.size) {
             data = data.copyOf(kotlin.math.max(length + count, data.size * 3)) as IntArray
         }
@@ -149,7 +149,7 @@ class IntArrayList(capacity: Int = 7) : List<Int> {
     // Data
     override fun hashCode(): Int = data.contentHashCode(0, size)
     override fun equals(other: Any?): Boolean {
-        if (other is IntArrayList) return this.size == other.size && data.contentEquals(other.data, 0, size)
+        if (other is IntArrayList) return size == other.size && data.contentEquals(other.data, 0, size)
         if (other is List<*>) return other == this
         return false
     }
@@ -193,7 +193,7 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
         add(other)
     }
 
-    private fun ensure(count: Int) {
+    @PublishedApi internal fun ensure(count: Int) {
         if (length + count > data.size) {
             data = data.copyOf(kotlin.math.max(length + count, data.size * 3)) as DoubleArray
         }
@@ -312,7 +312,7 @@ class DoubleArrayList(capacity: Int = 7) : List<Double> {
     // Data
     override fun hashCode(): Int = data.contentHashCode(0, size)
     override fun equals(other: Any?): Boolean {
-        if (other is DoubleArrayList) return this.size == other.size && data.contentEquals(other.data, 0, size)
+        if (other is DoubleArrayList) return size == other.size && data.contentEquals(other.data, 0, size)
         if (other is List<*>) return other == this
         return false
     }
@@ -356,7 +356,7 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
         add(other)
     }
 
-    private fun ensure(count: Int) {
+    @PublishedApi internal fun ensure(count: Int) {
         if (length + count > data.size) {
             data = data.copyOf(kotlin.math.max(length + count, data.size * 3)) as FloatArray
         }
@@ -475,7 +475,7 @@ class FloatArrayList(capacity: Int = 7) : List<Float> {
     // Data
     override fun hashCode(): Int = data.contentHashCode(0, size)
     override fun equals(other: Any?): Boolean {
-        if (other is FloatArrayList) return this.size == other.size && data.contentEquals(other.data, 0, size)
+        if (other is FloatArrayList) return size == other.size && data.contentEquals(other.data, 0, size)
         if (other is List<*>) return other == this
         return false
     }
