@@ -43,7 +43,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
                     }
                 }
                 .filter { it.isNotEmpty() }
-            val width = lines.map { it.length }.max() ?: 0
+            val width = lines.map { it.length }.maxOrNull() ?: 0
             val height = lines.size
 
             return Array2<TGen>(width, height) { n ->
@@ -87,7 +87,7 @@ data class Array2<TGen>(val width: Int, val height: Int, val data: Array<TGen>) 
         )
     }
 
-    override fun hashCode(): Int = width + height + data.hashCode()
+    override fun hashCode(): Int = width + height + data.contentHashCode()
 
     private fun index(x: Int, y: Int): Int {
         if ((x !in 0 until width) || (y !in 0 until height)) throw IndexOutOfBoundsException()
