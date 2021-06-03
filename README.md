@@ -1,7 +1,7 @@
 <h2 align="center"><img alt="kds" src="docs/kds-nomargin-256.png" /></h2>
 
 <p align="center">
-Kds is a Data Structure library for Multiplatform Kotlin 1.3.
+Kds is a Data Structure library for Multiplatform Kotlin.
 It includes a set of optimized data structures written in Kotlin Common so they are available in
 JVM, JS and future multiplatform targets. Those structures are designed to be allocation-efficient and fast, so Kds
 include specialized versions for primitives like <code>Int</code> or <code>Double</code>.
@@ -10,18 +10,10 @@ include specialized versions for primitives like <code>Int</code> or <code>Doubl
 <!-- BADGES -->
 <p align="center">
 	<a href="https://github.com/korlibs/kds/actions"><img alt="Build Status" src="https://github.com/korlibs/kds/workflows/CI/badge.svg" /></a>
-	<a href="https://bintray.com/korlibs/korlibs/kds"><img alt="Maven Version" src="https://img.shields.io/bintray/v/korlibs/korlibs/kds.svg?style=flat&label=maven" /></a>
+    <a href="https://search.maven.org/artifact/com.soywiz.korlibs.kds/kds"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.soywiz.korlibs.kds/kds"></a>
 	<a href="https://discord.korge.org/"><img alt="Discord" src="https://img.shields.io/discord/728582275884908604?logo=discord" /></a>
 </p>
 <!-- /BADGES -->
-
-<!-- SUPPORT -->
-<h2 align="center">Support kds</h2>
-<p align="center">
-If you like kds, or want your company logo here, please consider <a href="https://github.com/sponsors/soywiz">becoming a sponsor ★</a>,<br />
-in addition to ensure the continuity of the project, you will get exclusive content.
-</p>
-<!-- /SUPPORT -->
 
 ### Full Documentation: https://korlibs.soywiz.com/kds/
 
@@ -107,7 +99,4 @@ dependencies {
     // For JS only
     implementation "com.soywiz.korlibs.kds:kds-js:$kdsVersion"
 }
-
-// settigs.gradle
-enableFeaturePreview('GRADLE_METADATA')
 ```
