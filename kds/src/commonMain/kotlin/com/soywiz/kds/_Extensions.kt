@@ -2,6 +2,7 @@ package com.soywiz.kds
 
 import com.soywiz.kds.internal.*
 import com.soywiz.kds.internal.umod
+import kotlin.math.*
 
 inline fun count(cond: (index: Int) -> Boolean): Int {
     var counter = 0
@@ -15,6 +16,7 @@ inline fun mapWhileFloat(cond: (index: Int) -> Boolean, gen: (Int) -> Float): Fl
 inline fun mapWhileDouble(cond: (index: Int) -> Boolean, gen: (Int) -> Double): DoubleArray = DoubleArrayList().apply { while (cond(this.size)) this += gen(this.size) }.toDoubleArray()
 
 fun <T> List<T>.getCyclic(index: Int) = this[index umod this.size]
+fun <T> List<T>.getCyclicOrNull(index: Int) = this.getOrNull(index umod this.size)
 fun <T> Array<T>.getCyclic(index: Int) = this[index umod this.size]
 fun IntArrayList.getCyclic(index: Int) = this.getAt(index umod this.size)
 fun FloatArrayList.getCyclic(index: Int) = this.getAt(index umod this.size)
@@ -67,9 +69,9 @@ fun DoubleArrayList.binarySearchRight(v: Double, fromIndex: Int = 0, toIndex: In
 inline fun genericBinarySearchResult(fromIndex: Int, toIndex: Int, check: (value: Int) -> Int): BSearchResult = BSearchResult(genericBinarySearch(fromIndex, toIndex, { _, _, low, _ -> -low - 1 }, check))
 
 inline fun genericBinarySearchLeft(fromIndex: Int, toIndex: Int, check: (value: Int) -> Int): Int =
-    genericBinarySearch(fromIndex, toIndex, invalid = { from, to, low, high -> min2(low, high).coerceIn(from, to - 1) }, check = check)
+    genericBinarySearch(fromIndex, toIndex, invalid = { from, to, low, high -> min(low, high).coerceIn(from, to - 1) }, check = check)
 inline fun genericBinarySearchRight(fromIndex: Int, toIndex: Int, check: (value: Int) -> Int): Int =
-    genericBinarySearch(fromIndex, toIndex, invalid = { from, to, low, high -> max2(low, high).coerceIn(from, to - 1) }, check = check)
+    genericBinarySearch(fromIndex, toIndex, invalid = { from, to, low, high -> max(low, high).coerceIn(from, to - 1) }, check = check)
 
 inline fun genericBinarySearch(
     fromIndex: Int,
