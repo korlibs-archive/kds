@@ -54,10 +54,15 @@ expect operator fun <T> FastStringMap<T>.set(key: String, value: T): Unit
 expect operator fun <T> FastStringMap<T>.contains(key: String): Boolean
 expect fun <T> FastStringMap<T>.remove(key: String)
 expect fun <T> FastStringMap<T>.clear()
+expect fun <T> FastStringMap<T>.putAll(other: FastStringMap<T>)
 
 fun <T> FastStringMap<T>.values(): List<T> = this.keys().map { this[it] } as List<T>
 val <T> FastStringMap<T>.keys: List<String> get() = keys()
 val <T> FastStringMap<T>.values: List<T> get() = values()
+
+fun <T> FastStringMap<T>.toMap(): Map<String, T> = LinkedHashMap<String, T>(this.size).also { out ->
+    fastForEachNullable { key, value -> value?.let { out[key] = value } }
+}
 
 expect inline fun <T> FastStringMap<T>.fastKeyForEach(callback: (key: String) -> Unit): Unit
 
@@ -101,6 +106,7 @@ expect inline fun <K, V> FastIdentityMap<K, V>.fastKeyForEach(callback: (key: K)
 fun <K, V> FastIdentityMap<K, V>.values(): List<V> = this.keys().map { this[it] } as List<V>
 val <K, V> FastIdentityMap<K, V>.keys: List<K> get() = keys()
 val <K, V> FastIdentityMap<K, V>.values: List<V> get() = values()
+fun <K, V> FastIdentityMap<K, V>.getAndRemove(key: K): V? = get(key).also { remove(key) }
 
 inline fun <K, V : Any?> FastIdentityMap<K, V>.fastValueForEachNullable(callback: (value: V?) -> Unit): Unit {
     fastKeyForEach { callback(this[it]) }
